@@ -4,7 +4,6 @@
 .radiantBackground { opacity:1 !important; filter:none !important; mix-blend-mode:normal !important; }
 .section, .learn, .cta, .footer, .learnGrid, .ctaInner { background:transparent !important; box-shadow:none !important; }
 .cta { border:0 !important; }
-
 .brand, .navlinks, .githubLink, .micro, .sectionLabel, .eyebrow, .heroFoot, .factGrid b, .serviceNumber, .projectIndex, .footer, .lightText { color:#ffffff !important; }
 .hero h1, .aboutIntro h2, .sectionHeading h2, .learn h2, .cta h2, .serviceRow h3, .projectMain h3 { color:#ffffff !important; }
 .hero h1 em, .sectionHeading em, .aboutIntro h2 em, .learn h2 em, .cta h2 em { color:#ffe39a !important; }
@@ -20,47 +19,21 @@
 .learn, .learnGrid, .cta, .ctaInner { background:transparent !important; }
 .cta { padding-left:0 !important; padding-right:0 !important; margin-left:auto; margin-right:auto; }
 .learn .sectionLabel, .cta .sectionLabel { background:transparent !important; }
-.learn h2, .cta h2 {
-  color:#ffffff !important;
-  font-weight:700 !important;
-  opacity:1 !important;
-  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 18px rgba(0,0,0,.98), 0 0 32px rgba(0,0,0,.82);
-  -webkit-text-stroke:.25px rgba(255,255,255,.65);
-}
-.learn h2 em, .cta h2 em {
-  color:#fff1ad !important;
-  font-weight:700 !important;
-  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 18px rgba(0,0,0,.98), 0 0 30px rgba(255,227,154,.35);
-}
-.learnGrid p, .ctaSide p {
-  color:#ffffff !important;
-  font-weight:500 !important;
-  opacity:1 !important;
-  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 14px rgba(0,0,0,1), 0 0 26px rgba(0,0,0,.85);
-  -webkit-text-stroke:.15px rgba(255,255,255,.5);
-}
-.learn .sectionLabel span, .cta .sectionLabel span, .cta .micro {
-  color:#ffffff !important;
-  font-weight:700 !important;
-  opacity:1 !important;
-  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 14px rgba(0,0,0,1);
-  -webkit-text-stroke:.15px rgba(255,255,255,.55);
-}
+.learn h2, .cta h2 { color:#ffffff !important; font-weight:700 !important; opacity:1 !important; text-shadow:0 2px 4px rgba(0,0,0,1),0 0 18px rgba(0,0,0,.98),0 0 32px rgba(0,0,0,.82); -webkit-text-stroke:.25px rgba(255,255,255,.65); }
+.learn h2 em, .cta h2 em { color:#fff1ad !important; font-weight:700 !important; text-shadow:0 2px 4px rgba(0,0,0,1),0 0 18px rgba(0,0,0,.98),0 0 30px rgba(255,227,154,.35); }
+.learnGrid p, .ctaSide p { color:#ffffff !important; font-weight:500 !important; opacity:1 !important; text-shadow:0 2px 4px rgba(0,0,0,1),0 0 14px rgba(0,0,0,1),0 0 26px rgba(0,0,0,.85); -webkit-text-stroke:.15px rgba(255,255,255,.5); }
+.learn .sectionLabel span, .cta .sectionLabel span, .cta .micro { color:#ffffff !important; font-weight:700 !important; opacity:1 !important; text-shadow:0 2px 4px rgba(0,0,0,1),0 0 14px rgba(0,0,0,1); -webkit-text-stroke:.15px rgba(255,255,255,.55); }
 .ctaButton { box-shadow:0 2px 18px rgba(0,0,0,.55); }
 
-/* Нижняя строка шапки остаётся читаемой. */
-.heroFoot {
-  margin-top:8px;
-  padding:14px 16px 12px;
-  border:1px solid rgba(255,255,255,.72) !important;
-  border-radius:10px;
-  background:rgba(255,255,255,.90) !important;
-  color:#171717 !important;
-  text-shadow:none !important;
-}
+/* Переключатель языка. */
+.languageSwitch { display:inline-flex; align-items:center; gap:2px; padding:3px; border:1px solid rgba(255,255,255,.55); border-radius:999px; background:rgba(0,0,0,.22); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.languageSwitch button { appearance:none; border:0; border-radius:999px; background:transparent; color:#fff; font:inherit; font-size:9px; font-weight:700; letter-spacing:.08em; line-height:1; padding:7px 8px; cursor:pointer; opacity:.72; transition:background .2s ease,color .2s ease,opacity .2s ease,transform .2s ease; }
+.languageSwitch button:hover { opacity:1; transform:translateY(-1px); }
+.languageSwitch button.active { background:#fff; color:#171717; opacity:1; }
+
+.heroFoot { margin-top:8px; padding:14px 16px 12px; border:1px solid rgba(255,255,255,.72) !important; border-radius:10px; background:rgba(255,255,255,.90) !important; color:#171717 !important; text-shadow:none !important; }
 .heroFoot span { color:#171717 !important; }
 
-/* Последовательное плавное появление блоков: появление снизу + лёгкий параллакс. */
 @supports (animation-timeline:view()) {
   .section, .cta, .footer { animation:blockRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 34%; will-change:transform,opacity; }
   .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .learnGrid, .ctaInner, .footer > * { animation:blockRiseSmall linear both; animation-timeline:view(block); animation-range:entry 0% cover 32%; will-change:transform,opacity; }
@@ -77,26 +50,18 @@
 
 @media(max-width:560px) {
   .heroFoot { margin-top:4px; padding:12px 10px; gap:8px; font-size:7px; }
-  .services .sectionHeading h2 {
-    font-size:34px !important;
-    line-height:.94 !important;
-    letter-spacing:-.055em !important;
-    white-space:normal !important;
-    max-width:100%;
-    overflow-wrap:normal;
-    word-break:normal;
-  }
+  .services .sectionHeading h2 { font-size:34px !important; line-height:.94 !important; letter-spacing:-.055em !important; white-space:normal !important; max-width:100%; overflow-wrap:normal; word-break:normal; }
   .services .sectionHeading h2 em { display:inline; }
   .contactPill { display:inline-flex !important; padding:7px 10px !important; font-size:8px !important; }
-  .navRight { gap:8px; }
+  .navRight { gap:7px; }
   .githubLink { display:none; }
+  .languageSwitch { gap:1px; padding:2px; }
+  .languageSwitch button { font-size:8px; padding:6px 6px; }
   .cta { padding-top:78px !important; padding-bottom:45px !important; }
   .ctaInner { padding-top:48px; gap:35px; }
   .learnGrid { padding-top:50px; }
-  .learn h2, .cta h2 { text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 16px rgba(0,0,0,1), 0 0 28px rgba(0,0,0,.9); }
-  .learnGrid p, .ctaSide p { text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 12px rgba(0,0,0,1), 0 0 22px rgba(0,0,0,.9); }
+  .learn h2, .cta h2 { text-shadow:0 2px 4px rgba(0,0,0,1),0 0 16px rgba(0,0,0,1),0 0 28px rgba(0,0,0,.9); }
+  .learnGrid p, .ctaSide p { text-shadow:0 2px 4px rgba(0,0,0,1),0 0 12px rgba(0,0,0,1),0 0 22px rgba(0,0,0,.9); }
 }
 
-@media (prefers-reduced-motion:reduce) {
-  .section, .cta, .footer, .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .serviceRow, .projectCard, .learnGrid, .ctaInner, .footer > * { animation:none !important; transform:none !important; opacity:1 !important; }
-}
+@media (prefers-reduced-motion:reduce) { .section, .cta, .footer, .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .serviceRow, .projectCard, .learnGrid, .ctaInner, .footer > * { animation:none !important; transform:none !important; opacity:1 !important; } }
