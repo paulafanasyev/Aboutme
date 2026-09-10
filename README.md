@@ -1,32 +1,59 @@
-# React + TypeScript + Vite
+# Pavel Afanasiev — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Персональный сайт-портфолио Павла Афанасьева — разработчика и создателя AI-продуктов, мобильных приложений, веб-сервисов и экспериментальных технологических проектов.
 
-Currently, two official plugins are available:
+## О проекте
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Этот репозиторий содержит современное интерактивное портфолио, предназначенное для презентации профессионального профиля, проектов, технологий и направления развития автора.
 
-## React Compiler
+Сайт объединяет информацию о разработке программного обеспечения, искусственном интеллекте, автоматизации, мобильных технологиях и создании собственных продуктов.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Основные направления
 
-## Expanding the Oxlint configuration
+- **AI и интеллектуальные ассистенты** — разработка AI-систем, интеграция внешних моделей и создание пользовательских AI-интерфейсов.
+- **Мобильная разработка** — Android/React Native/Expo-проекты, включая AI-ассистентов и управление функциями устройства.
+- **Web-разработка** — современные React/Vite-интерфейсы, адаптивные сайты и продуктовые лендинги.
+- **Автоматизация и Termux** — локальные инструменты, терминальные сценарии, MCP-интеграции и управление окружением.
+- **Собственные продукты** — практические проекты от идеи и прототипа до рабочего приложения и публикации.
+- **Экспериментальные технологии** — компьютерное зрение, локальные и внешние AI-модели, серверные интеграции и исследовательские прототипы.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Проекты
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+### Svetlana / Svetlana-App
+AI-ассистент нового поколения с естественным интерфейсом, голосовым взаимодействием и интеграцией с мобильным устройством. Проект развивается вокруг идеи персонального помощника, который способен работать не только как чат, но и как интерфейс управления цифровой средой.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Мир Самозанятых
+Экосистема цифровых инструментов для самозанятых: веб-интерфейс, backend-сервисы, AI-помощник Светлана, интеграции и мобильное направление.
+
+### OX
+Экспериментальная платформа мобильного AI-агента с Termux/MCP-интеграцией, инструментами автоматизации и управлением функциями Android.
+
+### Nuclear God's Eye
+Экспериментальный 3D-проект, посвящённый глобальной стратегии, моделированию Земли и ядерным сценариям.
+
+### Я-Зарядка
+Проект цифрового сервиса с современным пользовательским интерфейсом и фокусом на удобную подачу продукта через веб.
+
+## Технологический стек
+
+**Frontend:** React, TypeScript, Vite, Tailwind CSS, Framer Motion
+
+**Mobile:** React Native, Expo, Android
+
+**Backend / Infrastructure:** API-сервисы, серверные интеграции, GitHub Actions, облачные deployment-процессы
+
+**AI:** внешние LLM, AI-агенты, MCP, голосовые интерфейсы, компьютерное зрение и локальные инструменты
+
+**Development:** GitHub, Termux, Linux, автоматизированное тестирование и CI/CD
+
+## Технологическая философия
+
+Портфолио отражает практический подход: не просто демонстрировать технологии, а превращать их в работающие продукты. Особое внимание уделяется AI, автоматизации, мобильным устройствам, безопасности, удобству интерфейсов и возможности постепенно развивать прототип до полноценной системы.
+
+## Статус
+
+Проект развивается. Сайт собирается как production-ready статическое приложение и публикуется через GitHub Pages.
+
+## Лицензия
+
+MIT
