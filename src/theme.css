@@ -1,0 +1,134 @@
+/* Theme adaptation for the global Radiant Flow Field background. */
+
+@media (prefers-color-scheme: light) {
+  :root,
+  body {
+    color: #171717;
+  }
+
+  .site {
+    --fg: #171717;
+    --muted: #4b4b46;
+    --line: #17171733;
+    color: #171717;
+  }
+
+  /* Radiant's stock Flow Field is dark. Invert + hue-rotate preserves its warm palette
+     while turning the canvas into a light background. */
+  .radiantBackground {
+    filter: invert(1) hue-rotate(180deg) saturate(.72) brightness(1.03);
+  }
+
+  .nav,
+  .heroFoot,
+  .aboutGrid,
+  .sectionLabel,
+  .serviceList,
+  .projectGrid {
+    border-color: #17171733;
+  }
+
+  .brand,
+  .navlinks,
+  .githubLink,
+  .micro,
+  .sectionLabel,
+  .eyebrow,
+  .heroFoot,
+  .factGrid b,
+  .serviceNumber,
+  .projectIndex,
+  .projectMeta,
+  .footer,
+  .lightText {
+    color: #30302d;
+  }
+
+  .hero h1,
+  .aboutIntro h2,
+  .sectionHeading h2,
+  .learn h2,
+  .cta h2,
+  .serviceRow h3,
+  .projectMain h3 {
+    color: #11110f;
+  }
+
+  .hero h1 em,
+  .sectionHeading em,
+  .aboutIntro h2 em,
+  .learn h2 em {
+    color: #4f5f9b;
+  }
+
+  .lead,
+  .aboutLead,
+  .aboutText p,
+  .sectionHeading p,
+  .serviceRow p,
+  .projectMain p,
+  .learnGrid p,
+  .ctaSide p {
+    color: #30302d;
+  }
+
+  .factGrid span,
+  .footerBrand,
+  .footer > a {
+    color: #171717;
+  }
+
+  .contactPill,
+  .ghostButton,
+  .menuButton,
+  .serviceArrow,
+  .projectArrow,
+  .tags span {
+    color: #171717;
+    border-color: #17171766;
+    background: #ffffff66;
+  }
+
+  .contactPill:hover,
+  .serviceRow:hover .serviceArrow,
+  .projectCard:hover .projectArrow {
+    background: #171717;
+    color: #fff;
+    border-color: #171717;
+  }
+
+  .primaryButton,
+  .ctaButton {
+    background: #171717;
+    color: #fff;
+  }
+
+  .primaryButton:hover,
+  .ctaButton:hover {
+    background: #000;
+  }
+
+  .navlinks.open {
+    background: #ffffffdd;
+    border-color: #17171733;
+  }
+
+  .cta {
+    background: #ffffffcc;
+    color: #171717;
+    border: 1px solid #17171722;
+    box-shadow: 0 30px 80px #17171722;
+  }
+
+  .sectionLabel.light {
+    border-color: #17171733;
+  }
+
+  .sectionLabel.light span:first-child {
+    color: #171717;
+  }
+
+  .cta h2 em {
+    color: #4f5f9b;
+  }
+}
