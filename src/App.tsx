@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type MouseEvent } from 'react'
 
 const projects = [
   { number: '01', category: 'EdTech · Kids', title: 'Я-Зарядка AI', status: 'Реализован · Веду активно', text: 'Игровая система для ежедневной зарядки детей 5–14 лет: карта мира, миссии, награды и семейные челленджи.', tags: ['HTML', 'AI', 'RuStore'], href: 'https://github.com/paulafanasyev/ya-zaryadka-ai', accent: 'mint' },
@@ -20,21 +20,23 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
   const ref = useRef<HTMLAnchorElement>(null)
   const [spot, setSpot] = useState({ x: 50, y: 50 })
 
-  const move = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = ref.current?.getBoundingClientRect()
-    if (!rect) return
+  const move = (event: MouseEvent<HTMLAnchorElement>) => {
+    const node = ref.current
+    const rect = node?.getBoundingClientRect()
+    if (!node || !rect) return
     const x = ((event.clientX - rect.left) / rect.width) * 100
     const y = ((event.clientY - rect.top) / rect.height) * 100
     setSpot({ x, y })
-    ref.current.style.setProperty('--mx', `${(x - 50) / 18}px`)
-    ref.current.style.setProperty('--my', `${(y - 50) / 18}px`)
+    node.style.setProperty('--mx', `${(x - 50) / 18}px`)
+    node.style.setProperty('--my', `${(y - 50) / 18}px`)
   }
 
   const leave = () => {
     setSpot({ x: 50, y: 50 })
-    if (ref.current) {
-      ref.current.style.setProperty('--mx', '0px')
-      ref.current.style.setProperty('--my', '0px')
+    const node = ref.current
+    if (node) {
+      node.style.setProperty('--mx', '0px')
+      node.style.setProperty('--my', '0px')
     }
   }
 
