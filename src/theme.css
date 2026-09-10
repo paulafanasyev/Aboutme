@@ -7,7 +7,7 @@
 .brand, .navlinks, .githubLink, .micro, .sectionLabel, .eyebrow, .heroFoot, .factGrid b, .serviceNumber, .projectIndex, .footer, .lightText { color:#f4f4f1 !important; }
 .hero h1, .aboutIntro h2, .sectionHeading h2, .learn h2, .cta h2, .serviceRow h3, .projectMain h3 { color:#ffffff !important; }
 .hero h1 em, .sectionHeading em, .aboutIntro h2 em, .learn h2 em, .cta h2 em { color:#e3c77a !important; }
-.lead, .aboutLead, .aboutText p, .sectionHeading p, .serviceRow p, .projectMain p, .learnGrid p, .ctaSide p { color:#e1e1dc !important; }
+.lead, .aboutLead, .aboutText p, .sectionHeading p, .serviceRow p, .projectMain p, .learnGrid p, .ctaSide p { color:#e8e8e3 !important; }
 .factGrid span, .footerBrand, .footer > a { color:#ffffff !important; }
 .nav, .heroFoot, .aboutGrid, .sectionLabel, .serviceList, .projectGrid { border-color:rgba(255,255,255,.34) !important; }
 .contactPill, .ghostButton, .menuButton, .serviceArrow, .projectArrow, .tags span { color:#ffffff !important; border-color:rgba(255,255,255,.55) !important; background:rgba(255,255,255,.10) !important; }
@@ -15,11 +15,29 @@
 .contactPill:hover, .serviceRow:hover .serviceArrow, .projectCard:hover .projectArrow { background:#fff !important; color:#171717 !important; border-color:#fff !important; }
 .navlinks.open { background:rgba(10,10,10,.88) !important; border-color:rgba(255,255,255,.34) !important; }
 
-/* Последовательное плавное появление блоков снизу. */
+/* Нижняя строка шапки получает светлую подложку, чтобы не теряться на Flow Field. */
+.heroFoot {
+  margin-top:8px;
+  padding:14px 16px 12px;
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:10px;
+  background:rgba(255,255,255,.90) !important;
+  color:#171717 !important;
+  text-shadow:none !important;
+}
+.heroFoot span { color:#171717 !important; }
+
+/* Текстовые блоки остаются прозрачными, но получают локальный контраст без тёмных карточек. */
+.learnGrid p, .ctaSide p, .sectionHeading p, .aboutLead, .aboutText p, .serviceRow p, .projectMain p {
+  text-shadow:0 2px 16px rgba(0,0,0,.92), 0 1px 3px rgba(0,0,0,.95);
+}
+.learnGrid h2, .cta h2, .sectionHeading h2, .aboutIntro h2 { text-shadow:0 3px 22px rgba(0,0,0,.9); }
+
+/* Последовательное плавное появление блоков: появление снизу + лёгкий параллакс. */
 @supports (animation-timeline:view()) {
   .section, .cta, .footer { animation:blockRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 34%; will-change:transform,opacity; }
   .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .learnGrid, .ctaInner, .footer > * { animation:blockRiseSmall linear both; animation-timeline:view(block); animation-range:entry 0% cover 32%; will-change:transform,opacity; }
-  .serviceRow, .projectCard { animation:cardRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 28%; will-change:transform,opacity; }
+  .serviceRow, .projectCard { animation:cardRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 30%; will-change:transform,opacity; }
   .serviceRow:nth-child(2), .projectCard:nth-child(2) { animation-delay:.10s; }
   .serviceRow:nth-child(3), .projectCard:nth-child(3) { animation-delay:.20s; }
   .serviceRow:nth-child(4), .projectCard:nth-child(4) { animation-delay:.30s; }
@@ -27,7 +45,26 @@
   .projectCard:nth-child(6) { animation-delay:.50s; }
   @keyframes blockRise { from { opacity:0; transform:translate3d(0,76px,0) scale(.985); } to { opacity:1; transform:translate3d(0,0,0) scale(1); } }
   @keyframes blockRiseSmall { from { opacity:0; transform:translate3d(0,48px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
-  @keyframes cardRise { from { opacity:0; transform:translate3d(0,58px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+  @keyframes cardRise { from { opacity:0; transform:translate3d(0,58px,0) scale(.985); } to { opacity:1; transform:translate3d(0,0,0) scale(1); } }
+}
+
+@media(max-width:560px) {
+  .heroFoot { margin-top:4px; padding:12px 10px; gap:8px; font-size:7px; }
+  .services .sectionHeading h2 {
+    font-size:34px !important;
+    line-height:.94 !important;
+    letter-spacing:-.055em !important;
+    white-space:normal !important;
+    max-width:100%;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+  .services .sectionHeading h2 em { display:inline; }
+  .contactPill { display:inline-flex !important; padding:7px 10px !important; font-size:8px !important; }
+  .navRight { gap:8px; }
+  .githubLink { display:none; }
+  .cta { padding-left:0 !important; padding-right:0 !important; }
+  .ctaInner { padding-top:48px; }
 }
 
 @media (prefers-reduced-motion:reduce) {
