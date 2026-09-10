@@ -34,6 +34,28 @@
 .heroFoot { margin-top:8px; padding:14px 16px 12px; border:1px solid rgba(255,255,255,.72) !important; border-radius:10px; background:rgba(255,255,255,.90) !important; color:#171717 !important; text-shadow:none !important; }
 .heroFoot span { color:#171717 !important; }
 
+/* Клиентский чат: фиксированная точка входа в консультацию. */
+.chatLauncher { position:fixed; right:24px; bottom:24px; z-index:20; width:58px; height:58px; border:1px solid rgba(255,255,255,.72); border-radius:50%; background:#fff; color:#171717; font-size:13px; font-weight:800; letter-spacing:.04em; box-shadow:0 10px 40px rgba(0,0,0,.45); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; transition:transform .2s ease,box-shadow .2s ease; }
+.chatLauncher:hover { transform:translateY(-3px); box-shadow:0 14px 44px rgba(0,0,0,.55); }
+.chatLauncherDot { width:6px; height:6px; border-radius:50%; background:#c6a94d; box-shadow:0 0 9px rgba(255,227,154,.9); }
+.clientChat { position:fixed; right:24px; bottom:94px; z-index:19; width:min(390px,calc(100vw - 32px)); height:min(620px,calc(100vh - 125px)); display:flex; flex-direction:column; overflow:hidden; border:1px solid rgba(255,255,255,.42); border-radius:22px; background:rgba(10,10,12,.88); color:#fff; box-shadow:0 24px 80px rgba(0,0,0,.58); backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px); }
+.clientChatHead { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 18px 15px; border-bottom:1px solid rgba(255,255,255,.16); }
+.clientChatHead strong { display:block; font-size:15px; line-height:1.2; }
+.clientChatHead small { display:block; margin-top:5px; color:#c8c8c4; font-size:10px; }
+.clientChatHead button { border:0; background:transparent; color:#fff; font-size:25px; line-height:1; cursor:pointer; padding:2px 5px; }
+.clientChatBody { flex:1; overflow:auto; display:flex; flex-direction:column; gap:10px; padding:16px; scrollbar-width:thin; }
+.chatBubble { max-width:88%; padding:11px 13px; border-radius:15px; font-size:12px; line-height:1.48; white-space:pre-wrap; }
+.chatBubble.bot { align-self:flex-start; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.13); color:#fff; border-top-left-radius:5px; }
+.chatBubble.user { align-self:flex-end; background:#fff; color:#171717; border-top-right-radius:5px; }
+.chatQuick { display:flex; flex-wrap:wrap; gap:7px; padding:0 14px 12px; }
+.chatQuick button { border:1px solid rgba(255,255,255,.3); border-radius:999px; background:rgba(255,255,255,.07); color:#fff; padding:7px 10px; font-size:10px; cursor:pointer; transition:background .2s ease,color .2s ease; }
+.chatQuick button:hover { background:#fff; color:#171717; }
+.chatForm { display:flex; gap:8px; padding:12px; border-top:1px solid rgba(255,255,255,.16); background:rgba(0,0,0,.18); }
+.chatForm input { min-width:0; flex:1; border:1px solid rgba(255,255,255,.28); border-radius:12px; outline:none; background:rgba(255,255,255,.08); color:#fff; padding:11px 12px; font-size:12px; }
+.chatForm input::placeholder { color:#aaa; }
+.chatForm input:focus { border-color:rgba(255,255,255,.65); }
+.chatForm button { border:0; border-radius:12px; background:#fff; color:#171717; padding:0 13px; font-size:11px; font-weight:700; cursor:pointer; }
+
 @supports (animation-timeline:view()) {
   .section, .cta, .footer { animation:blockRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 34%; will-change:transform,opacity; }
   .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .learnGrid, .ctaInner, .footer > * { animation:blockRiseSmall linear both; animation-timeline:view(block); animation-range:entry 0% cover 32%; will-change:transform,opacity; }
@@ -62,6 +84,11 @@
   .learnGrid { padding-top:50px; }
   .learn h2, .cta h2 { text-shadow:0 2px 4px rgba(0,0,0,1),0 0 16px rgba(0,0,0,1),0 0 28px rgba(0,0,0,.9); }
   .learnGrid p, .ctaSide p { text-shadow:0 2px 4px rgba(0,0,0,1),0 0 12px rgba(0,0,0,1),0 0 22px rgba(0,0,0,.9); }
+  .chatLauncher { right:16px; bottom:16px; width:54px; height:54px; }
+  .clientChat { right:16px; bottom:82px; width:calc(100vw - 32px); height:min(620px,calc(100vh - 105px)); border-radius:18px; }
+  .chatQuick { gap:6px; }
+  .chatQuick button { font-size:9px; padding:6px 8px; }
+  .chatForm button { padding:0 10px; }
 }
 
 @media (prefers-reduced-motion:reduce) { .section, .cta, .footer, .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .serviceRow, .projectCard, .learnGrid, .ctaInner, .footer > * { animation:none !important; transform:none !important; opacity:1 !important; } }
