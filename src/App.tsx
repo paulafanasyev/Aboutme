@@ -1,89 +1,108 @@
 import { useState } from 'react'
 
 const projects = [
-  { n: '01', title: 'Svetlana', type: 'AI · MOBILE', text: 'Персональный AI-ассистент для телефона, инструментов разработчика и управления устройством.', tags: ['React Native', 'AI', 'Android'], href: 'https://github.com/paulafanasyev/Svetlana-App' },
-  { n: '02', title: 'Мир Самозанятых', type: 'PRODUCT · WEB', text: 'Платформа, объединяющая сервисы, AI и финансовые инструменты для самозанятых.', tags: ['React', 'Python', 'AI'], href: 'https://github.com/paulafanasyev/mir-samozanyatykh-' },
-  { n: '03', title: 'OX', type: 'AGENTS · AUTOMATION', text: 'Экспериментальная агентная система с Termux MCP и управлением Android.', tags: ['Android', 'MCP', 'AI'], href: 'https://github.com/paulafanasyev/mobile-agent-russkiy-termuxMCP-OX' },
-  { n: '04', title: "God’s Eye View", type: 'SIMULATION · 3D', text: '3D-симуляция Земли, кризисов и глобальных сценариев в интерактивной среде.', tags: ['3D', 'Simulation', 'Web'], href: 'https://github.com/paulafanasyev/-_-' },
-  { n: '05', title: 'Я-Зарядка AI', type: 'AI · PRODUCT', text: 'AI-продукт с фокусом на простой интерфейс и понятный пользовательский путь.', tags: ['AI', 'React', 'UX'], href: 'https://github.com/paulafanasyev/ya-zaryadka-ai' },
-  { n: '06', title: 'CryptoLayer', type: 'WEB3 · BACKEND', text: 'Инфраструктурный эксперимент вокруг API, безопасности и Web3.', tags: ['Web3', 'API', 'Security'], href: 'https://github.com/paulafanasyev/cryptolayer' },
+  { number: '01', category: 'EdTech · Kids', title: 'Я-Зарядка AI', status: 'Реализован · Веду активно', text: 'Детский мир движения: зарядка как игровое приключение для детей 5–14 лет. Карта мира, миссии, награды и семейные челленджи.', tags: ['HTML', 'AI', 'RuStore'], href: 'https://github.com/paulafanasyev/ya-zaryadka-ai', accent: 'mint' },
+  { number: '02', category: 'EdTech · AI', title: 'AI English & Math Teacher', status: 'Реализован · Веду активно', text: 'Триязычный AI-репетитор с говорящими аватарами, живым голосом и кабинетами. RU / EN / VI, шесть AI-учителей, уроки и мини-игры.', tags: ['React', 'Node', 'Prisma', 'Capacitor'], href: 'https://github.com/paulafanasyev/ai-english-teacher', accent: 'lavender' },
+  { number: '03', category: 'Social · i18n', title: 'Bridge · Два Сердца', status: 'Реализован · Веду активно', text: 'Кросс-культурная платформа знакомств Китай — Россия с голосовым переводом, совместимостью и тремя языками.', tags: ['React', 'Express', 'WebSocket', 'Capacitor'], href: 'https://github.com/paulafanasyev/bridges', accent: 'peach' },
+  { number: '04', category: 'Search · Analytics', title: 'Глаз Бога', status: 'В разработке · Веду активно', text: 'Интеллектуальная система поиска и аналитики по открытым источникам: агрегация публичных данных, быстрые запросы и понятный интерфейс.', tags: ['Python', 'API', 'Telegram'], href: 'https://github.com/paulafanasyev', accent: 'blue' },
+  { number: '05', category: 'Platform · Civic', title: 'Мир Самозанятых', status: 'В разработке · Веду активно', text: 'Единая продуктовая линейка: веб, мобильное приложение и backend, сервисы поддержки сообщества, AI-админ и клиент Светлана.', tags: ['Python', 'TypeScript', 'Flutter'], href: 'https://github.com/paulafanasyev/mir-samozanyatykh-', accent: 'green' },
+  { number: '06', category: 'AI Agent · Avatar', title: 'Svetlana App', status: 'В разработке · Веду активно', text: 'Русскоязычный AI-агент и realtime-аватар Светлана для веба и Android: TermuxMCP, accessibility, память, файлы, расписания и сетевой экран.', tags: ['TypeScript', 'Android', 'MCP', '3D'], href: 'https://github.com/paulafanasyev/Mobile-agent-russkiy-termuxMCP-OX', accent: 'rose' },
 ]
 
-const services = ['AI-продукты', 'Web & SaaS', 'Mobile Apps', 'Backend & API', 'Архитектура', 'Автоматизация']
+const services = [
+  ['01', 'Full-stack разработка', 'Веб и API под ключ: React, Node, PostgreSQL, PWA, деплой и сопровождение.'],
+  ['02', 'AI-продукты', 'Аватары, голосовые агенты, LLM-интеграции, MCP, кабинеты и геймификация.'],
+  ['03', 'Мобильные клиенты', 'Capacitor / Flutter / Android: от прототипа до сборки и релиза.'],
+  ['04', 'Включение в чужой проект', 'Архитектура, закрытие фич, релиз и поддержка существующей команды.'],
+]
 
 function App() {
   const [menu, setMenu] = useState(false)
-  const [chat, setChat] = useState(false)
-  const [message, setMessage] = useState('')
-  const [sent, setSent] = useState(false)
-
-  const send = () => {
-    if (!message.trim()) return
-    setSent(true)
-    setMessage('')
-  }
 
   return (
-    <main className="site">
+    <main className="site" id="top">
+      <div className="ambient ambientOne" />
+      <div className="ambient ambientTwo" />
+
       <header className="nav shell">
-        <a className="brand" href="#top" aria-label="Pavel Afanasiev"><span>PA</span><small>/</small>26</a>
+        <a className="brand" href="#top" aria-label="Pavel Afanasyev home">
+          <span className="brandMark">P</span><span>Pavel Afanasyev</span>
+        </a>
         <nav className={menu ? 'navlinks open' : 'navlinks'}>
-          <a href="#work" onClick={() => setMenu(false)}>Работы</a>
-          <a href="#services" onClick={() => setMenu(false)}>Возможности</a>
           <a href="#about" onClick={() => setMenu(false)}>Обо мне</a>
+          <a href="#services" onClick={() => setMenu(false)}>Услуги</a>
+          <a href="#projects" onClick={() => setMenu(false)}>Проекты</a>
+          <a href="#contact" onClick={() => setMenu(false)}>Контакты</a>
         </nav>
-        <div className="navactions">
-          <a className="navcta" href="mailto:pavel.afanadyev@inbox.ru">Связаться <b>↗</b></a>
+        <div className="navRight">
+          <a className="githubLink" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a className="contactPill" href="#contact">Обсудить проект</a>
           <button className="menuButton" onClick={() => setMenu(!menu)} aria-label="Меню">{menu ? '×' : '☰'}</button>
         </div>
       </header>
 
-      <section id="top" className="hero shell">
+      <section className="hero shell">
+        <div className="heroBadge"><span className="pulse" /> Open to collaboration · commercial full-stack</div>
         <div className="heroGrid">
           <div className="heroCopy">
-            <div className="eyebrow"><span>INDEPENDENT DEVELOPER</span><i /></div>
-            <h1>Делаю идеи<br /><strong>работающими.</strong></h1>
-            <p className="lead">Павел Афанасьев. Full-stack разработчик, создающий AI-продукты, мобильные приложения и web-сервисы.</p>
-            <div className="heroActions"><a className="primary" href="#work">Смотреть проекты <b>↓</b></a><a className="secondary" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+            <p className="micro">FULL-STACK / PRODUCT / AI</p>
+            <h1>Создаю рабочие<br /><em>цифровые продукты.</em></h1>
+            <p className="lead">Павел Афанасьев — full-stack разработчик с продуктовым фокусом. Собираю веб, API, мобильные клиенты и AI-контуры от идеи до работающего релиза.</p>
+            <div className="heroActions">
+              <a className="primaryButton" href="#contact">Обсудить сотрудничество <span>↗</span></a>
+              <a className="ghostButton" href="#projects">Смотреть проекты <span>↓</span></a>
+            </div>
+            <div className="heroMeta"><span>VIETNAM · RUSSIA</span><span>REMOTE</span><span>2026</span></div>
           </div>
-          <div className="heroVisual">
-            <div className="visualCard mainCard"><span>PA</span><div><small>BUILDING</small><strong>AI × PRODUCT</strong></div></div>
-            <div className="visualCard noteCard"><span>●</span><p>От идеи<br />до релиза.</p></div>
-            <div className="orbit">↗</div>
+          <div className="heroVisual" aria-hidden="true">
+            <div className="gradientOrb" />
+            <div className="glassLogo"><span>P</span><small>PA / 26</small></div>
+            <div className="glassCard cardTop"><small>BUILD MODE</small><strong>PRODUCT<br />FIRST</strong></div>
+            <div className="glassCard cardBottom"><span className="dot" /> AI × WEB × MOBILE</div>
+            <div className="gridLines" />
           </div>
         </div>
-        <div className="heroMeta"><span>VIETNAM / REMOTE</span><span>AVAILABLE FOR SELECTED PROJECTS</span><span>SCROLL ↓</span></div>
       </section>
 
-      <section id="work" className="work shell">
-        <div className="sectionIntro"><div><span className="kicker">01 / SELECTED WORK</span><h2>Избранные<br /><i>проекты.</i></h2></div><p>Не коллекция концептов. Здесь продукты, системы и эксперименты, которые я действительно строю.</p></div>
+      <section id="about" className="section shell about">
+        <div className="sectionLabel"><span>01</span><span>ОБО МНЕ</span></div>
+        <div className="aboutGrid">
+          <div><h2>Павел<br /><em>Афанасьев.</em></h2></div>
+          <div className="aboutText">
+            <p className="largeText">Full-stack разработчик: проектирую и собираю продукты от интерфейса до сервера, данных и мобильной обёртки.</p>
+            <p>Работаю с React, Node, TypeScript, Python, PostgreSQL, PWA и native-обёртками. Работаю в АНО ЦПС «Мир Самозанятых» и веду проекты удалённо между Вьетнамом и Россией.</p>
+            <p>На коммерческой основе выполняю full-stack разработку: MVP, развитие существующих систем, AI-модули и интеграции. Могу подключиться к чужому проекту как сильный исполнитель или партнёр по архитектуре.</p>
+            <div className="factGrid"><div><b>Организация</b><span>Мир Самозанятых</span></div><div><b>Формат</b><span>Удалённо</span></div><div><b>География</b><span>Вьетнам · Россия</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" className="section shell services">
+        <div className="sectionLabel"><span>02</span><span>УСЛУГИ</span></div>
+        <div className="sectionHeading"><h2>Коммерческая<br /><em>full-stack разработка.</em></h2><p>Не просто код. Задача, продуктовая логика, архитектура, интерфейс и выпуск.</p></div>
+        <div className="serviceList">
+          {services.map(([number, title, text]) => <article className="serviceRow" key={number}><span className="serviceNumber">{number}</span><div><h3>{title}</h3><p>{text}</p></div><span className="serviceArrow">↗</span></article>)}
+        </div>
+      </section>
+
+      <section id="projects" className="section shell projects">
+        <div className="sectionLabel"><span>03</span><span>ПОРТФОЛИО</span></div>
+        <div className="sectionHeading"><h2>Активно веду<br /><em>эти продукты.</em></h2><p>Реализованные проекты и системы, которые сейчас находятся в разработке. Описания — по репозиториям GitHub.</p></div>
         <div className="projectGrid">
-          {projects.map((p, i) => <a className={`project project${i + 1}`} href={p.href} target="_blank" rel="noreferrer" key={p.n}>
-            <div className="projectTop"><span>{p.n}</span><span>{p.type}</span></div>
-            <div className="projectArt"><span>{i === 0 ? 'S' : i === 1 ? 'M' : i === 2 ? 'OX' : i === 3 ? 'G' : i === 4 ? 'Y' : 'C'}</span></div>
-            <div className="projectBody"><h3>{p.title}</h3><p>{p.text}</p><div className="tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div></div>
-            <div className="projectArrow">↗</div>
+          {projects.map((project) => <a className="projectCard" href={project.href} target="_blank" rel="noreferrer" key={project.number}>
+            <div className={`projectVisual ${project.accent}`}><span className="projectNumber">{project.number}</span><div className="projectSymbol">{project.title === 'Svetlana App' ? 'S' : project.title === 'Мир Самозанятых' ? 'M' : project.title === 'Глаз Бога' ? 'G' : project.title === 'Bridge · Два Сердца' ? 'B' : project.title === 'AI English & Math Teacher' ? 'AI' : 'Y'}</div><span className="projectOpen">↗</span></div>
+            <div className="projectInfo"><div className="projectCategory">{project.category}</div><h3>{project.title}</h3><span className="status">{project.status}</span><p>{project.text}</p><div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div>
           </a>)}
         </div>
       </section>
 
-      <section id="services" className="services shell">
-        <div className="sectionIntro"><div><span className="kicker">02 / WHAT I DO</span><h2>От идеи<br /><i>к системе.</i></h2></div><p>Продуктовый подход: сначала задача и пользователь, затем архитектура, интерфейс и код.</p></div>
-        <div className="serviceList">{services.map((s, i) => <div className="service" key={s}><span>0{i + 1}</span><strong>{s}</strong><b>↗</b></div>)}</div>
+      <section className="cta shell" id="contact">
+        <div className="ctaGlow" />
+        <div className="sectionLabel light"><span>04</span><span>КОНТАКТЫ</span></div>
+        <div className="ctaInner"><div><p className="micro lightText">OPEN TO COLLABORATION</p><h2>Готов включиться<br /><em>в ваш проект.</em></h2></div><div className="ctaSide"><p>Продукт, стартап, команда или разовая задача. Могу взять full-stack контур целиком или закрыть конкретный слой — фронт, API, мобильную сборку или AI-агента.</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">Написать Павлу <span>↗</span></a></div></div>
       </section>
 
-      <section id="about" className="about shell">
-        <div className="aboutStamp">PA<br /><small>FULL STACK<br />DEVELOPER</small></div>
-        <div className="aboutCopy"><span className="kicker">03 / ABOUT</span><h2>Технологии —<br />это <i>инструмент.</i></h2><p>Я работаю на пересечении разработки, AI и продуктового дизайна. Люблю превращать сложные системы в понятные интерфейсы и доводить идеи до состояния, когда ими можно пользоваться.</p><div className="facts"><div><strong>AI</strong><span>agents & products</span></div><div><strong>WEB</strong><span>apps & platforms</span></div><div><strong>MOBILE</strong><span>Android & React Native</span></div></div></div>
-      </section>
-
-      <footer className="footer shell">
-        <div className="footerTop"><div><span className="kicker">04 / CONTACT</span><h2>Есть идея?<br /><i>Давайте сделаем.</i></h2></div><a className="footerMail" href="mailto:pavel.afanadyev@inbox.ru">pavel.afanadyev@inbox.ru <b>↗</b></a></div>
-        <div className="footerBottom"><span>© 2026 Pavel Afanasiev</span><span>AI · PRODUCT · ENGINEERING</span><a href="#top">НАВЕРХ ↑</a></div>
-      </footer>
-
-      <button className="chatButton" onClick={() => setChat(true)}><span>AI</span> Ассистент <b>↗</b></button>
-      {chat && <div className="chatOverlay" onClick={() => setChat(false)}><div className="chat" onClick={e => e.stopPropagation()}><button className="close" onClick={() => setChat(false)}>×</button><span className="kicker">PA / AI ASSISTANT</span><h3>{sent ? 'Готово.' : 'Что строим?'}</h3>{sent ? <p>Запрос принят. Для реального проекта свяжитесь с Павлом напрямую.</p> : <><p>Опишите задачу — ассистент поможет сориентироваться по проектам и технологиям.</p><div className="chatInput"><input value={message} onChange={e => setMessage(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ваш вопрос..." /><button onClick={send}>↗</button></div></>}</div></div>}
+      <footer className="footer shell"><div className="footerBrand"><span className="brandMark">P</span><span>Pavel Afanasyev</span></div><div>© 2026 · Full-stack · AI · Product</div><div>Вьетнам · Россия · удалённо</div><a href="#top">Наверх ↑</a></footer>
     </main>
   )
 }
