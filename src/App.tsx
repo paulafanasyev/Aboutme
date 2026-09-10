@@ -1,19 +1,19 @@
 import { useState } from 'react'
 
 const projects = [
-  { n: '01', title: 'Svetlana App', type: 'AI / MOBILE', text: 'AI-ассистент для управления телефоном, моделями ИИ и инструментами разработчика.', tags: ['React Native', 'AI', 'Android'], href: 'https://github.com/paulafanasyev/Svetlana-App' },
-  { n: '02', title: 'Мир Самозанятых', type: 'PRODUCT / WEB', text: 'Цифровая платформа для самозанятых: сервисы, AI и финансовые инструменты в одном продукте.', tags: ['React', 'Python', 'AI'], href: 'https://github.com/paulafanasyev/mir-samozanyatykh-' },
-  { n: '03', title: 'OX', type: 'AI / AUTOMATION', text: 'Экспериментальная мобильная агентная система с Termux MCP и управлением устройством.', tags: ['Android', 'MCP', 'AI'], href: 'https://github.com/paulafanasyev/mobile-agent-russkiy-termuxMCP-OX' },
-  { n: '04', title: 'God’s Eye View', type: 'SIMULATION / 3D', text: 'Стратегическая 3D-система моделирования Земли, кризисов и глобальных сценариев.', tags: ['3D', 'Simulation', 'Web'], href: 'https://github.com/paulafanasyev/-_-' },
-  { n: '05', title: 'Я-Зарядка AI', type: 'AI / PRODUCT', text: 'AI-продукт с современным интерфейсом и фокусом на понятный пользовательский опыт.', tags: ['AI', 'React', 'UX'], href: 'https://github.com/paulafanasyev/ya-zaryadka-ai' },
-  { n: '06', title: 'CryptoLayer', type: 'WEB3 / BACKEND', text: 'Инфраструктурный эксперимент вокруг безопасных транзакций и Web3.', tags: ['Web3', 'API', 'Security'], href: 'https://github.com/paulafanasyev/cryptolayer' },
+  { n: '01', title: 'Svetlana', type: 'AI · MOBILE', text: 'Персональный AI-ассистент для телефона, инструментов разработчика и управления устройством.', tags: ['React Native', 'AI', 'Android'], href: 'https://github.com/paulafanasyev/Svetlana-App' },
+  { n: '02', title: 'Мир Самозанятых', type: 'PRODUCT · WEB', text: 'Платформа, объединяющая сервисы, AI и финансовые инструменты для самозанятых.', tags: ['React', 'Python', 'AI'], href: 'https://github.com/paulafanasyev/mir-samozanyatykh-' },
+  { n: '03', title: 'OX', type: 'AGENTS · AUTOMATION', text: 'Экспериментальная агентная система с Termux MCP и управлением Android.', tags: ['Android', 'MCP', 'AI'], href: 'https://github.com/paulafanasyev/mobile-agent-russkiy-termuxMCP-OX' },
+  { n: '04', title: "God’s Eye View", type: 'SIMULATION · 3D', text: '3D-симуляция Земли, кризисов и глобальных сценариев в интерактивной среде.', tags: ['3D', 'Simulation', 'Web'], href: 'https://github.com/paulafanasyev/-_-' },
+  { n: '05', title: 'Я-Зарядка AI', type: 'AI · PRODUCT', text: 'AI-продукт с фокусом на простой интерфейс и понятный пользовательский путь.', tags: ['AI', 'React', 'UX'], href: 'https://github.com/paulafanasyev/ya-zaryadka-ai' },
+  { n: '06', title: 'CryptoLayer', type: 'WEB3 · BACKEND', text: 'Инфраструктурный эксперимент вокруг API, безопасности и Web3.', tags: ['Web3', 'API', 'Security'], href: 'https://github.com/paulafanasyev/cryptolayer' },
 ]
 
 const services = ['AI-продукты', 'Web & SaaS', 'Mobile Apps', 'Backend & API', 'Архитектура', 'Автоматизация']
 
 function App() {
+  const [menu, setMenu] = useState(false)
   const [chat, setChat] = useState(false)
-  const [dark, setDark] = useState(true)
   const [message, setMessage] = useState('')
   const [sent, setSent] = useState(false)
 
@@ -24,33 +24,43 @@ function App() {
   }
 
   return (
-    <main className={dark ? 'site dark' : 'site light'}>
-      <nav className="nav shell">
-        <a className="brand" href="#top" aria-label="Pavel Afanasiev">PA<span>.</span></a>
-        <div className="navlinks">
-          <a href="#work">Работы</a><a href="#services">Услуги</a><a href="#about">Обо мне</a>
-        </div>
+    <main className="site">
+      <header className="nav shell">
+        <a className="brand" href="#top" aria-label="Pavel Afanasiev"><span>PA</span><small>/</small>26</a>
+        <nav className={menu ? 'navlinks open' : 'navlinks'}>
+          <a href="#work" onClick={() => setMenu(false)}>Работы</a>
+          <a href="#services" onClick={() => setMenu(false)}>Возможности</a>
+          <a href="#about" onClick={() => setMenu(false)}>Обо мне</a>
+        </nav>
         <div className="navactions">
-          <button className="theme" onClick={() => setDark(!dark)} aria-label="Переключить тему">{dark ? '☼' : '◐'}</button>
-          <a className="navcta" href="mailto:pavel.afanadyev@inbox.ru">Связаться <span>↗</span></a>
+          <a className="navcta" href="mailto:pavel.afanadyev@inbox.ru">Связаться <b>↗</b></a>
+          <button className="menuButton" onClick={() => setMenu(!menu)} aria-label="Меню">{menu ? '×' : '☰'}</button>
         </div>
-      </nav>
+      </header>
 
       <section id="top" className="hero shell">
-        <div className="eyebrow"><i /> FULL STACK DEVELOPER · AI · PRODUCT</div>
-        <h1>Создаю цифровые<br /><em>продукты,</em> а не просто код.</h1>
-        <div className="heroBottom">
-          <p className="lead">Павел Афанасьев — full-stack разработчик. Проектирую и собираю AI-продукты, web-сервисы и мобильные приложения от идеи до рабочего релиза.</p>
-          <a className="roundArrow" href="#work">↓</a>
+        <div className="heroGrid">
+          <div className="heroCopy">
+            <div className="eyebrow"><span>INDEPENDENT DEVELOPER</span><i /></div>
+            <h1>Делаю идеи<br /><strong>работающими.</strong></h1>
+            <p className="lead">Павел Афанасьев. Full-stack разработчик, создающий AI-продукты, мобильные приложения и web-сервисы.</p>
+            <div className="heroActions"><a className="primary" href="#work">Смотреть проекты <b>↓</b></a><a className="secondary" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+          </div>
+          <div className="heroVisual">
+            <div className="visualCard mainCard"><span>PA</span><div><small>BUILDING</small><strong>AI × PRODUCT</strong></div></div>
+            <div className="visualCard noteCard"><span>●</span><p>От идеи<br />до релиза.</p></div>
+            <div className="orbit">↗</div>
+          </div>
         </div>
-        <div className="heroLine"><span>01 — INTRO</span><span>SCROLL TO EXPLORE</span></div>
+        <div className="heroMeta"><span>VIETNAM / REMOTE</span><span>AVAILABLE FOR SELECTED PROJECTS</span><span>SCROLL ↓</span></div>
       </section>
 
       <section id="work" className="work shell">
-        <div className="sectionHead"><span>02 — SELECTED WORK</span><h2>Проекты<br /><em>в работе.</em></h2></div>
+        <div className="sectionIntro"><div><span className="kicker">01 / SELECTED WORK</span><h2>Избранные<br /><i>проекты.</i></h2></div><p>Не коллекция концептов. Здесь продукты, системы и эксперименты, которые я действительно строю.</p></div>
         <div className="projectGrid">
-          {projects.map(p => <a className="project" href={p.href} target="_blank" rel="noreferrer" key={p.n}>
+          {projects.map((p, i) => <a className={`project project${i + 1}`} href={p.href} target="_blank" rel="noreferrer" key={p.n}>
             <div className="projectTop"><span>{p.n}</span><span>{p.type}</span></div>
+            <div className="projectArt"><span>{i === 0 ? 'S' : i === 1 ? 'M' : i === 2 ? 'OX' : i === 3 ? 'G' : i === 4 ? 'Y' : 'C'}</span></div>
             <div className="projectBody"><h3>{p.title}</h3><p>{p.text}</p><div className="tags">{p.tags.map(t => <span key={t}>{t}</span>)}</div></div>
             <div className="projectArrow">↗</div>
           </a>)}
@@ -58,23 +68,22 @@ function App() {
       </section>
 
       <section id="services" className="services shell">
-        <div className="sectionHead"><span>03 — CAPABILITIES</span><h2>Что можно<br /><em>сделать.</em></h2></div>
+        <div className="sectionIntro"><div><span className="kicker">02 / WHAT I DO</span><h2>От идеи<br /><i>к системе.</i></h2></div><p>Продуктовый подход: сначала задача и пользователь, затем архитектура, интерфейс и код.</p></div>
         <div className="serviceList">{services.map((s, i) => <div className="service" key={s}><span>0{i + 1}</span><strong>{s}</strong><b>↗</b></div>)}</div>
       </section>
 
       <section id="about" className="about shell">
-        <div className="aboutMark">PA</div>
-        <div><span className="mini">04 — ABOUT</span><h2>Технологии должны<br />решать <em>задачи.</em></h2><p>Работаю на стыке разработки, AI и продуктового дизайна. Предпочитаю простые интерфейсы, сильную архитектуру и решения, которые можно реально запустить и поддерживать.</p><a className="textLink" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+        <div className="aboutStamp">PA<br /><small>FULL STACK<br />DEVELOPER</small></div>
+        <div className="aboutCopy"><span className="kicker">03 / ABOUT</span><h2>Технологии —<br />это <i>инструмент.</i></h2><p>Я работаю на пересечении разработки, AI и продуктового дизайна. Люблю превращать сложные системы в понятные интерфейсы и доводить идеи до состояния, когда ими можно пользоваться.</p><div className="facts"><div><strong>AI</strong><span>agents & products</span></div><div><strong>WEB</strong><span>apps & platforms</span></div><div><strong>MOBILE</strong><span>Android & React Native</span></div></div></div>
       </section>
 
       <footer className="footer shell">
-        <div><span className="mini">05 — LET'S BUILD</span><h2>Есть идея?<br /><em>Поговорим.</em></h2></div>
-        <a className="footerMail" href="mailto:pavel.afanadyev@inbox.ru">pavel.afanadyev@inbox.ru ↗</a>
-        <div className="copyright">© 2026 Pavel Afanasiev · Full Stack Developer</div>
+        <div className="footerTop"><div><span className="kicker">04 / CONTACT</span><h2>Есть идея?<br /><i>Давайте сделаем.</i></h2></div><a className="footerMail" href="mailto:pavel.afanadyev@inbox.ru">pavel.afanadyev@inbox.ru <b>↗</b></a></div>
+        <div className="footerBottom"><span>© 2026 Pavel Afanasiev</span><span>AI · PRODUCT · ENGINEERING</span><a href="#top">НАВЕРХ ↑</a></div>
       </footer>
 
-      <button className="chatButton" onClick={() => setChat(true)}>AI <span>Ассистент</span> ↗</button>
-      {chat && <div className="chatOverlay" onClick={() => setChat(false)}><div className="chat" onClick={e => e.stopPropagation()}><button className="close" onClick={() => setChat(false)}>×</button><span className="mini">PA / AI ASSISTANT</span><h3>{sent ? 'Сообщение принято.' : 'Что строим?'}</h3>{sent ? <p>Напишите Павлу напрямую — ответит по проекту.</p> : <><p>Спросите о проектах, технологиях или опишите задачу.</p><div className="chatInput"><input value={message} onChange={e => setMessage(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ваш вопрос..." /><button onClick={send}>↗</button></div></>}</div></div>}
+      <button className="chatButton" onClick={() => setChat(true)}><span>AI</span> Ассистент <b>↗</b></button>
+      {chat && <div className="chatOverlay" onClick={() => setChat(false)}><div className="chat" onClick={e => e.stopPropagation()}><button className="close" onClick={() => setChat(false)}>×</button><span className="kicker">PA / AI ASSISTANT</span><h3>{sent ? 'Готово.' : 'Что строим?'}</h3>{sent ? <p>Запрос принят. Для реального проекта свяжитесь с Павлом напрямую.</p> : <><p>Опишите задачу — ассистент поможет сориентироваться по проектам и технологиям.</p><div className="chatInput"><input value={message} onChange={e => setMessage(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ваш вопрос..." /><button onClick={send}>↗</button></div></>}</div></div>}
     </main>
   )
 }
