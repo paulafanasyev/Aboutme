@@ -1,211 +1,35 @@
-/* Theme adaptation for the global Radiant Flow Field background. */
+/* Единый небесный фон с золотыми потоками. */
+:root, body, .site { background: linear-gradient(180deg, #7fc7ee 0%, #9bd8f2 48%, #d9eaf0 100%) !important; }
+.site { --fg:#17232b; --muted:#31444f; --line:rgba(23,35,43,.25); color:var(--fg); }
+.radiantBackground { opacity:1 !important; filter:none !important; mix-blend-mode:screen !important; }
+.section, .learn, .cta, .footer, .learnGrid, .ctaInner { background:transparent !important; box-shadow:none !important; }
+.cta { border:0 !important; }
+.brand, .navlinks, .githubLink, .micro, .sectionLabel, .eyebrow, .heroFoot, .factGrid b, .serviceNumber, .projectIndex, .footer, .lightText { color:#20323d !important; }
+.hero h1, .aboutIntro h2, .sectionHeading h2, .learn h2, .cta h2, .serviceRow h3, .projectMain h3 { color:#10212b !important; }
+.hero h1 em, .sectionHeading em, .aboutIntro h2 em, .learn h2 em, .cta h2 em { color:#a76b00 !important; }
+.lead, .aboutLead, .aboutText p, .sectionHeading p, .serviceRow p, .projectMain p, .learnGrid p, .ctaSide p { color:#29414e !important; }
+.factGrid span, .footerBrand, .footer > a { color:#132630 !important; }
+.nav, .heroFoot, .aboutGrid, .sectionLabel, .serviceList, .projectGrid { border-color:rgba(16,33,43,.25) !important; }
+.contactPill, .ghostButton, .menuButton, .serviceArrow, .projectArrow, .tags span { color:#17303d !important; border-color:rgba(23,48,61,.38) !important; background:rgba(255,255,255,.16) !important; }
+.primaryButton, .ctaButton { background:#fff !important; color:#152832 !important; }
+.contactPill:hover, .serviceRow:hover .serviceArrow, .projectCard:hover .projectArrow { background:#152832 !important; color:#fff !important; border-color:#152832 !important; }
+.navlinks.open { background:rgba(220,241,249,.92) !important; border-color:rgba(16,33,43,.25) !important; }
 
-@media (prefers-color-scheme: light) {
-  :root,
-  body {
-    color: #171717;
-  }
-
-  .site {
-    --fg: #171717;
-    --muted: #4b4b46;
-    --line: #17171733;
-    color: #171717;
-  }
-
-  .radiantBackground {
-    filter: invert(1) hue-rotate(180deg) saturate(.72) brightness(1.03);
-  }
-
-  .nav,
-  .heroFoot,
-  .aboutGrid,
-  .sectionLabel,
-  .serviceList,
-  .projectGrid {
-    border-color: #17171733;
-  }
-
-  .brand,
-  .navlinks,
-  .githubLink,
-  .micro,
-  .sectionLabel,
-  .eyebrow,
-  .heroFoot,
-  .factGrid b,
-  .serviceNumber,
-  .projectIndex,
-  .projectMeta,
-  .footer,
-  .lightText {
-    color: #30302d;
-  }
-
-  .hero h1,
-  .aboutIntro h2,
-  .sectionHeading h2,
-  .learn h2,
-  .cta h2,
-  .serviceRow h3,
-  .projectMain h3 {
-    color: #11110f;
-  }
-
-  .hero h1 em,
-  .sectionHeading em,
-  .aboutIntro h2 em,
-  .learn h2 em {
-    color: #4f5f9b;
-  }
-
-  .lead,
-  .aboutLead,
-  .aboutText p,
-  .sectionHeading p,
-  .serviceRow p,
-  .projectMain p,
-  .learnGrid p,
-  .ctaSide p {
-    color: #30302d;
-  }
-
-  .factGrid span,
-  .footerBrand,
-  .footer > a {
-    color: #171717;
-  }
-
-  .contactPill,
-  .ghostButton,
-  .menuButton,
-  .serviceArrow,
-  .projectArrow,
-  .tags span {
-    color: #171717;
-    border-color: #17171766;
-    background: #ffffff66;
-  }
-
-  .contactPill:hover,
-  .serviceRow:hover .serviceArrow,
-  .projectCard:hover .projectArrow {
-    background: #171717;
-    color: #fff;
-    border-color: #171717;
-  }
-
-  .primaryButton,
-  .ctaButton {
-    background: #171717;
-    color: #fff;
-  }
-
-  .primaryButton:hover,
-  .ctaButton:hover {
-    background: #000;
-  }
-
-  .navlinks.open {
-    background: #ffffffdd;
-    border-color: #17171733;
-  }
-
-  .cta {
-    background: #ffffffcc;
-    color: #171717;
-    border: 1px solid #17171722;
-    box-shadow: 0 30px 80px #17171722;
-  }
-
-  .sectionLabel.light {
-    border-color: #17171733;
-  }
-
-  .sectionLabel.light span:first-child {
-    color: #171717;
-  }
-
-  .cta h2 em {
-    color: #4f5f9b;
-  }
+/* Последовательное плавное появление блоков снизу. */
+@supports (animation-timeline:view()) {
+  .section, .cta, .footer { animation:blockRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 34%; will-change:transform,opacity; }
+  .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .learnGrid, .ctaInner, .footer > * { animation:blockRiseSmall linear both; animation-timeline:view(block); animation-range:entry 0% cover 32%; will-change:transform,opacity; }
+  .serviceRow, .projectCard { animation:cardRise linear both; animation-timeline:view(block); animation-range:entry 0% cover 28%; will-change:transform,opacity; }
+  .serviceRow:nth-child(2), .projectCard:nth-child(2) { animation-delay:.10s; }
+  .serviceRow:nth-child(3), .projectCard:nth-child(3) { animation-delay:.20s; }
+  .serviceRow:nth-child(4), .projectCard:nth-child(4) { animation-delay:.30s; }
+  .projectCard:nth-child(5) { animation-delay:.40s; }
+  .projectCard:nth-child(6) { animation-delay:.50s; }
+  @keyframes blockRise { from { opacity:0; transform:translate3d(0,76px,0) scale(.985); } to { opacity:1; transform:translate3d(0,0,0) scale(1); } }
+  @keyframes blockRiseSmall { from { opacity:0; transform:translate3d(0,48px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+  @keyframes cardRise { from { opacity:0; transform:translate3d(0,58px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
 }
 
-/* Scroll-driven reveal: sections feel like layers moving through the viewport. */
-@supports (animation-timeline: view()) {
-  .section,
-  .cta,
-  .footer {
-    animation: sectionParallax linear both;
-    animation-timeline: view(block);
-    animation-range: entry 0% cover 42%;
-    will-change: transform, opacity;
-  }
-
-  .sectionLabel,
-  .sectionHeading,
-  .aboutIntro,
-  .aboutGrid,
-  .serviceList,
-  .projectGrid,
-  .learnGrid,
-  .ctaInner,
-  .footer > * {
-    animation: contentParallax linear both;
-    animation-timeline: view(block);
-    animation-range: entry 0% cover 38%;
-    will-change: transform, opacity;
-  }
-
-  @keyframes sectionParallax {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 72px, 0) scale(.975);
-    }
-    to {
-      opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-  }
-
-  @keyframes contentParallax {
-    from {
-      opacity: 0;
-      transform: translate3d(0, 42px, 0);
-    }
-    to {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
-  }
-}
-
-/* JS fallback for browsers without scroll-driven animation support. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports not (animation-timeline: view()) {
-    .section,
-    .cta,
-    .footer {
-      transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .section,
-  .cta,
-  .footer,
-  .sectionLabel,
-  .sectionHeading,
-  .aboutIntro,
-  .aboutGrid,
-  .serviceList,
-  .projectGrid,
-  .learnGrid,
-  .ctaInner,
-  .footer > * {
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-  }
+@media (prefers-reduced-motion:reduce) {
+  .section, .cta, .footer, .sectionLabel, .sectionHeading, .aboutIntro, .aboutGrid, .serviceRow, .projectCard, .learnGrid, .ctaInner, .footer > * { animation:none !important; transform:none !important; opacity:1 !important; }
 }
