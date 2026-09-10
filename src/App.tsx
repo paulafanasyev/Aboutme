@@ -61,9 +61,6 @@ function App() {
   return (
     <main className="site" id="top">
       <iframe className="radiantBackground" src="https://radiant-shaders.com/flow-field" title="Radiant Flow Field background" loading="eager" aria-hidden="true" tabIndex={-1} />
-      <div className="radiantOverlay" />
-      <div className="ambient ambientOne" />
-      <div className="ambient ambientTwo" />
 
       <header className="nav shell">
         <a className="brand" href="#top" aria-label="Pavel Afanasyev home">PAVEL AFANASIEV</a>
@@ -98,7 +95,7 @@ function App() {
 
       <section className="section shell learn"><div className="sectionLabel"><span>05</span><span>LEARN · BUILD · REPEAT</span></div><div className="learnGrid"><div><h2>Исследую,<br /><em>строю, повторяю.</em></h2></div><p>Помимо коммерческой разработки, экспериментирую с AI-агентами, realtime-интерфейсами, компьютерным зрением, 3D и новыми способами взаимодействия человека с программой.</p></div></section>
 
-      <section className="cta shell" id="contact"><div className="ctaGlow" /><div className="sectionLabel light"><span>06</span><span>CONTACT</span></div><div className="ctaInner"><div><p className="micro lightText">OPEN TO COLLABORATION</p><h2>Готов включиться<br /><em>в ваш проект.</em></h2></div><div className="ctaSide"><p>Продукт, стартап, команда или разовая задача. Могу взять full-stack контур целиком или закрыть конкретный слой — фронт, API, мобильную сборку или AI-агента.</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">Написать Павлу <span>↗</span></a></div></div></section>
+      <section className="cta shell" id="contact"><div className="sectionLabel light"><span>06</span><span>CONTACT</span></div><div className="ctaInner"><div><p className="micro lightText">OPEN TO COLLABORATION</p><h2>Готов включиться<br /><em>в ваш проект.</em></h2></div><div className="ctaSide"><p>Продукт, стартап, команда или разовая задача. Могу взять full-stack контур целиком или закрыть конкретный слой — фронт, API, мобильную сборку или AI-агента.</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">Написать Павлу <span>↗</span></a></div></div></section>
       <footer className="footer shell"><div className="footerBrand">PAVEL AFANASIEV</div><div>© 2026 · Full-stack · AI · Product</div><div>Вьетнам · Россия · удалённо</div><a href="#top">Наверх ↑</a></footer>
     </main>
   )
