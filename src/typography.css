@@ -1,0 +1,126 @@
+/* Unified typography: the rest of the site follows the Hero's Manrope system. */
+:root,
+body,
+button,
+input,
+textarea,
+.site,
+.site * {
+  font-family: Manrope, system-ui, sans-serif;
+}
+
+.heroBadge,
+.micro,
+.sectionLabel,
+.factGrid span,
+.serviceNumber,
+.projectNumber,
+.projectCategory,
+.status,
+.tags span,
+.footer {
+  font-family: Manrope, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.navlinks,
+.githubLink,
+.contactPill,
+.primaryButton,
+.ghostButton,
+.ctaButton {
+  font-family: Manrope, system-ui, sans-serif;
+}
+
+.sectionLabel,
+.micro {
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.heroBadge {
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.navlinks { font-size: 13px; }
+.githubLink { font-size: 12px; }
+.contactPill,
+.primaryButton,
+.ghostButton,
+.ctaButton { font-size: 13px; }
+
+.about h2,
+.sectionHeading h2,
+.cta h2 {
+  font-family: Manrope, system-ui, sans-serif;
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+  font-weight: 600;
+}
+
+.aboutText p,
+.sectionHeading p,
+.serviceRow p,
+.projectInfo p,
+.ctaSide p {
+  font-family: Manrope, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.largeText {
+  font-size: 21px !important;
+  line-height: 1.55 !important;
+  font-weight: 500;
+}
+
+.factGrid b { font-size: 12px; font-weight: 700; }
+.factGrid span { font-size: 12px; }
+
+.serviceRow h3,
+.projectInfo h3 {
+  font-family: Manrope, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+}
+
+.serviceRow h3 { font-size: clamp(30px, 3.2vw, 44px); }
+.projectInfo h3 { font-size: clamp(30px, 3.2vw, 44px); }
+
+.projectCategory,
+.status,
+.projectNumber,
+.tags span,
+.serviceNumber {
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.footer,
+.footerBrand {
+  font-family: Manrope, system-ui, sans-serif;
+  font-size: 11px;
+}
+
+@media (max-width: 560px) {
+  .about h2,
+  .sectionHeading h2,
+  .cta h2 { font-size: 53px; }
+  .aboutText p,
+  .sectionHeading p,
+  .serviceRow p,
+  .projectInfo p,
+  .ctaSide p { font-size: 15px; line-height: 1.65; }
+  .largeText { font-size: 19px !important; }
+  .serviceRow h3,
+  .projectInfo h3 { font-size: 29px; }
+  .sectionLabel,
+  .micro { font-size: 10px; }
+}
