@@ -72,7 +72,11 @@ function App() {
       </header>
 
       <section className="hero shell">
-        <div className="heroStage"><div className="heroOrb" /><span className="heroOrbLabel">FULL-STACK / AI / PRODUCT</span></div>
+        <div className="heroStage">
+          <iframe className="radiantFrame" src="https://radiant-shaders.com/flow-field" title="Radiant Flow Field interactive shader" loading="eager" aria-hidden="true" tabIndex={-1} />
+          <div className="heroShaderVignette" />
+          <span className="heroOrbLabel">RADIANT / FLOW FIELD / INTERACTIVE</span>
+        </div>
         <div className="heroCopy"><p className="micro">01 — INDEX</p><h1>Создаю цифровые<br /><em>продукты, которые работают.</em></h1><p className="lead">Павел Афанасьев — full-stack разработчик с продуктовым фокусом. Проектирую и собираю веб, API, мобильные клиенты и AI-контуры — от архитектуры до работающего релиза.</p><div className="heroActions"><a className="primaryButton" href="#projects">Смотреть работу <span>↓</span></a><a className="ghostButton" href="#contact">Обсудить проект <span>↗</span></a></div></div>
         <div className="heroFoot"><span>Вьетнам · Россия</span><span>Удалённо</span><span>© 2026</span></div>
       </section>
