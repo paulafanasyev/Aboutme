@@ -16,14 +16,36 @@
 .contactPill:hover, .serviceRow:hover .serviceArrow, .projectCard:hover .projectArrow { background:#fff !important; color:#171717 !important; border-color:#fff !important; }
 .navlinks.open { background:rgba(10,10,10,.88) !important; border-color:rgba(255,255,255,.34) !important; }
 
-/* Блоки 5 и 6: только текст поверх оригинального Flow Field. */
+/* Блоки 5 и 6: только текст поверх оригинального Flow Field, максимально яркий. */
 .learn, .learnGrid, .cta, .ctaInner { background:transparent !important; }
 .cta { padding-left:0 !important; padding-right:0 !important; margin-left:auto; margin-right:auto; }
 .learn .sectionLabel, .cta .sectionLabel { background:transparent !important; }
-.learn h2, .cta h2 { color:#ffffff !important; text-shadow:0 3px 24px rgba(0,0,0,.95), 0 0 10px rgba(0,0,0,.72); }
-.learn h2 em, .cta h2 em { color:#ffe39a !important; text-shadow:0 3px 20px rgba(0,0,0,.95); }
-.learnGrid p, .ctaSide p { color:#ffffff !important; text-shadow:0 2px 16px rgba(0,0,0,.98), 0 0 8px rgba(0,0,0,.78); }
-.learn .sectionLabel span, .cta .sectionLabel span, .cta .micro { color:#ffffff !important; text-shadow:0 2px 12px rgba(0,0,0,.95); }
+.learn h2, .cta h2 {
+  color:#ffffff !important;
+  font-weight:700 !important;
+  opacity:1 !important;
+  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 18px rgba(0,0,0,.98), 0 0 32px rgba(0,0,0,.82);
+  -webkit-text-stroke:.25px rgba(255,255,255,.65);
+}
+.learn h2 em, .cta h2 em {
+  color:#fff1ad !important;
+  font-weight:700 !important;
+  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 18px rgba(0,0,0,.98), 0 0 30px rgba(255,227,154,.35);
+}
+.learnGrid p, .ctaSide p {
+  color:#ffffff !important;
+  font-weight:500 !important;
+  opacity:1 !important;
+  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 14px rgba(0,0,0,1), 0 0 26px rgba(0,0,0,.85);
+  -webkit-text-stroke:.15px rgba(255,255,255,.5);
+}
+.learn .sectionLabel span, .cta .sectionLabel span, .cta .micro {
+  color:#ffffff !important;
+  font-weight:700 !important;
+  opacity:1 !important;
+  text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 14px rgba(0,0,0,1);
+  -webkit-text-stroke:.15px rgba(255,255,255,.55);
+}
 .ctaButton { box-shadow:0 2px 18px rgba(0,0,0,.55); }
 
 /* Нижняя строка шапки остаётся читаемой. */
@@ -71,8 +93,8 @@
   .cta { padding-top:78px !important; padding-bottom:45px !important; }
   .ctaInner { padding-top:48px; gap:35px; }
   .learnGrid { padding-top:50px; }
-  .learn h2, .cta h2 { text-shadow:0 3px 20px rgba(0,0,0,.98), 0 0 8px rgba(0,0,0,.8); }
-  .learnGrid p, .ctaSide p { text-shadow:0 2px 14px rgba(0,0,0,1), 0 0 7px rgba(0,0,0,.8); }
+  .learn h2, .cta h2 { text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 16px rgba(0,0,0,1), 0 0 28px rgba(0,0,0,.9); }
+  .learnGrid p, .ctaSide p { text-shadow:0 2px 4px rgba(0,0,0,1), 0 0 12px rgba(0,0,0,1), 0 0 22px rgba(0,0,0,.9); }
 }
 
 @media (prefers-reduced-motion:reduce) {
