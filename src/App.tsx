@@ -71,7 +71,7 @@ function App() {
 
       <header className="nav shell">
         <a className="brand" href="#top" aria-label="Pavel Afanasyev home">
-          <span className="brandMark">PA</span><span>Pavel Afanasyev</span>
+          <span>Pavel Afanasyev</span>
         </a>
         <nav className={menu ? 'navlinks open' : 'navlinks'}>
           <a href="#about" onClick={() => setMenu(false)}>Обо мне</a>
@@ -96,7 +96,6 @@ function App() {
             <a className="primaryButton" href="#contact">Обсудить сотрудничество <span>↗</span></a>
             <a className="ghostButton" href="#projects">Смотреть проекты <span>↓</span></a>
           </div>
-          <div className="heroMeta"><span>VIETNAM · RUSSIA</span><span>REMOTE</span><span>FULL-STACK · AI</span></div>
         </div>
       </section>
 
@@ -135,7 +134,7 @@ function App() {
         <div className="ctaInner"><div><p className="micro lightText">OPEN TO COLLABORATION</p><h2>Готов включиться<br /><em>в ваш проект.</em></h2></div><div className="ctaSide"><p>Продукт, стартап, команда или разовая задача. Могу взять full-stack контур целиком или закрыть конкретный слой — фронт, API, мобильную сборку или AI-агента.</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">Написать Павлу <span>↗</span></a></div></div>
       </section>
 
-      <footer className="footer shell"><div className="footerBrand"><span className="brandMark">PA</span><span>Pavel Afanasyev</span></div><div>© 2026 · Full-stack · AI · Product</div><div>Вьетнам · Россия · удалённо</div><a href="#top">Наверх ↑</a></footer>
+      <footer className="footer shell"><div className="footerBrand"><span>Pavel Afanasyev</span></div><div>© 2026 · Full-stack · AI · Product</div><div>Вьетнам · Россия · удалённо</div><a href="#top">Наверх ↑</a></footer>
     </main>
   )
 }
