@@ -2,11 +2,11 @@ import { useRef, useState, type MouseEvent } from 'react'
 import './theme.css'
 
 type Lang = 'ru' | 'en' | 'vi'
+type ChatMessage = { from: 'bot' | 'user'; text: string }
 
 const translations = {
   ru: {
-    nav: ['Главная', 'Обо мне', 'Проекты', 'Контакты'],
-    contact: 'Связаться', code: 'Код ↗',
+    nav: ['Главная', 'Обо мне', 'Проекты', 'Контакты'], contact: 'Связаться', code: 'Код ↗',
     heroMicro: '01 — ГЛАВНАЯ', heroTitle: <>Создаю цифровые<br /><em>продукты, которые работают.</em></>,
     heroLead: 'Павел Афанасьев — разработчик полного цикла с продуктовым фокусом. Проектирую и собираю веб, API, мобильные приложения и системы ИИ — от архитектуры до работающего выпуска.',
     viewProjects: 'Смотреть проекты', discuss: 'Обсудить проект', location: 'Вьетнам · Россия', remote: 'Удалённо',
@@ -20,18 +20,42 @@ const translations = {
     contactLabel: 'КОНТАКТЫ', contactEyebrow: 'ОТКРЫТ К СОТРУДНИЧЕСТВУ', contactTitle: <>Готов включиться<br /><em>в ваш проект.</em></>,
     contactText: 'Продукт, стартап, команда или разовая задача. Могу взять разработку полного цикла или закрыть конкретный слой — интерфейс, API, мобильную сборку или ИИ-агента.',
     write: 'Написать Павлу', top: 'Наверх ↑', footer: 'Разработка · ИИ · Продукты', statusDone: 'Реализован', statusWork: 'В разработке',
+    chatTitle: 'Павел · консультант', chatOpen: 'Спросить об услугах', chatClose: 'Закрыть чат', chatPlaceholder: 'Напишите вопрос…', chatSend: 'Отправить',
+    chatWelcome: 'Здравствуйте. Здесь можно узнать об услугах, стоимости, сроках и формате работы.', chatServices: 'Какие услуги?', chatPrice: 'Сколько стоит?', chatTime: 'Какие сроки?', chatProcess: 'Как проходит работа?', chatContact: 'Хочу обсудить проект',
+    chatServicesAnswer: 'Веб-системы и API, продукты с ИИ, мобильные приложения, а также подключение к существующим проектам. Можно взять весь цикл или отдельный слой: интерфейс, API, mobile, AI-agent.',
+    chatPriceAnswer: 'Стоимость зависит от объёма, требований и состава работ. В текущей версии сайта точный прайс-лист не хранится, поэтому я не буду придумывать суммы. Опишите задачу — Павел сможет дать точную оценку после уточнения объёма.',
+    chatTimeAnswer: 'Срок зависит от масштаба. Для оценки нужны задача, желаемый результат и объём первой версии. После этого можно определить этапы и срок разработки без гадания.',
+    chatProcessAnswer: 'Сначала уточняются цель и объём, затем архитектура и план работ, разработка, интеграции, тестирование и выпуск. Можно подключиться к уже существующему проекту на этапе разработки или архитектуры.',
+    chatContactAnswer: 'Опишите задачу прямо здесь или нажмите «Написать Павлу». Для первичной оценки полезно указать продукт, основные функции, платформу и желаемый срок.',
+    chatFallback: 'Могу рассказать об услугах, стоимости, сроках или процессе работы. Выберите тему ниже или опишите задачу своими словами.',
   },
   en: {
     nav: ['Home', 'About', 'Projects', 'Contact'], contact: 'Contact', code: 'Code ↗', heroMicro: '01 — HOME',
     heroTitle: <>I create digital<br /><em>products that work.</em></>, heroLead: 'Pavel Afanasyev — full-stack developer with a product focus. I design and build web, API, mobile applications and AI systems, from architecture to production.', viewProjects: 'View projects', discuss: 'Discuss a project', location: 'Vietnam · Russia', remote: 'Remote',
     aboutLabel: 'ABOUT', aboutEyebrow: 'FULL-STACK DEVELOPER · DIGITAL PRODUCT CREATOR', aboutTitle: <>Working where<br /><em>product meets technology.</em></>, aboutLead: 'I design and build products from interface to server, data and mobile application. I like complex systems, but make them clear for the user.',
     servicesLabel: 'SERVICES', servicesTitle: <>Full-cycle<br /><em>commercial development.</em></>, servicesLead: 'Product logic, architecture, interface, integrations and delivery — in one workflow.', projectsLabel: 'SELECTED PROJECTS', projectsTitle: <>Projects<br /><em>in progress.</em></>, projectsLead: 'Not just portfolio cards, but live systems. Open a repository to see the code and current implementation.', learnLabel: 'RESEARCH · BUILD · REPEAT', learnTitle: <>Research,<br /><em>build, repeat.</em></>, learnText: 'Beyond commercial development, I experiment with AI agents, real-time interfaces, computer vision, 3D graphics and new ways for people to interact with software.', contactLabel: 'CONTACT', contactEyebrow: 'OPEN TO COLLABORATION', contactTitle: <>Ready to join<br /><em>your project.</em></>, contactText: 'A product, startup, team or one-off task. I can take full-cycle development or own a specific layer — interface, API, mobile build or AI agent.', write: 'Write to Pavel', top: 'Back to top ↑', footer: 'Development · AI · Products', statusDone: 'Completed', statusWork: 'In development',
+    chatTitle: 'Pavel · project advisor', chatOpen: 'Ask about services', chatClose: 'Close chat', chatPlaceholder: 'Ask a question…', chatSend: 'Send',
+    chatWelcome: 'You can ask here about services, pricing, timelines and the way projects are delivered.', chatServices: 'Services', chatPrice: 'Pricing', chatTime: 'Timelines', chatProcess: 'How it works', chatContact: 'Discuss my project',
+    chatServicesAnswer: 'Web systems and APIs, AI products, mobile applications, and joining existing projects. The full cycle or a specific layer can be covered: interface, API, mobile or AI agent.',
+    chatPriceAnswer: 'Pricing depends on scope, requirements and deliverables. The current website does not contain a verified price list, so I will not invent figures. Describe the project and Pavel can estimate it after the scope is clarified.',
+    chatTimeAnswer: 'Timing depends on project size. For an accurate estimate, I need the task, target result and first-version scope. Then the stages and delivery timeline can be defined without guessing.',
+    chatProcessAnswer: 'First we clarify the goal and scope, then architecture and plan, development, integrations, testing and release. I can join an existing project as an implementation or architecture partner.',
+    chatContactAnswer: 'Describe the project here or use “Write to Pavel”. For an initial estimate, include the product, key features, platform and desired deadline.',
+    chatFallback: 'I can explain services, pricing, timelines or the delivery process. Choose a topic below or describe your project in your own words.',
   },
   vi: {
     nav: ['Trang chủ', 'Giới thiệu', 'Dự án', 'Liên hệ'], contact: 'Liên hệ', code: 'Mã nguồn ↗', heroMicro: '01 — TRANG CHỦ',
     heroTitle: <>Tôi tạo ra các<br /><em>sản phẩm số hiệu quả.</em></>, heroLead: 'Pavel Afanasyev — lập trình viên full-stack tập trung vào sản phẩm. Tôi thiết kế và xây dựng web, API, ứng dụng di động và hệ thống AI, từ kiến trúc đến triển khai.', viewProjects: 'Xem dự án', discuss: 'Trao đổi dự án', location: 'Việt Nam · Nga', remote: 'Từ xa',
     aboutLabel: 'GIỚI THIỆU', aboutEyebrow: 'LẬP TRÌNH VIÊN FULL-STACK · NHÀ SÁNG TẠO SẢN PHẨM SỐ', aboutTitle: <>Kết nối giữa<br /><em>sản phẩm và công nghệ.</em></>, aboutLead: 'Tôi thiết kế và xây dựng sản phẩm từ giao diện đến máy chủ, dữ liệu và ứng dụng di động. Hệ thống có thể phức tạp, nhưng trải nghiệm phải rõ ràng.',
-    servicesLabel: 'DỊCH VỤ', servicesTitle: <>Phát triển<br /><em>trọn gói thương mại.</em></>, servicesLead: 'Logic sản phẩm, kiến trúc, giao diện, tích hợp và triển khai — trong một quy trình.', projectsLabel: 'DỰ ÁN TIÊU BIỂU', projectsTitle: <>Các dự án<br /><em>đang triển khai.</em></>, projectsLead: 'Không chỉ là hồ sơ năng lực, mà là các hệ thống thực tế. Mở kho mã để xem mã nguồn và tiến độ hiện tại.', learnLabel: 'NGHIÊN CỨU · XÂY DỰNG · LẶP LẠI', learnTitle: <>Nghiên cứu,<br /><em>xây dựng, lặp lại.</em></>, learnText: 'Ngoài phát triển thương mại, tôi thử nghiệm với AI agent, giao diện thời gian thực, thị giác máy tính, đồ họa 3D và những cách mới để con người tương tác với phần mềm.', contactLabel: 'LIÊN HỆ', contactEyebrow: 'SẴN SÀNG HỢP TÁC', contactTitle: <>Sẵn sàng tham gia<br /><em>dự án của bạn.</em></>, contactText: 'Sản phẩm, startup, đội ngũ hoặc một nhiệm vụ cụ thể. Tôi có thể đảm nhận toàn bộ quy trình hoặc một lớp riêng — giao diện, API, mobile hoặc AI agent.', write: 'Viết cho Pavel', top: 'Lên đầu trang ↑', footer: 'Phát triển · AI · Sản phẩm', statusDone: 'Đã hoàn thành', statusWork: 'Đang phát triển',
+    servicesLabel: 'DỊCH VỤ', servicesTitle: <>Phát triển<br /><em>thương mại trọn gói.</em></>, servicesLead: 'Logic sản phẩm, kiến trúc, giao diện, tích hợp và triển khai — trong một quy trình.', projectsLabel: 'DỰ ÁN TIÊU BIỂU', projectsTitle: <>Các dự án<br /><em>đang triển khai.</em></>, projectsLead: 'Không chỉ là hồ sơ năng lực, mà là các hệ thống thực tế. Mở kho mã để xem mã nguồn và tiến độ hiện tại.', learnLabel: 'NGHIÊN CỨU · XÂY DỰNG · LẶP LẠI', learnTitle: <>Nghiên cứu,<br /><em>xây dựng, lặp lại.</em></>, learnText: 'Ngoài phát triển thương mại, tôi thử nghiệm với AI agent, giao diện thời gian thực, thị giác máy tính, đồ họa 3D và những cách mới để con người tương tác với phần mềm.', contactLabel: 'LIÊN HỆ', contactEyebrow: 'SẴN SÀNG HỢP TÁC', contactTitle: <>Sẵn sàng tham gia<br /><em>dự án của bạn.</em></>, contactText: 'Sản phẩm, startup, đội ngũ hoặc một nhiệm vụ cụ thể. Tôi có thể đảm nhận toàn bộ quy trình hoặc một lớp riêng — giao diện, API, mobile hoặc AI agent.', write: 'Viết cho Pavel', top: 'Lên đầu trang ↑', footer: 'Phát triển · AI · Sản phẩm', statusDone: 'Đã hoàn thành', statusWork: 'Đang phát triển',
+    chatTitle: 'Pavel · tư vấn dự án', chatOpen: 'Hỏi về dịch vụ', chatClose: 'Đóng chat', chatPlaceholder: 'Nhập câu hỏi…', chatSend: 'Gửi',
+    chatWelcome: 'Bạn có thể hỏi về dịch vụ, chi phí, thời gian và cách thức triển khai dự án.', chatServices: 'Dịch vụ', chatPrice: 'Chi phí', chatTime: 'Thời gian', chatProcess: 'Quy trình', chatContact: 'Trao đổi dự án',
+    chatServicesAnswer: 'Phát triển hệ thống web và API, sản phẩm AI, ứng dụng di động và tham gia các dự án đang có. Có thể đảm nhận toàn bộ quy trình hoặc một lớp riêng: giao diện, API, mobile hoặc AI agent.',
+    chatPriceAnswer: 'Chi phí phụ thuộc vào phạm vi, yêu cầu và khối lượng công việc. Website hiện tại không chứa bảng giá đã được xác minh, vì vậy tôi không tự đưa ra con số. Hãy mô tả dự án để Pavel có thể ước tính sau khi làm rõ phạm vi.',
+    chatTimeAnswer: 'Thời gian phụ thuộc vào quy mô. Để ước tính chính xác cần biết nhiệm vụ, kết quả mong muốn và phạm vi phiên bản đầu tiên. Sau đó có thể xác định các giai đoạn và thời hạn.',
+    chatProcessAnswer: 'Đầu tiên xác định mục tiêu và phạm vi, sau đó là kiến trúc và kế hoạch, phát triển, tích hợp, kiểm thử và phát hành. Tôi cũng có thể tham gia một dự án đang có với vai trò triển khai hoặc kiến trúc.',
+    chatContactAnswer: 'Hãy mô tả dự án ngay tại đây hoặc chọn “Viết cho Pavel”. Để đánh giá ban đầu, hãy nêu sản phẩm, chức năng chính, nền tảng và thời hạn mong muốn.',
+    chatFallback: 'Tôi có thể giải thích về dịch vụ, chi phí, thời gian hoặc quy trình làm việc. Chọn chủ đề bên dưới hoặc mô tả dự án theo cách của bạn.',
   },
 }
 
@@ -62,8 +86,25 @@ function ProjectCard({ project, lang }: { project: typeof projects[number], lang
 }
 
 function App() {
-  const [menu, setMenu] = useState(false); const [lang, setLang] = useState<Lang>(() => (localStorage.getItem('site-lang') as Lang) || 'ru'); const t = translations[lang]
-  const changeLang = (next: Lang) => { setLang(next); localStorage.setItem('site-lang', next); setMenu(false) }
+  const [menu, setMenu] = useState(false); const [lang, setLang] = useState<Lang>(() => { const saved = localStorage.getItem('site-lang'); return saved === 'en' || saved === 'vi' ? saved : 'ru' }); const t = translations[lang]
+  const [chatOpen, setChatOpen] = useState(false)
+  const [chatInput, setChatInput] = useState('')
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([{ from: 'bot', text: t.chatWelcome }])
+  const changeLang = (next: Lang) => { setLang(next); localStorage.setItem('site-lang', next); setMenu(false); setChatMessages([{ from: 'bot', text: translations[next].chatWelcome }]) }
+  const answerFor = (topic: string) => {
+    if (topic === 'services') return t.chatServicesAnswer
+    if (topic === 'price') return t.chatPriceAnswer
+    if (topic === 'time') return t.chatTimeAnswer
+    if (topic === 'process') return t.chatProcessAnswer
+    return t.chatContactAnswer
+  }
+  const sendChat = (preset?: string, topic?: string) => {
+    const text = (preset ?? chatInput).trim(); if (!text) return
+    const lower = text.toLowerCase()
+    const detected = topic ?? (/(стоим|цен|сколько|price|cost|pricing|chi phí|giá)/i.test(lower) ? 'price' : /(срок|когда|долго|timeline|deadline|how long|thời gian|bao lâu)/i.test(lower) ? 'time' : /(услуг|дела|можете|service|what do you do|dịch vụ)/i.test(lower) ? 'services' : /(как работ|процесс|process|how it works|quy trình)/i.test(lower) ? 'process' : /(проект|связ|contact|discuss|dự án|liên hệ)/i.test(lower) ? 'contact' : 'fallback')
+    const response = detected === 'fallback' ? t.chatFallback : answerFor(detected)
+    setChatMessages(prev => [...prev, { from: 'user', text }, { from: 'bot', text: response }]); setChatInput('')
+  }
   return <main className="site" id="top">
     <iframe className="radiantBackground" src="https://radiant-shaders.com/flow-field" title="Flow Field background" loading="eager" aria-hidden="true" tabIndex={-1} />
     <header className="nav shell"><a className="brand" href="#top" aria-label="Pavel Afanasyev — home">PAVEL AFANASYEV</a><nav className={menu ? 'navlinks open' : 'navlinks'}>{t.nav.map((item, i) => <a key={item} href={['#top','#about','#projects','#contact'][i]} onClick={() => setMenu(false)}>{item}</a>)}</nav><div className="navRight"><div className="languageSwitch" aria-label="Language"><button className={lang === 'ru' ? 'active' : ''} onClick={() => changeLang('ru')}>RU</button><button className={lang === 'en' ? 'active' : ''} onClick={() => changeLang('en')}>EN</button><button className={lang === 'vi' ? 'active' : ''} onClick={() => changeLang('vi')}>VI</button></div><a className="githubLink" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">{t.code}</a><a className="contactPill" href="#contact">{t.contact}</a><button className="menuButton" onClick={() => setMenu(!menu)} aria-label="Menu">{menu ? '×' : '☰'}</button></div></header>
@@ -74,6 +115,8 @@ function App() {
     <section className="section shell learn"><div className="sectionLabel"><span>05</span><span>{t.learnLabel}</span></div><div className="learnGrid"><div><h2>{t.learnTitle}</h2></div><p>{t.learnText}</p></div></section>
     <section className="cta shell" id="contact"><div className="sectionLabel light"><span>06</span><span>{t.contactLabel}</span></div><div className="ctaInner"><div><p className="micro lightText">{t.contactEyebrow}</p><h2>{t.contactTitle}</h2></div><div className="ctaSide"><p>{t.contactText}</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">{t.write} <span>↗</span></a></div></div></section>
     <footer className="footer shell"><div className="footerBrand">PAVEL AFANASYEV</div><div>© 2026 · {t.footer}</div><div>{t.location} · {lang === 'ru' ? 'удалённо' : lang === 'en' ? 'remote' : 'từ xa'}</div><a href="#top">{t.top}</a></footer>
+    <button className="chatLauncher" onClick={() => setChatOpen(!chatOpen)} aria-label={chatOpen ? t.chatClose : t.chatOpen}><span className="chatLauncherDot" />{chatOpen ? '×' : 'AI'}</button>
+    {chatOpen && <aside className="clientChat" aria-label={t.chatTitle}><div className="clientChatHead"><div><strong>{t.chatTitle}</strong><small>{t.location} · {t.remote}</small></div><button onClick={() => setChatOpen(false)} aria-label={t.chatClose}>×</button></div><div className="clientChatBody">{chatMessages.map((message, index) => <div className={`chatBubble ${message.from}`} key={`${index}-${message.text}`}>{message.text}</div>)}</div><div className="chatQuick"><button onClick={() => sendChat(t.chatServices, 'services')}>{t.chatServices}</button><button onClick={() => sendChat(t.chatPrice, 'price')}>{t.chatPrice}</button><button onClick={() => sendChat(t.chatTime, 'time')}>{t.chatTime}</button><button onClick={() => sendChat(t.chatProcess, 'process')}>{t.chatProcess}</button><button onClick={() => sendChat(t.chatContact, 'contact')}>{t.chatContact}</button></div><form className="chatForm" onSubmit={event => { event.preventDefault(); sendChat() }}><input value={chatInput} onChange={event => setChatInput(event.target.value)} placeholder={t.chatPlaceholder} aria-label={t.chatPlaceholder} /><button type="submit">{t.chatSend}</button></form></aside>}
   </main>
 }
 export default App
