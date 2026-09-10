@@ -1,19 +1,19 @@
-/* Единый небесный фон с золотыми потоками. */
-:root, body, .site { background: linear-gradient(180deg, #7fc7ee 0%, #9bd8f2 48%, #d9eaf0 100%) !important; }
-.site { --fg:#17232b; --muted:#31444f; --line:rgba(23,35,43,.25); color:var(--fg); }
-.radiantBackground { opacity:1 !important; filter:none !important; mix-blend-mode:screen !important; }
+/* Оригинальный Flow Field без дополнительного голубого фона. */
+:root, body, .site { background: transparent !important; }
+.site { --fg:#f4f4f1; --muted:#cfcfca; --line:rgba(255,255,255,.34); color:var(--fg); }
+.radiantBackground { opacity:1 !important; filter:none !important; mix-blend-mode:normal !important; }
 .section, .learn, .cta, .footer, .learnGrid, .ctaInner { background:transparent !important; box-shadow:none !important; }
 .cta { border:0 !important; }
-.brand, .navlinks, .githubLink, .micro, .sectionLabel, .eyebrow, .heroFoot, .factGrid b, .serviceNumber, .projectIndex, .footer, .lightText { color:#20323d !important; }
-.hero h1, .aboutIntro h2, .sectionHeading h2, .learn h2, .cta h2, .serviceRow h3, .projectMain h3 { color:#10212b !important; }
-.hero h1 em, .sectionHeading em, .aboutIntro h2 em, .learn h2 em, .cta h2 em { color:#a76b00 !important; }
-.lead, .aboutLead, .aboutText p, .sectionHeading p, .serviceRow p, .projectMain p, .learnGrid p, .ctaSide p { color:#29414e !important; }
-.factGrid span, .footerBrand, .footer > a { color:#132630 !important; }
-.nav, .heroFoot, .aboutGrid, .sectionLabel, .serviceList, .projectGrid { border-color:rgba(16,33,43,.25) !important; }
-.contactPill, .ghostButton, .menuButton, .serviceArrow, .projectArrow, .tags span { color:#17303d !important; border-color:rgba(23,48,61,.38) !important; background:rgba(255,255,255,.16) !important; }
-.primaryButton, .ctaButton { background:#fff !important; color:#152832 !important; }
-.contactPill:hover, .serviceRow:hover .serviceArrow, .projectCard:hover .projectArrow { background:#152832 !important; color:#fff !important; border-color:#152832 !important; }
-.navlinks.open { background:rgba(220,241,249,.92) !important; border-color:rgba(16,33,43,.25) !important; }
+.brand, .navlinks, .githubLink, .micro, .sectionLabel, .eyebrow, .heroFoot, .factGrid b, .serviceNumber, .projectIndex, .footer, .lightText { color:#f4f4f1 !important; }
+.hero h1, .aboutIntro h2, .sectionHeading h2, .learn h2, .cta h2, .serviceRow h3, .projectMain h3 { color:#ffffff !important; }
+.hero h1 em, .sectionHeading em, .aboutIntro h2 em, .learn h2 em, .cta h2 em { color:#e3c77a !important; }
+.lead, .aboutLead, .aboutText p, .sectionHeading p, .serviceRow p, .projectMain p, .learnGrid p, .ctaSide p { color:#e1e1dc !important; }
+.factGrid span, .footerBrand, .footer > a { color:#ffffff !important; }
+.nav, .heroFoot, .aboutGrid, .sectionLabel, .serviceList, .projectGrid { border-color:rgba(255,255,255,.34) !important; }
+.contactPill, .ghostButton, .menuButton, .serviceArrow, .projectArrow, .tags span { color:#ffffff !important; border-color:rgba(255,255,255,.55) !important; background:rgba(255,255,255,.10) !important; }
+.primaryButton, .ctaButton { background:#fff !important; color:#171717 !important; }
+.contactPill:hover, .serviceRow:hover .serviceArrow, .projectCard:hover .projectArrow { background:#fff !important; color:#171717 !important; border-color:#fff !important; }
+.navlinks.open { background:rgba(10,10,10,.88) !important; border-color:rgba(255,255,255,.34) !important; }
 
 /* Последовательное плавное появление блоков снизу. */
 @supports (animation-timeline:view()) {
