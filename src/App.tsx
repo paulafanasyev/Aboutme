@@ -1,6 +1,40 @@
 import { useRef, useState, type MouseEvent } from 'react'
 import './theme.css'
 
+type Lang = 'ru' | 'en' | 'vi'
+
+const translations = {
+  ru: {
+    nav: ['Главная', 'Обо мне', 'Проекты', 'Контакты'],
+    contact: 'Связаться', code: 'Код ↗',
+    heroMicro: '01 — ГЛАВНАЯ', heroTitle: <>Создаю цифровые<br /><em>продукты, которые работают.</em></>,
+    heroLead: 'Павел Афанасьев — разработчик полного цикла с продуктовым фокусом. Проектирую и собираю веб, API, мобильные приложения и системы ИИ — от архитектуры до работающего выпуска.',
+    viewProjects: 'Смотреть проекты', discuss: 'Обсудить проект', location: 'Вьетнам · Россия', remote: 'Удалённо',
+    aboutLabel: 'ОБО МНЕ', aboutEyebrow: 'РАЗРАБОТЧИК ПОЛНОГО ЦИКЛА · СОЗДАТЕЛЬ ЦИФРОВЫХ ПРОДУКТОВ',
+    aboutTitle: <>Работаю на стыке<br /><em>продукта и технологий.</em></>,
+    aboutLead: 'Проектирую и собираю продукты от интерфейса до сервера, данных и мобильного приложения. Люблю сложные системы, но делаю их понятными для пользователя.',
+    servicesLabel: 'УСЛУГИ', servicesTitle: <>Коммерческая<br /><em>разработка полного цикла.</em></>, servicesLead: 'Задача, продуктовая логика, архитектура, интерфейс, интеграции и выпуск — в одном контуре.',
+    projectsLabel: 'ИЗБРАННЫЕ ПРОЕКТЫ', projectsTitle: <>Проекты<br /><em>в работе.</em></>, projectsLead: 'Не просто карточки портфолио, а живые системы. Открывай репозиторий, чтобы посмотреть код и текущую реализацию.',
+    learnLabel: 'ИССЛЕДУЮ · СТРОЮ · ПОВТОРЯЮ', learnTitle: <>Исследую,<br /><em>строю, повторяю.</em></>,
+    learnText: 'Помимо коммерческой разработки, экспериментирую с ИИ-агентами, интерфейсами реального времени, компьютерным зрением, трёхмерной графикой и новыми способами взаимодействия человека с программой.',
+    contactLabel: 'КОНТАКТЫ', contactEyebrow: 'ОТКРЫТ К СОТРУДНИЧЕСТВУ', contactTitle: <>Готов включиться<br /><em>в ваш проект.</em></>,
+    contactText: 'Продукт, стартап, команда или разовая задача. Могу взять разработку полного цикла или закрыть конкретный слой — интерфейс, API, мобильную сборку или ИИ-агента.',
+    write: 'Написать Павлу', top: 'Наверх ↑', footer: 'Разработка · ИИ · Продукты', statusDone: 'Реализован', statusWork: 'В разработке',
+  },
+  en: {
+    nav: ['Home', 'About', 'Projects', 'Contact'], contact: 'Contact', code: 'Code ↗', heroMicro: '01 — HOME',
+    heroTitle: <>I create digital<br /><em>products that work.</em></>, heroLead: 'Pavel Afanasyev — full-stack developer with a product focus. I design and build web, API, mobile applications and AI systems, from architecture to production.', viewProjects: 'View projects', discuss: 'Discuss a project', location: 'Vietnam · Russia', remote: 'Remote',
+    aboutLabel: 'ABOUT', aboutEyebrow: 'FULL-STACK DEVELOPER · DIGITAL PRODUCT CREATOR', aboutTitle: <>Working where<br /><em>product meets technology.</em></>, aboutLead: 'I design and build products from interface to server, data and mobile application. I like complex systems, but make them clear for the user.',
+    servicesLabel: 'SERVICES', servicesTitle: <>Full-cycle<br /><em>commercial development.</em></>, servicesLead: 'Product logic, architecture, interface, integrations and delivery — in one workflow.', projectsLabel: 'SELECTED PROJECTS', projectsTitle: <>Projects<br /><em>in progress.</em></>, projectsLead: 'Not just portfolio cards, but live systems. Open a repository to see the code and current implementation.', learnLabel: 'RESEARCH · BUILD · REPEAT', learnTitle: <>Research,<br /><em>build, repeat.</em></>, learnText: 'Beyond commercial development, I experiment with AI agents, real-time interfaces, computer vision, 3D graphics and new ways for people to interact with software.', contactLabel: 'CONTACT', contactEyebrow: 'OPEN TO COLLABORATION', contactTitle: <>Ready to join<br /><em>your project.</em></>, contactText: 'A product, startup, team or one-off task. I can take full-cycle development or own a specific layer — interface, API, mobile build or AI agent.', write: 'Write to Pavel', top: 'Back to top ↑', footer: 'Development · AI · Products', statusDone: 'Completed', statusWork: 'In development',
+  },
+  vi: {
+    nav: ['Trang chủ', 'Giới thiệu', 'Dự án', 'Liên hệ'], contact: 'Liên hệ', code: 'Mã nguồn ↗', heroMicro: '01 — TRANG CHỦ',
+    heroTitle: <>Tôi tạo ra các<br /><em>sản phẩm số hiệu quả.</em></>, heroLead: 'Pavel Afanasyev — lập trình viên full-stack tập trung vào sản phẩm. Tôi thiết kế và xây dựng web, API, ứng dụng di động và hệ thống AI, từ kiến trúc đến triển khai.', viewProjects: 'Xem dự án', discuss: 'Trao đổi dự án', location: 'Việt Nam · Nga', remote: 'Từ xa',
+    aboutLabel: 'GIỚI THIỆU', aboutEyebrow: 'LẬP TRÌNH VIÊN FULL-STACK · NHÀ SÁNG TẠO SẢN PHẨM SỐ', aboutTitle: <>Kết nối giữa<br /><em>sản phẩm và công nghệ.</em></>, aboutLead: 'Tôi thiết kế và xây dựng sản phẩm từ giao diện đến máy chủ, dữ liệu và ứng dụng di động. Hệ thống có thể phức tạp, nhưng trải nghiệm phải rõ ràng.',
+    servicesLabel: 'DỊCH VỤ', servicesTitle: <>Phát triển<br /><em>trọn gói thương mại.</em></>, servicesLead: 'Logic sản phẩm, kiến trúc, giao diện, tích hợp và triển khai — trong một quy trình.', projectsLabel: 'DỰ ÁN TIÊU BIỂU', projectsTitle: <>Các dự án<br /><em>đang triển khai.</em></>, projectsLead: 'Không chỉ là hồ sơ năng lực, mà là các hệ thống thực tế. Mở kho mã để xem mã nguồn và tiến độ hiện tại.', learnLabel: 'NGHIÊN CỨU · XÂY DỰNG · LẶP LẠI', learnTitle: <>Nghiên cứu,<br /><em>xây dựng, lặp lại.</em></>, learnText: 'Ngoài phát triển thương mại, tôi thử nghiệm với AI agent, giao diện thời gian thực, thị giác máy tính, đồ họa 3D và những cách mới để con người tương tác với phần mềm.', contactLabel: 'LIÊN HỆ', contactEyebrow: 'SẴN SÀNG HỢP TÁC', contactTitle: <>Sẵn sàng tham gia<br /><em>dự án của bạn.</em></>, contactText: 'Sản phẩm, startup, đội ngũ hoặc một nhiệm vụ cụ thể. Tôi có thể đảm nhận toàn bộ quy trình hoặc một lớp riêng — giao diện, API, mobile hoặc AI agent.', write: 'Viết cho Pavel', top: 'Lên đầu trang ↑', footer: 'Phát triển · AI · Sản phẩm', statusDone: 'Đã hoàn thành', statusWork: 'Đang phát triển',
+  },
+}
+
 const projects = [
   { number: '01', category: 'Образование · Дети', title: 'Я-Зарядка ИИ', status: 'Реализован', text: 'Игровая система для ежедневной зарядки детей 5–14 лет: карта мира, миссии, награды и семейные челленджи.', tags: ['Веб', 'ИИ', 'RuStore'], href: 'https://github.com/paulafanasyev/ya-zaryadka-ai' },
   { number: '02', category: 'Образование · ИИ', title: 'ИИ-репетитор английского и математики', status: 'Реализован', text: 'Триязычный ИИ-репетитор RU / EN / VI с шестью ИИ-учителями, голосом, аватарами, уроками и мини-играми.', tags: ['React', 'Node', 'Prisma'], href: 'https://github.com/paulafanasyev/ai-english-teacher' },
@@ -9,97 +43,37 @@ const projects = [
   { number: '05', category: 'Платформа · Общественные сервисы', title: 'Мир Самозанятых', status: 'В разработке', text: 'Продуктовая линейка АНО ЦПС: веб, мобильный клиент и серверная часть, сервисы поддержки сообщества и контур ИИ.', tags: ['Python', 'TypeScript', 'Flutter'], href: 'https://github.com/paulafanasyev/mir-samozanyatykh-' },
   { number: '06', category: 'ИИ-агент · Аватар', title: 'Светлана', status: 'В разработке', text: 'Русскоязычный ИИ-агент и реалистичный аватар Светлана для веба и Android: управление устройством, память, файлы и расписания.', tags: ['TypeScript', 'Android', 'MCP'], href: 'https://github.com/paulafanasyev/Mobile-agent-russkiy-termuxMCP-OX' },
 ]
-
 const services = [
-  ['01', 'Разработка веб-систем', 'Веб и API под ключ: React, Node, PostgreSQL, PWA, размещение и сопровождение.'],
-  ['02', 'Продукты с ИИ', 'ИИ-агенты, голосовые интерфейсы, языковые модели, MCP, аватары и продуктовые кабинеты.'],
-  ['03', 'Мобильные приложения', 'Capacitor, Flutter и Android: от прототипа до сборки и выпуска.'],
-  ['04', 'Подключение к существующему проекту', 'Архитектура, новые функции, интеграции, выпуск и поддержка команды.'],
+  ['01', 'Разработка веб-систем', 'Веб и API под ключ: React, Node, PostgreSQL, PWA, размещение и сопровождение.'], ['02', 'Продукты с ИИ', 'ИИ-агенты, голосовые интерфейсы, языковые модели, MCP, аватары и продуктовые кабинеты.'], ['03', 'Мобильные приложения', 'Capacitor, Flutter и Android: от прототипа до сборки и выпуска.'], ['04', 'Подключение к существующему проекту', 'Архитектура, новые функции, интеграции, выпуск и поддержка команды.'],
 ]
 
-function ProjectCard({ project }: { project: typeof projects[number] }) {
-  const ref = useRef<HTMLAnchorElement>(null)
-  const [spot, setSpot] = useState({ x: 50, y: 50 })
-
-  const move = (event: MouseEvent<HTMLAnchorElement>) => {
-    const node = ref.current
-    const rect = node?.getBoundingClientRect()
-    if (!node || !rect) return
-    const x = ((event.clientX - rect.left) / rect.width) * 100
-    const y = ((event.clientY - rect.top) / rect.height) * 100
-    setSpot({ x, y })
-    node.style.setProperty('--mx', `${(x - 50) / 28}px`)
-    node.style.setProperty('--my', `${(y - 50) / 28}px`)
-  }
-
-  const leave = () => {
-    setSpot({ x: 50, y: 50 })
-    const node = ref.current
-    if (node) {
-      node.style.setProperty('--mx', '0px')
-      node.style.setProperty('--my', '0px')
-    }
-  }
-
-  return (
-    <a ref={ref} className="projectCard" href={project.href} target="_blank" rel="noreferrer" onMouseMove={move} onMouseLeave={leave}>
-      <div className="projectIndex">{project.number}</div>
-      <div className="projectMain">
-        <div className="projectMeta"><span>{project.category}</span><span>{project.status}</span></div>
-        <h3>{project.title}</h3>
-        <p>{project.text}</p>
-        <div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
-      </div>
-      <div className="projectArrow">↗</div>
-      <div className="projectLight" style={{ left: `${spot.x}%`, top: `${spot.y}%` }} />
-    </a>
-  )
+function ProjectCard({ project, lang }: { project: typeof projects[number], lang: Lang }) {
+  const ref = useRef<HTMLAnchorElement>(null); const [spot, setSpot] = useState({ x: 50, y: 50 }); const t = translations[lang]
+  const move = (event: MouseEvent<HTMLAnchorElement>) => { const node = ref.current; const rect = node?.getBoundingClientRect(); if (!node || !rect) return; const x = ((event.clientX - rect.left) / rect.width) * 100; const y = ((event.clientY - rect.top) / rect.height) * 100; setSpot({ x, y }); node.style.setProperty('--mx', `${(x - 50) / 28}px`); node.style.setProperty('--my', `${(y - 50) / 28}px`) }
+  const leave = () => { setSpot({ x: 50, y: 50 }); const node = ref.current; if (node) { node.style.setProperty('--mx', '0px'); node.style.setProperty('--my', '0px') } }
+  const localized = [
+    lang === 'en' ? ['Education · Children','AI English & Math Tutor','Social · Translation','Search · Analytics','Platform · Public Services','AI Agent · Avatar'] : lang === 'vi' ? ['Giáo dục · Trẻ em','AI · Giáo dục','Xã hội · Dịch thuật','Tìm kiếm · Phân tích','Nền tảng · Dịch vụ cộng đồng','AI Agent · Avatar'] : projects.map(p => p.category),
+    lang === 'en' ? ['AI Kids Workout','AI English & Math Tutor','Bridge · Two Hearts','God’s Eye','Self-Employed World','Svetlana'] : lang === 'vi' ? ['AI Vận động trẻ em','Gia sư AI Anh văn & Toán','Cầu nối · Hai trái tim','God’s Eye','Thế giới người tự doanh','Svetlana'] : projects.map(p => p.title),
+  ]
+  const i = Number(project.number) - 1
+  const status = project.status === 'Реализован' ? t.statusDone : t.statusWork
+  const text = lang === 'en' ? ['A game system for daily workouts for children aged 5–14: world map, missions, rewards and family challenges.','Trilingual AI tutor RU / EN / VI with six AI teachers, voice, avatars, lessons and mini-games.','Cross-cultural China–Russia platform with voice translation, profile compatibility and three languages.','Intelligent search and analytics across open sources: public-data aggregation, fast queries and a clear interface.','Product line of the Center for Self-Employed Support: web, mobile and server services with an AI layer.','Russian-speaking AI agent and realistic avatar Svetlana for web and Android: device control, memory, files and schedules.'][i] : lang === 'vi' ? ['Hệ thống trò chơi luyện tập hằng ngày cho trẻ 5–14 tuổi: bản đồ thế giới, nhiệm vụ, phần thưởng và thử thách gia đình.','Gia sư AI ba ngôn ngữ RU / EN / VI với sáu giáo viên AI, giọng nói, avatar, bài học và mini-game.','Nền tảng kết nối Trung Quốc–Nga với dịch giọng nói, tương thích hồ sơ và ba ngôn ngữ.','Tìm kiếm và phân tích thông minh từ nguồn mở: tổng hợp dữ liệu công khai, truy vấn nhanh và giao diện rõ ràng.','Hệ sinh thái sản phẩm hỗ trợ người tự doanh: web, mobile, máy chủ và lớp AI.','AI agent nói tiếng Nga và avatar Svetlana cho web và Android: điều khiển thiết bị, bộ nhớ, tệp và lịch.'][i] : project.text
+  return <a ref={ref} className="projectCard" href={project.href} target="_blank" rel="noreferrer" onMouseMove={move} onMouseLeave={leave}><div className="projectIndex">{project.number}</div><div className="projectMain"><div className="projectMeta"><span>{localized[0][i]}</span><span>{status}</span></div><h3>{localized[1][i]}</h3><p>{text}</p><div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div><div className="projectArrow">↗</div><div className="projectLight" style={{ left: `${spot.x}%`, top: `${spot.y}%` }} /></a>
 }
 
 function App() {
-  const [menu, setMenu] = useState(false)
-
-  return (
-    <main className="site" id="top">
-      <iframe className="radiantBackground" src="https://radiant-shaders.com/flow-field" title="Фоновое поле потока" loading="eager" aria-hidden="true" tabIndex={-1} />
-
-      <header className="nav shell">
-        <a className="brand" href="#top" aria-label="Pavel Afanasyev — главная">PAVEL AFANASYEV</a>
-        <nav className={menu ? 'navlinks open' : 'navlinks'}>
-          <a href="#top" onClick={() => setMenu(false)}>Главная</a><a href="#about" onClick={() => setMenu(false)}>Обо мне</a><a href="#projects" onClick={() => setMenu(false)}>Проекты</a><a href="#contact" onClick={() => setMenu(false)}>Контакты</a>
-        </nav>
-        <div className="navRight"><a className="githubLink" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">Код ↗</a><a className="contactPill" href="#contact">Связаться</a><button className="menuButton" onClick={() => setMenu(!menu)} aria-label="Меню">{menu ? '×' : '☰'}</button></div>
-      </header>
-
-      <section className="hero shell">
-        <div className="heroCopy"><p className="micro">01 — ГЛАВНАЯ</p><h1>Создаю цифровые<br /><em>продукты, которые работают.</em></h1><p className="lead">Павел Афанасьев — разработчик полного цикла с продуктовым фокусом. Проектирую и собираю веб, API, мобильные приложения и системы ИИ — от архитектуры до работающего выпуска.</p><div className="heroActions"><a className="primaryButton" href="#projects">Смотреть проекты <span>↓</span></a><a className="ghostButton" href="#contact">Обсудить проект <span>↗</span></a></div></div>
-        <div className="heroFoot"><span>Вьетнам · Россия</span><span>Удалённо</span><span>© 2026</span></div>
-      </section>
-
-      <section id="about" className="section shell about">
-        <div className="sectionLabel"><span>02</span><span>ОБО МНЕ</span></div>
-        <div className="aboutIntro"><p className="eyebrow">РАЗРАБОТЧИК ПОЛНОГО ЦИКЛА · СОЗДАТЕЛЬ ЦИФРОВЫХ ПРОДУКТОВ</p><h2>Работаю на стыке<br /><em>продукта и технологий.</em></h2><p className="aboutLead">Проектирую и собираю продукты от интерфейса до сервера, данных и мобильного приложения. Люблю сложные системы, но делаю их понятными для пользователя.</p></div>
-        <div className="aboutGrid"><div className="aboutText"><p>Работаю с React, Node, TypeScript, Python, PostgreSQL, PWA и мобильными технологиями. Веду проекты удалённо между Вьетнамом и Россией.</p><p>На коммерческой основе выполняю разработку полного цикла: первые версии продуктов, развитие существующих систем, модули ИИ и интеграции. Могу подключиться к чужому проекту как исполнитель или партнёр по архитектуре.</p></div><div className="factGrid"><div><b>Организация</b><span>Мир Самозанятых</span></div><div><b>Формат</b><span>Удалённо</span></div><div><b>Фокус</b><span>Веб · ИИ · Мобильные приложения</span></div></div></div>
-      </section>
-
-      <section id="services" className="section shell services">
-        <div className="sectionLabel"><span>03</span><span>УСЛУГИ</span></div>
-        <div className="sectionHeading"><h2>Коммерческая<br /><em>разработка полного цикла.</em></h2><p>Задача, продуктовая логика, архитектура, интерфейс, интеграции и выпуск — в одном контуре.</p></div>
-        <div className="serviceList">{services.map(([number, title, text]) => <article className="serviceRow" key={number}><span className="serviceNumber">{number}</span><div><h3>{title}</h3><p>{text}</p></div><span className="serviceArrow">↗</span></article>)}</div>
-      </section>
-
-      <section id="projects" className="section shell projects">
-        <div className="sectionLabel"><span>04</span><span>ИЗБРАННЫЕ ПРОЕКТЫ</span></div>
-        <div className="sectionHeading"><h2>Проекты<br /><em>в работе.</em></h2><p>Не просто карточки портфолио, а живые системы. Открывай репозиторий, чтобы посмотреть код и текущую реализацию.</p></div>
-        <div className="projectGrid">{projects.map(project => <ProjectCard key={project.number} project={project} />)}</div>
-      </section>
-
-      <section className="section shell learn"><div className="sectionLabel"><span>05</span><span>ИССЛЕДУЮ · СТРОЮ · ПОВТОРЯЮ</span></div><div className="learnGrid"><div><h2>Исследую,<br /><em>строю, повторяю.</em></h2></div><p>Помимо коммерческой разработки, экспериментирую с ИИ-агентами, интерфейсами реального времени, компьютерным зрением, трёхмерной графикой и новыми способами взаимодействия человека с программой.</p></div></section>
-
-      <section className="cta shell" id="contact"><div className="sectionLabel light"><span>06</span><span>КОНТАКТЫ</span></div><div className="ctaInner"><div><p className="micro lightText">ОТКРЫТ К СОТРУДНИЧЕСТВУ</p><h2>Готов включиться<br /><em>в ваш проект.</em></h2></div><div className="ctaSide"><p>Продукт, стартап, команда или разовая задача. Могу взять разработку полного цикла или закрыть конкретный слой — интерфейс, API, мобильную сборку или ИИ-агента.</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">Написать Павлу <span>↗</span></a></div></div></section>
-      <footer className="footer shell"><div className="footerBrand">PAVEL AFANASYEV</div><div>© 2026 · Разработка · ИИ · Продукты</div><div>Вьетнам · Россия · удалённо</div><a href="#top">Наверх ↑</a></footer>
-    </main>
-  )
+  const [menu, setMenu] = useState(false); const [lang, setLang] = useState<Lang>(() => (localStorage.getItem('site-lang') as Lang) || 'ru'); const t = translations[lang]
+  const changeLang = (next: Lang) => { setLang(next); localStorage.setItem('site-lang', next); setMenu(false) }
+  return <main className="site" id="top">
+    <iframe className="radiantBackground" src="https://radiant-shaders.com/flow-field" title="Flow Field background" loading="eager" aria-hidden="true" tabIndex={-1} />
+    <header className="nav shell"><a className="brand" href="#top" aria-label="Pavel Afanasyev — home">PAVEL AFANASYEV</a><nav className={menu ? 'navlinks open' : 'navlinks'}>{t.nav.map((item, i) => <a key={item} href={['#top','#about','#projects','#contact'][i]} onClick={() => setMenu(false)}>{item}</a>)}</nav><div className="navRight"><div className="languageSwitch" aria-label="Language"><button className={lang === 'ru' ? 'active' : ''} onClick={() => changeLang('ru')}>RU</button><button className={lang === 'en' ? 'active' : ''} onClick={() => changeLang('en')}>EN</button><button className={lang === 'vi' ? 'active' : ''} onClick={() => changeLang('vi')}>VI</button></div><a className="githubLink" href="https://github.com/paulafanasyev" target="_blank" rel="noreferrer">{t.code}</a><a className="contactPill" href="#contact">{t.contact}</a><button className="menuButton" onClick={() => setMenu(!menu)} aria-label="Menu">{menu ? '×' : '☰'}</button></div></header>
+    <section className="hero shell"><div className="heroCopy"><p className="micro">{t.heroMicro}</p><h1>{t.heroTitle}</h1><p className="lead">{t.heroLead}</p><div className="heroActions"><a className="primaryButton" href="#projects">{t.viewProjects} <span>↓</span></a><a className="ghostButton" href="#contact">{t.discuss} <span>↗</span></a></div></div><div className="heroFoot"><span>{t.location}</span><span>{t.remote}</span><span>© 2026</span></div></section>
+    <section id="about" className="section shell about"><div className="sectionLabel"><span>02</span><span>{t.aboutLabel}</span></div><div className="aboutIntro"><p className="eyebrow">{t.aboutEyebrow}</p><h2>{t.aboutTitle}</h2><p className="aboutLead">{t.aboutLead}</p></div><div className="aboutGrid"><div className="aboutText"><p>{lang === 'ru' ? 'Работаю с React, Node, TypeScript, Python, PostgreSQL, PWA и мобильными технологиями. Веду проекты удалённо между Вьетнамом и Россией.' : lang === 'en' ? 'I work with React, Node, TypeScript, Python, PostgreSQL, PWA and mobile technologies. I run projects remotely between Vietnam and Russia.' : 'Tôi làm việc với React, Node, TypeScript, Python, PostgreSQL, PWA và công nghệ di động. Tôi triển khai dự án từ xa giữa Việt Nam và Nga.'}</p><p>{lang === 'ru' ? 'На коммерческой основе выполняю разработку полного цикла: первые версии продуктов, развитие существующих систем, модули ИИ и интеграции. Могу подключиться к чужому проекту как исполнитель или партнёр по архитектуре.' : lang === 'en' ? 'I provide full-cycle commercial development: first product versions, existing-system development, AI modules and integrations. I can join as an implementation partner or architecture partner.' : 'Tôi cung cấp phát triển thương mại trọn gói: phiên bản đầu tiên, phát triển hệ thống hiện có, module AI và tích hợp. Tôi có thể tham gia với vai trò thực thi hoặc đối tác kiến trúc.'}</p></div><div className="factGrid"><div><b>{lang === 'ru' ? 'Организация' : lang === 'en' ? 'Organization' : 'Tổ chức'}</b><span>Мир Самозанятых</span></div><div><b>{lang === 'ru' ? 'Формат' : lang === 'en' ? 'Format' : 'Hình thức'}</b><span>{t.remote}</span></div><div><b>{lang === 'ru' ? 'Фокус' : lang === 'en' ? 'Focus' : 'Trọng tâm'}</b><span>Web · AI · Mobile</span></div></div></div></section>
+    <section id="services" className="section shell services"><div className="sectionLabel"><span>03</span><span>{t.servicesLabel}</span></div><div className="sectionHeading"><h2>{t.servicesTitle}</h2><p>{t.servicesLead}</p></div><div className="serviceList">{services.map(([number, title, text]) => <article className="serviceRow" key={number}><span className="serviceNumber">{number}</span><div><h3>{lang === 'en' ? ['Web systems development','AI products','Mobile applications','Joining an existing project'][Number(number)-1] : lang === 'vi' ? ['Phát triển hệ thống web','Sản phẩm AI','Ứng dụng di động','Tham gia dự án hiện có'][Number(number)-1] : title}</h3><p>{lang === 'en' ? ['Web and API development: React, Node, PostgreSQL, PWA, deployment and support.','AI agents, voice interfaces, language models, MCP, avatars and product dashboards.','Capacitor, Flutter and Android: from prototype to build and release.','Architecture, new features, integrations, release and team support.'][Number(number)-1] : lang === 'vi' ? ['Web và API trọn gói: React, Node, PostgreSQL, PWA, triển khai và hỗ trợ.','AI agent, giao diện giọng nói, mô hình ngôn ngữ, MCP, avatar và dashboard sản phẩm.','Capacitor, Flutter và Android: từ prototype đến build và phát hành.','Kiến trúc, tính năng mới, tích hợp, phát hành và hỗ trợ đội ngũ.'][Number(number)-1] : text}</p></div><span className="serviceArrow">↗</span></article>)}</div></section>
+    <section id="projects" className="section shell projects"><div className="sectionLabel"><span>04</span><span>{t.projectsLabel}</span></div><div className="sectionHeading"><h2>{t.projectsTitle}</h2><p>{t.projectsLead}</p></div><div className="projectGrid">{projects.map(project => <ProjectCard key={project.number} project={project} lang={lang} />)}</div></section>
+    <section className="section shell learn"><div className="sectionLabel"><span>05</span><span>{t.learnLabel}</span></div><div className="learnGrid"><div><h2>{t.learnTitle}</h2></div><p>{t.learnText}</p></div></section>
+    <section className="cta shell" id="contact"><div className="sectionLabel light"><span>06</span><span>{t.contactLabel}</span></div><div className="ctaInner"><div><p className="micro lightText">{t.contactEyebrow}</p><h2>{t.contactTitle}</h2></div><div className="ctaSide"><p>{t.contactText}</p><a className="ctaButton" href="mailto:pavel.afanadyev@inbox.ru">{t.write} <span>↗</span></a></div></div></section>
+    <footer className="footer shell"><div className="footerBrand">PAVEL AFANASYEV</div><div>© 2026 · {t.footer}</div><div>{t.location} · {lang === 'ru' ? 'удалённо' : lang === 'en' ? 'remote' : 'từ xa'}</div><a href="#top">{t.top}</a></footer>
+  </main>
 }
-
 export default App
