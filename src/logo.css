@@ -1,0 +1,37 @@
+.brand {
+  display: block !important;
+  width: 72px !important;
+  height: 40px !important;
+  flex: 0 0 72px !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  background: url('/logo-pavel.svg') center / contain no-repeat !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+}
+
+.footerBrand {
+  display: block !important;
+  width: 88px !important;
+  height: 48px !important;
+  flex: 0 0 88px !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  background: url('/logo-pavel.svg') center / contain no-repeat !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+}
+
+@media (max-width: 560px) {
+  .brand {
+    width: 58px !important;
+    height: 32px !important;
+    flex-basis: 58px !important;
+  }
+
+  .footerBrand {
+    width: 70px !important;
+    height: 38px !important;
+    flex-basis: 70px !important;
+  }
+}
