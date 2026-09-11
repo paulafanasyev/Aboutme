@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1084 602" role="img" aria-labelledby="title desc">
+  <title id="title">Pavel Afanasyev logo</title>
+  <desc id="desc">Geometric P slash arrow mark in a dark blue to teal gradient.</desc>
+  <defs>
+    <linearGradient id="logoGradient" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0" stop-color="#062d4b"/>
+      <stop offset="0.55" stop-color="#087f8b"/>
+      <stop offset="1" stop-color="#0ca4a7"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#logoGradient)" fill-rule="evenodd" d="M0 0h355c78 0 133 19 176 47 39 25 67 56 82 97 8 24 13 54 13 88 0 34-5 64-13 88-15 41-43 72-82 97-43 28-98 47-176 47H161l-3 147H0V0Zm161 143v168h148c42-5 71-15 90-32 16-15 24-37 24-65 0-28-8-50-24-65-19-17-48-27-90-32H161Z" transform="translate(0 0)"/>
+  <path fill="url(#logoGradient)" d="M869 0H720L503 599l146 1L869 0Z"/>
+  <path fill="url(#logoGradient)" d="M897 162v142l59 44-59 43v152l184-145 8-11v-78l-8-10-184-137Z"/>
+</svg>
