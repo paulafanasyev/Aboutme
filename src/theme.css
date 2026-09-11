@@ -71,3 +71,23 @@
  .lang-en .sectionHeading h2,.lang-vi .sectionHeading h2{font-size:clamp(30px,8.5vw,42px)!important;line-height:.98!important;letter-spacing:-.045em!important}.lang-en .serviceRow h3,.lang-vi .serviceRow h3{line-height:1.05}.lang-en .projectMain h3,.lang-vi .projectMain h3{line-height:1.05}.lang-en .projectMeta,.lang-vi .projectMeta{min-height:0;display:flex;flex-wrap:wrap;gap:4px 10px}
 }
 @media(prefers-reduced-motion:reduce){.section,.cta,.footer,.sectionLabel,.sectionHeading,.aboutIntro,.aboutGrid,.serviceRow,.projectCard,.learnGrid,.ctaInner,.footer>*{animation:none!important;transform:none!important;opacity:1!important}}
+
+/* Blocks 05/06 and footer must stay fully opaque over the Flow Field. Their
+   scroll-reveal animation was animating parent opacity, making text look
+   faded on mobile at certain scroll positions. Keep the visual reveal off
+   for these content areas while preserving the original transparent background. */
+.learn, .learnGrid, .cta, .ctaInner, .footer,
+.learn .sectionLabel, .learnGrid > *,
+.cta .sectionLabel, .ctaInner > *,
+.footer > * {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+  will-change: auto !important;
+}
+.learn h2, .learn h2 em, .learnGrid p,
+.cta h2, .cta h2 em, .ctaSide p,
+.learn .sectionLabel span, .cta .sectionLabel span, .cta .micro,
+.footer, .footerBrand, .footer > a {
+  opacity: 1 !important;
+}
