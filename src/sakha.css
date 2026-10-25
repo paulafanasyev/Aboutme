@@ -246,3 +246,212 @@ body { color: var(--sakha-ice); }
   .site .brandSubtitle { font-size: 6px; }
   .site .sectionLabel::after { content: "САХА"; }
 }
+
+
+/* Interactive CSS landscape: a lightweight first step toward the larger 3D alas. */
+.site .alasJourney {
+  display: grid;
+  grid-template-columns: minmax(210px, .72fr) minmax(0, 1.45fr);
+  align-items: center;
+  gap: clamp(20px, 4vw, 52px);
+  margin-top: clamp(34px, 6vw, 82px);
+  padding-top: clamp(20px, 3vw, 34px);
+  padding-bottom: clamp(18px, 3vw, 34px);
+  border-top: 1px solid rgba(117, 224, 207, .25);
+  border-bottom: 1px solid rgba(117, 224, 207, .25);
+}
+.site .alasIntro { min-width: 0; }
+.site .alasIntro .eyebrow { color: var(--sakha-gold) !important; }
+.site .alasIntro h2 {
+  margin: 14px 0;
+  color: var(--sakha-ice) !important;
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: .99;
+  letter-spacing: -.045em;
+}
+.site .alasIntro h2 em { color: var(--sakha-gold) !important; font-style: normal; }
+.site .alasIntro > p:last-child {
+  max-width: 34em;
+  color: #c2d9d6 !important;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.site .alasMap {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 300px;
+  overflow: hidden;
+  perspective: 1100px;
+  border: 1px solid rgba(117, 224, 207, .35);
+  border-radius: 8px;
+  background: #09242d;
+  box-shadow: inset 0 0 70px rgba(1, 11, 18, .42), 0 18px 52px rgba(0, 0, 0, .16);
+}
+.site .alasSky {
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  background:
+    radial-gradient(ellipse at 75% 10%, rgba(117, 224, 207, .28), transparent 32%),
+    radial-gradient(ellipse at 34% 2%, rgba(79, 188, 168, .18), transparent 38%),
+    linear-gradient(180deg, #0b2737 0%, #0d3440 52%, #071923 100%);
+}
+.site .alasMap::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: auto -12% -38%;
+  height: 68%;
+  transform: rotateX(58deg) scale(1.08);
+  transform-origin: center bottom;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(117, 224, 207, .16) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 34px, rgba(117, 224, 207, .12) 35px 36px),
+    radial-gradient(ellipse at center, rgba(18, 79, 77, .8), rgba(5, 22, 30, .98) 75%);
+  border-top: 1px solid rgba(233, 184, 110, .35);
+}
+.site .alasRidge {
+  position: absolute;
+  inset: auto -2% 22%;
+  width: 104%;
+  height: 42%;
+  pointer-events: none;
+}
+.site .alasRidgeBack {
+  z-index: -3;
+  opacity: .82;
+  background: #12444a;
+  clip-path: polygon(0 76%, 9% 41%, 17% 65%, 27% 22%, 36% 62%, 48% 32%, 56% 70%, 66% 18%, 75% 62%, 86% 30%, 100% 68%, 100% 100%, 0 100%);
+}
+.site .alasRidgeFront {
+  z-index: -2;
+  bottom: 12%;
+  height: 36%;
+  opacity: .94;
+  background: linear-gradient(180deg, #0e353b, #071923);
+  clip-path: polygon(0 66%, 12% 35%, 24% 72%, 35% 28%, 48% 65%, 60% 43%, 73% 73%, 85% 38%, 100% 63%, 100% 100%, 0 100%);
+}
+.site .alasGround {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 25%;
+  background: linear-gradient(180deg, rgba(7,25,35,0), rgba(4,16,23,.95));
+}
+.site .alasLandmark {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 22%;
+  min-height: 120px;
+  padding: 12px 8px;
+  border: 1px solid rgba(117, 224, 207, .25);
+  border-radius: 5px;
+  background: linear-gradient(155deg, rgba(9, 38, 47, .88), rgba(5, 24, 32, .78));
+  color: var(--sakha-ice) !important;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 14px 32px rgba(0,0,0,.22);
+  transform: translateZ(8px) rotateX(3deg);
+  transition: transform .24s ease, border-color .24s ease, background .24s ease, box-shadow .24s ease;
+}
+.site .alasLandmark:hover, .site .alasLandmark:focus-visible {
+  transform: translateY(-7px) translateZ(22px) rotateX(0);
+  border-color: var(--sakha-gold);
+  background: rgba(13, 50, 56, .96);
+  box-shadow: 0 18px 38px rgba(0,0,0,.32), 0 0 22px rgba(117,224,207,.08);
+  outline: none;
+}
+.site .landmarkAbout { left: 4%; top: 21%; }
+.site .landmarkServices { left: 28%; top: 38%; }
+.site .landmarkProjects { left: 52%; top: 17%; }
+.site .landmarkContact { right: 3%; top: 37%; }
+.site .landmarkGlyph {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 40px;
+  color: var(--sakha-gold);
+}
+.site .sergeGlyph::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 2px;
+  width: 4px;
+  height: 36px;
+  background: linear-gradient(90deg, #966d40, #f1d29b, #996f3e);
+  box-shadow: 0 0 18px rgba(233,184,110,.24);
+}
+.site .sergeGlyph i, .site .sergeGlyph b {
+  position: absolute;
+  top: 8px;
+  width: 24px;
+  height: 3px;
+  background: var(--sakha-gold);
+  border-radius: 1px;
+}
+.site .sergeGlyph i { left: 0; transform: rotate(-24deg); }
+.site .sergeGlyph b { right: -1px; transform: rotate(24deg); }
+.site .craftGlyph::before, .site .projectGlyph::before, .site .contactGlyph::before {
+  content: "";
+  position: absolute;
+  inset: 6px 8px;
+  border: 1px solid var(--sakha-teal);
+  transform: rotate(45deg);
+}
+.site .craftGlyph i, .site .projectGlyph i, .site .contactGlyph i {
+  position: absolute;
+  inset: 13px 15px;
+  border: 1px solid var(--sakha-gold);
+  transform: rotate(45deg);
+}
+.site .craftGlyph b, .site .projectGlyph b, .site .contactGlyph b {
+  position: absolute;
+  inset: 17px 19px;
+  background: var(--sakha-teal);
+  transform: rotate(45deg);
+}
+.site .projectGlyph::before { transform: rotate(0deg); border-color: var(--sakha-gold); }
+.site .projectGlyph i { transform: rotate(0deg); }
+.site .projectGlyph b { transform: rotate(0deg); }
+.site .contactGlyph::before { border-radius: 50%; transform: none; }
+.site .contactGlyph i { border-radius: 50%; transform: none; }
+.site .contactGlyph b { border-radius: 50%; transform: none; }
+.site .landmarkText { display: grid; gap: 6px; width: 100%; }
+.site .landmarkText small { color: var(--sakha-gold); font-size: 7px; font-weight: 700; letter-spacing: .12em; }
+.site .landmarkText strong { color: var(--sakha-ice); font-size: 11px; line-height: 1.25; overflow-wrap: anywhere; }
+.site .alasCompass {
+  position: absolute;
+  right: 12px;
+  top: 9px;
+  color: rgba(233,184,110,.75);
+  font-size: 17px;
+  text-shadow: 0 0 16px rgba(233,184,110,.35);
+}
+@media (max-width: 760px) {
+  .site .alasJourney { grid-template-columns: minmax(0,1fr); gap: 18px; }
+  .site .alasIntro h2 { font-size: clamp(30px, 8vw, 42px); }
+  .site .alasIntro > p:last-child { font-size: 12px; }
+}
+@media (max-width: 560px) {
+  .site .alasMap { min-height: 344px; }
+  .site .alasLandmark { width: 42%; min-height: 116px; gap: 8px; padding: 11px 7px; }
+  .site .landmarkAbout { left: 4%; top: 7%; }
+  .site .landmarkServices { left: 53%; top: 7%; }
+  .site .landmarkProjects { left: 4%; top: 55%; }
+  .site .landmarkContact { right: 5%; top: 55%; }
+  .site .landmarkGlyph { width: 36px; height: 34px; }
+  .site .sergeGlyph::before { left: 16px; height: 30px; }
+  .site .sergeGlyph i, .site .sergeGlyph b { width: 21px; }
+  .site .landmarkText strong { font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site .alasLandmark { transition: none !important; transform: none !important; }
+}
