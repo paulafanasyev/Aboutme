@@ -6,8 +6,13 @@ import * as THREE from 'three'
  * Lightweight WebGL layer for the Sakha-inspired alas. The CSS landscape is
  * deliberately kept underneath as a graceful fallback when WebGL is blocked.
  */
-export default function SakhaThreeScene() {
+export default function SakhaThreeScene({ lang = 'ru' }) {
   const mountRef = useRef(null)
+  const controlCopy = ({
+    ru: { label: 'Управление сценой', hint: 'WASD / стрелки · E — открыть рядом', up: 'Вперёд', down: 'Назад', left: 'Влево', right: 'Вправо', interact: 'Открыть ближайший ориентир' },
+    en: { label: 'Scene controls', hint: 'WASD / arrows · E — interact nearby', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open nearest landmark' },
+    vi: { label: 'Điều khiển cảnh', hint: 'WASD / phím mũi tên · E — tương tác gần nhất', up: 'Tiến lên', down: 'Lùi lại', left: 'Sang trái', right: 'Sang phải', interact: 'Mở địa điểm gần nhất' },
+  })[lang] || { label: 'Scene controls', hint: 'WASD / arrows · E — interact nearby', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open nearest landmark' }
 
   useEffect(() => {
     const mount = mountRef.current
@@ -22,6 +27,9 @@ export default function SakhaThreeScene() {
     let visible = !('IntersectionObserver' in window)
     let pointerX = 0
     let pointerY = 0
+    let lastFrame = 0
+    const pressedDirections = new Set()
+    const interactiveTargets = []
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const scene = new THREE.Scene()
@@ -146,7 +154,15 @@ export default function SakhaThreeScene() {
       roughness: 0.55,
       metalness: 0.12,
     })
-    const addSerge = (x, z, scale = 1) => {
+    const registerInteractive = (object, section) => {
+      object.traverse((child) => {
+        if (child.isMesh) {
+          child.userData.section = section
+          interactiveTargets.push(child)
+        }
+      })
+    }
+    const addSerge = (x, z, scale = 1, section = 'about') => {
       const serge = new THREE.Group()
       const post = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.09, 1.85, 6), sergeMaterial)
       post.position.y = -0.42
@@ -160,9 +176,10 @@ export default function SakhaThreeScene() {
       serge.position.set(x, 0, z)
       serge.scale.setScalar(scale)
       scene.add(serge)
+      registerInteractive(serge, section)
     }
-    addSerge(-2.45, 0.05, 0.82)
-    addSerge(2.5, 0.0, 0.88)
+    addSerge(-2.45, 0.05, 0.82, 'about')
+    addSerge(2.5, 0.0, 0.88, 'contact')
 
     const stoneMaterial = new THREE.MeshStandardMaterial({
       color: 0x5bc8b8,
@@ -179,6 +196,10 @@ export default function SakhaThreeScene() {
       stone.position.set(x, y, z)
       stone.rotation.set(index * 0.4, index * 0.6, index * 0.2)
       scene.add(stone)
+      if (index === 0 || index === 1) {
+        stone.userData.section = index === 0 ? 'services' : 'projects'
+        interactiveTargets.push(stone)
+      }
       stones.push({ mesh: stone, baseY: y, phase: index * 1.2 })
     })
 
@@ -193,6 +214,94 @@ export default function SakhaThreeScene() {
     )
     hearth.position.set(0, -0.75, 1.1)
     scene.add(hearth)
+
+    const player = new THREE.Group()
+    const playerBodyMaterial = new THREE.MeshStandardMaterial({
+      color: 0x16796f,
+      roughness: 0.75,
+      metalness: 0.05,
+    })
+    const playerTrimMaterial = new THREE.MeshStandardMaterial({
+      color: 0xe9b86e,
+      roughness: 0.42,
+      metalness: 0.14,
+    })
+    const playerFaceMaterial = new THREE.MeshStandardMaterial({
+      color: 0xe4c5a0,
+      roughness: 0.8,
+    })
+    const playerDarkMaterial = new THREE.MeshStandardMaterial({
+      color: 0x09232d,
+      roughness: 0.9,
+    })
+    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.23, 0.48, 7), playerBodyMaterial)
+    torso.position.y = 0.43
+    player.add(torso)
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.145, 8, 6), playerFaceMaterial)
+    head.position.y = 0.78
+    player.add(head)
+    const hood = new THREE.Mesh(new THREE.SphereGeometry(0.16, 7, 5, 0, Math.PI * 2, 0, Math.PI * 0.62), playerDarkMaterial)
+    hood.position.set(0, 0.82, -0.025)
+    player.add(hood)
+    const scarf = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.075, 0.21), playerTrimMaterial)
+    scarf.position.set(0, 0.59, 0.015)
+    player.add(scarf)
+    const pack = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.28, 0.12), playerDarkMaterial)
+    pack.position.set(0, 0.43, -0.19)
+    player.add(pack)
+    const legMaterial = new THREE.MeshStandardMaterial({ color: 0x102d35, roughness: 0.95 })
+    ;[-0.09, 0.09].forEach((x) => {
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.07, 0.23, 6), legMaterial)
+      leg.position.set(x, 0.13, 0)
+      player.add(leg)
+    })
+    const feetHalo = new THREE.Mesh(
+      new THREE.RingGeometry(0.24, 0.3, 32),
+      new THREE.MeshBasicMaterial({ color: 0x75e0cf, transparent: true, opacity: 0.68, side: THREE.DoubleSide }),
+    )
+    feetHalo.rotation.x = -Math.PI / 2
+    feetHalo.position.y = 0.025
+    player.add(feetHalo)
+    player.position.set(0.05, -1.34, 2.1)
+    scene.add(player)
+    const worldBounds = { minX: -3.15, maxX: 3.15, minZ: -2.5, maxZ: 3.15 }
+    const movePlayer = (direction, distance) => {
+      if (direction === 'up') player.position.z -= distance
+      if (direction === 'down') player.position.z += distance
+      if (direction === 'left') player.position.x -= distance
+      if (direction === 'right') player.position.x += distance
+      player.position.x = THREE.MathUtils.clamp(player.position.x, worldBounds.minX, worldBounds.maxX)
+      player.position.z = THREE.MathUtils.clamp(player.position.z, worldBounds.minZ, worldBounds.maxZ)
+      const forward = direction === 'up' ? -1 : direction === 'down' ? 1 : 0
+      const side = direction === 'left' ? -1 : direction === 'right' ? 1 : 0
+      if (forward || side) player.rotation.y = Math.atan2(side, forward)
+    }
+    const nearestSection = () => {
+      let nearest = null
+      let nearestDistance = Infinity
+      const worldPosition = new THREE.Vector3()
+      interactiveTargets.forEach((target) => {
+        if (!target.userData.section) return
+        target.getWorldPosition(worldPosition)
+        const distance = Math.hypot(worldPosition.x - player.position.x, worldPosition.z - player.position.z)
+        if (distance < nearestDistance) {
+          nearestDistance = distance
+          nearest = target.userData.section
+        }
+      })
+      return nearestDistance <= 1.7 ? nearest : null
+    }
+    const openSection = (section) => {
+      if (!section) return
+      const destination = document.getElementById(section)
+      destination?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
+    }
+    const keyDirection = (key) => ({
+      ArrowUp: 'up', KeyW: 'up', w: 'up', W: 'up',
+      ArrowDown: 'down', KeyS: 'down', s: 'down', S: 'down',
+      ArrowLeft: 'left', KeyA: 'left', a: 'left', A: 'left',
+      ArrowRight: 'right', KeyD: 'right', d: 'right', D: 'right',
+    })[key] || null
 
     const starPositions = new Float32Array(270)
     for (let i = 0; i < 90; i += 1) {
@@ -233,6 +342,24 @@ export default function SakhaThreeScene() {
     })
     scene.add(aurora)
 
+    const raycaster = new THREE.Raycaster()
+    const rayPointer = new THREE.Vector2()
+    const sectionAtPointer = (event) => {
+      const rect = renderer.domElement.getBoundingClientRect()
+      rayPointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1
+      rayPointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1)
+      raycaster.setFromCamera(rayPointer, camera)
+      const hit = raycaster.intersectObjects(interactiveTargets, false)[0]
+      return hit?.object?.userData?.section || null
+    }
+    const onSceneClick = (event) => {
+      const section = sectionAtPointer(event)
+      if (section) openSection(section)
+    }
+    const onScenePointerMove = (event) => {
+      const section = sectionAtPointer(event)
+      renderer.domElement.style.cursor = section ? 'pointer' : 'grab'
+    }
     const resize = () => {
       if (!renderer || disposed) return
       const rect = mount.getBoundingClientRect()
@@ -263,8 +390,66 @@ export default function SakhaThreeScene() {
         renderer.render(scene, camera)
       }
     }
+    map.tabIndex = map.tabIndex >= 0 ? map.tabIndex : 0
+    const onKeyDown = (event) => {
+      const direction = keyDirection(event.key)
+      const active = document.activeElement
+      const isEditing = active && (['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) || active.isContentEditable)
+      if (isEditing || !(map.contains(active) || map.matches(':hover'))) return
+      if (direction) {
+        event.preventDefault()
+        if (reduceMotion) {
+          if (!event.repeat) movePlayer(direction, 0.22)
+          renderer.render(scene, camera)
+        } else {
+          pressedDirections.add(direction)
+        }
+        return
+      }
+      if ((event.key === 'e' || event.key === 'E') && !event.repeat) {
+        event.preventDefault()
+        openSection(nearestSection())
+      }
+    }
+    const onKeyUp = (event) => {
+      const direction = keyDirection(event.key)
+      if (direction) pressedDirections.delete(direction)
+    }
+    const onPadDown = (event) => {
+      const control = event.target.closest?.('[data-scene-dir]')
+      if (!control || !map.contains(control)) return
+      event.preventDefault()
+      const direction = control.dataset.sceneDir
+      if (reduceMotion) {
+        movePlayer(direction, 0.22)
+        renderer.render(scene, camera)
+      } else {
+        pressedDirections.add(direction)
+      }
+    }
+    const onPadUp = (event) => {
+      const control = event.target.closest?.('[data-scene-dir]')
+      if (control?.dataset?.sceneDir) pressedDirections.delete(control.dataset.sceneDir)
+    }
+    const onPadClick = (event) => {
+      const action = event.target.closest?.('[data-scene-action="interact"]')
+      if (action) {
+        event.preventDefault()
+        openSection(nearestSection())
+      }
+    }
+    const clearDirections = () => pressedDirections.clear()
     map.addEventListener('pointermove', onPointerMove, { passive: true })
     map.addEventListener('pointerleave', onPointerLeave, { passive: true })
+    map.addEventListener('pointerdown', onPadDown)
+    map.addEventListener('pointerup', onPadUp)
+    map.addEventListener('pointercancel', onPadUp)
+    map.addEventListener('click', onPadClick)
+    renderer.domElement.addEventListener('click', onSceneClick)
+    renderer.domElement.addEventListener('pointermove', onScenePointerMove, { passive: true })
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    window.addEventListener('blur', clearDirections)
     window.addEventListener('resize', resize, { passive: true })
     if ('ResizeObserver' in window) {
       resizeObserver = new ResizeObserver(resize)
@@ -273,9 +458,20 @@ export default function SakhaThreeScene() {
     resize()
     renderer.render(scene, camera)
 
-    const animate = () => {
+    const animate = (timestamp = performance.now()) => {
       if (disposed || !visible || reduceMotion) return
       frameId = window.requestAnimationFrame(animate)
+      const delta = lastFrame ? Math.min((timestamp - lastFrame) / 1000, 0.05) : 0
+      lastFrame = timestamp
+      const directionX = Number(pressedDirections.has('right')) - Number(pressedDirections.has('left'))
+      const directionZ = Number(pressedDirections.has('down')) - Number(pressedDirections.has('up'))
+      const magnitude = Math.hypot(directionX, directionZ) || 1
+      if (directionX || directionZ) {
+        const distance = 2.25 * delta / magnitude
+        player.position.x = THREE.MathUtils.clamp(player.position.x + directionX * distance, worldBounds.minX, worldBounds.maxX)
+        player.position.z = THREE.MathUtils.clamp(player.position.z + directionZ * distance, worldBounds.minZ, worldBounds.maxZ)
+        player.rotation.y = Math.atan2(directionX, directionZ)
+      }
       const time = performance.now() * 0.001
       aurora.position.x = Math.sin(time * 0.19) * 0.16
       aurora.rotation.y = Math.sin(time * 0.12) * 0.025
@@ -285,9 +481,10 @@ export default function SakhaThreeScene() {
         mesh.position.y = baseY + Math.sin(time * 0.8 + phase) * 0.045
         mesh.rotation.y += 0.003
       })
-      camera.position.x += (pointerX * 0.42 - camera.position.x) * 0.025
+      camera.position.x += (player.position.x * 0.12 + pointerX * 0.25 - camera.position.x) * 0.025
       camera.position.y += (1.65 - pointerY * 0.13 - camera.position.y) * 0.025
-      camera.lookAt(0, 0.15, 0)
+      camera.position.z += (9.5 + (player.position.z - 2.1) * 0.08 - camera.position.z) * 0.025
+      camera.lookAt(player.position.x * 0.12, 0.15, (player.position.z - 2.1) * 0.12)
       renderer.render(scene, camera)
     }
 
@@ -312,8 +509,17 @@ export default function SakhaThreeScene() {
       visibilityObserver?.disconnect()
       resizeObserver?.disconnect()
       window.removeEventListener('resize', resize)
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+      window.removeEventListener('blur', clearDirections)
       map.removeEventListener('pointermove', onPointerMove)
       map.removeEventListener('pointerleave', onPointerLeave)
+      map.removeEventListener('pointerdown', onPadDown)
+      map.removeEventListener('pointerup', onPadUp)
+      map.removeEventListener('pointercancel', onPadUp)
+      map.removeEventListener('click', onPadClick)
+      renderer.domElement.removeEventListener('click', onSceneClick)
+      renderer.domElement.removeEventListener('pointermove', onScenePointerMove)
       const geometries = new Set()
       const materials = new Set()
       scene.traverse((object) => {
@@ -328,5 +534,21 @@ export default function SakhaThreeScene() {
     }
   }, [])
 
-  return <div className="threeSceneMount" ref={mountRef} aria-hidden="true" />
+  return (
+    <>
+      <div className="threeSceneMount" ref={mountRef} aria-hidden="true" />
+      <div className="sceneControls" aria-label={controlCopy.label}>
+        <span className="sceneControlsHint">{controlCopy.hint}</span>
+        <div className="scenePad" role="group" aria-label={controlCopy.label}>
+          <span />
+          <button type="button" data-scene-dir="up" aria-label={controlCopy.up}>↑</button>
+          <span />
+          <button type="button" data-scene-dir="left" aria-label={controlCopy.left}>←</button>
+          <button type="button" data-scene-dir="down" aria-label={controlCopy.down}>↓</button>
+          <button type="button" data-scene-dir="right" aria-label={controlCopy.right}>→</button>
+        </div>
+        <button type="button" className="sceneInteract" data-scene-action="interact">E · {controlCopy.interact}</button>
+      </div>
+    </>
+  )
 }
