@@ -148,3 +148,101 @@ body { color: var(--sakha-ice); }
   .brand { letter-spacing: .08em !important; }
   .site::after { height: 22vh; }
 }
+
+
+/* Permanent Sakha identity: the name stays visible while RU / EN / VI changes. */
+.site .nav {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 30 !important;
+  background: rgba(7, 25, 35, .92) !important;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 rgba(117, 224, 207, .16);
+}
+.site .brand {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  min-width: 0;
+  max-width: 42vw;
+  white-space: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.1;
+  text-decoration: none;
+}
+.site .brand::before { display: none !important; content: none !important; }
+.site .brandSakha {
+  display: block;
+  color: var(--sakha-ice);
+  font-size: clamp(11px, 1.18vw, 15px);
+  font-weight: 800;
+  letter-spacing: .12em;
+  line-height: 1.05;
+  white-space: nowrap;
+  text-shadow: 0 0 22px rgba(117, 224, 207, .18);
+}
+.site .brandSakha::before {
+  content: "✳";
+  display: inline-block;
+  margin-right: 7px;
+  color: var(--sakha-gold);
+  font-size: .92em;
+}
+.site .brandSubtitle {
+  display: block;
+  max-width: 100%;
+  color: #a6c9c5;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .055em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.site .footerBrand {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  color: var(--sakha-ice) !important;
+  letter-spacing: .08em;
+}
+.site .footerBrandSakha {
+  color: var(--sakha-gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+.site .footerBrandName {
+  color: var(--sakha-ice);
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+.site .sectionLabel::after {
+  content: "АЛГЫС КЫТЫЛЫТ";
+  margin-left: auto;
+  color: rgba(233, 184, 110, .82);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  white-space: nowrap;
+}
+.site .sectionLabel {
+  column-gap: 12px;
+}
+@media (max-width: 560px) {
+  .site .brand { max-width: 34vw; gap: 3px !important; }
+  .site .brandSakha { font-size: 10px; letter-spacing: .04em; }
+  .site .brandSakha::before { margin-right: 4px; }
+  .site .brandSubtitle { font-size: 6.5px; letter-spacing: 0; line-height: 1.15; }
+  .site .nav { padding-top: 10px !important; padding-bottom: 10px !important; }
+  .site .sectionLabel::after { font-size: 6.5px; letter-spacing: .055em; }
+}
+@media (max-width: 370px) {
+  .site .brand { max-width: 30vw; }
+  .site .brandSakha { font-size: 9px; letter-spacing: .025em; }
+  .site .brandSubtitle { font-size: 6px; }
+  .site .sectionLabel::after { content: "САХА"; }
+}
