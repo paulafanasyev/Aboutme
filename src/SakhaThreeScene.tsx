@@ -450,6 +450,8 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     window.addEventListener('keydown', onKeyDown)
     window.addEventListener('keyup', onKeyUp)
     window.addEventListener('blur', clearDirections)
+    window.addEventListener('pointerup', clearDirections)
+    window.addEventListener('pointercancel', clearDirections)
     window.addEventListener('resize', resize, { passive: true })
     if ('ResizeObserver' in window) {
       resizeObserver = new ResizeObserver(resize)
@@ -512,6 +514,8 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', clearDirections)
+      window.removeEventListener('pointerup', clearDirections)
+      window.removeEventListener('pointercancel', clearDirections)
       map.removeEventListener('pointermove', onPointerMove)
       map.removeEventListener('pointerleave', onPointerLeave)
       map.removeEventListener('pointerdown', onPadDown)
