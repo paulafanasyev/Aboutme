@@ -455,3 +455,24 @@ body { color: var(--sakha-ice); }
 @media (prefers-reduced-motion: reduce) {
   .site .alasLandmark { transition: none !important; transform: none !important; }
 }
+
+
+/* WebGL layer sits below the clickable landmarks and above the CSS fallback. */
+.site .threeSceneMount {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.site .threeSceneMount canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.site .threeSceneMount[data-fallback="true"] { display: none; }
+.site .alasLandmark { z-index: 2; }
+.site .alasCompass { z-index: 3; }
+@media (prefers-reduced-motion: reduce) {
+  .site .threeSceneMount canvas { animation: none !important; }
+}
