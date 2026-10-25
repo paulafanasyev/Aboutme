@@ -16,7 +16,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
 
   useEffect(() => {
     const mount = mountRef.current
-    const map = mount?.parentElement
+    const map = mount?.closest('.alasMap')
     if (!mount || !map) return undefined
 
     let renderer
