@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import './theme.css'
 import './sakha.css'
-import SakhaThreeScene from './SakhaThreeScene'
+import SakhaThreeScene from './SakhaSceneLoader'
 
 type Lang = 'ru' | 'en' | 'vi'
 type ChatMessage = { from: 'bot' | 'user'; text: string }
