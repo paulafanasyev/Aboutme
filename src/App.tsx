@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import './theme.css'
 import './sakha.css'
+import SakhaThreeScene from './SakhaThreeScene'
 
 type Lang = 'ru' | 'en' | 'vi'
 type ChatMessage = { from: 'bot' | 'user'; text: string }
@@ -55,7 +56,7 @@ function App(){
    <p>{lang==='ru'?'Каждая точка ведёт к разделу портфолио. Это первый интерактивный слой мира Саха; существующие проекты и AI-чат остаются на месте.':lang==='en'?'Each landmark opens a portfolio section. This is the first interactive layer of the Sakha-inspired world; existing projects and the AI chat remain intact.':'Mỗi điểm dẫn đến một phần của hồ sơ năng lực. Đây là lớp tương tác đầu tiên của không gian lấy cảm hứng từ Saha; các dự án và AI chat hiện có vẫn được giữ nguyên.'}</p>
   </div>
   <div className="alasMap" role="group" aria-label={lang==='ru'?'Интерактивная карта портфолио':lang==='en'?'Interactive portfolio map':'Bản đồ hồ sơ năng lực tương tác'}>
-   <div className="alasSky" aria-hidden="true"/>
+   <div className="alasSky" aria-hidden="true"/><SakhaThreeScene />
    <div className="alasRidge alasRidgeBack" aria-hidden="true"/>
    <div className="alasRidge alasRidgeFront" aria-hidden="true"/>
    <div className="alasGround" aria-hidden="true"/>
