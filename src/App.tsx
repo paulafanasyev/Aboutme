@@ -1,5 +1,6 @@
 import { useRef, useState, type MouseEvent } from 'react'
 import './theme.css'
+import './sakha.css'
 
 type Lang = 'ru' | 'en' | 'vi'
 type ChatMessage = { from: 'bot' | 'user'; text: string }
