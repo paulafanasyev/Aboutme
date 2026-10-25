@@ -20,4 +20,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Type-check the Vercel API route
+        run: npx tsc --noEmit --target es2023 --lib ES2023,DOM --module nodenext --moduleResolution nodenext --types node --skipLibCheck api/chat.ts
       - run: npm run lint
