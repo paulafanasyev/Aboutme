@@ -18,6 +18,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     const mount = mountRef.current
     const map = mount?.closest('.alasMap')
     if (!mount || !map) return undefined
+    const controls = map.querySelector('.sceneControls')
 
     let renderer
     let frameId = 0
@@ -46,9 +47,11 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       })
     } catch {
       mount.dataset.fallback = 'true'
+      if (controls) controls.hidden = true
       return undefined
     }
 
+    if (controls) controls.hidden = false
     renderer.setClearColor(0x000000, 0)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 560 ? 1.2 : 1.55))
     renderer.outputColorSpace = THREE.SRGBColorSpace
