@@ -19,11 +19,21 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
-      - name: Verify the Vercel root-path build
+      - name: Build for GitHub Pages
+        run: npm run build
+      - name: Verify GitHub Pages asset paths
+        run: |
+          grep -q 'src="/Aboutme/assets/' dist/index.html
+          grep -q 'href="/Aboutme/assets/' dist/index.html
+      - name: Build for Vercel root path
         run: npm run build
         env:
           VERCEL: '1'
+      - name: Verify Vercel asset paths
+        run: |
+          if grep -q '/Aboutme/assets/' dist/index.html; then echo 'Vercel build incorrectly uses the GitHub Pages base path'; exit 1; fi
+          grep -q 'src="/assets/' dist/index.html
+          grep -q 'href="/assets/' dist/index.html
       - name: Type-check the Vercel API route
-        run: npx tsc --noEmit --target es2023 --lib ES2023,DOM --module nodenext --moduleResolution nodenext --types node --skipLibCheck api/chat.ts
+        run: npx tsc --ignoreConfig --noEmit --target es2023 --lib ES2023,DOM --module nodenext --moduleResolution nodenext --types node --skipLibCheck api/chat.ts
       - run: npm run lint
