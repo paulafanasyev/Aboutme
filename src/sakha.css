@@ -471,7 +471,6 @@ body { color: var(--sakha-ice); }
   height: 100%;
 }
 .site .threeSceneMount[data-fallback="true"] { display: none; }
-.site .threeSceneMount[data-fallback="true"] + .sceneControls { display: none !important; }
 .site .alasLandmark { z-index: 2; }
 .site .alasCompass { z-index: 3; }
 @media (prefers-reduced-motion: reduce) {
