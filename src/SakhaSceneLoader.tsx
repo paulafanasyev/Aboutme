@@ -5,10 +5,6 @@ type SceneTheme = 'dark' | 'light'
 
 const DeferredSakhaThreeScene = lazy(() => import('./SakhaThreeScene'))
 
-/**
- * Load Three.js only when the alas enters or approaches the viewport.
- * The CSS landscape remains visible before and during the WebGL chunk load.
- */
 export default function SakhaSceneLoader({
   lang = 'ru',
   theme = 'dark',
