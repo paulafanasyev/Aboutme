@@ -1,3 +1,4 @@
+/// <reference types="node" />
 const BASE_URL = (process.env.APINEX_BASE_URL || 'https://api.apinex.bond/v1').replace(/\/$/, '')
 
 const MODELS = (process.env.APINEX_MODELS || [

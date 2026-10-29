@@ -1,0 +1,40 @@
+name: Validate portfolio
+
+on:
+  pull_request:
+    branches:
+      - portfolio-of-pavel-afanasiev-0036f
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build for GitHub Pages
+        run: npm run build
+      - name: Verify GitHub Pages asset paths
+        run: |
+          grep -q 'src="/Aboutme/assets/' dist/index.html
+          grep -q 'href="/Aboutme/assets/' dist/index.html
+      - name: Build for Vercel root path
+        run: npm run build
+        env:
+          VERCEL: '1'
+      - name: Verify Vercel asset paths
+        run: |
+          if grep -q '/Aboutme/assets/' dist/index.html; then echo 'Vercel build incorrectly uses the GitHub Pages base path'; exit 1; fi
+          grep -q 'src="/assets/' dist/index.html
+          grep -q 'href="/assets/' dist/index.html
+          test -n "$(find dist/assets -maxdepth 1 -type f -name 'SakhaThreeScene-*.js' -print -quit)"
+      - name: Type-check the Vercel API route
+        run: npx tsc --ignoreConfig --noEmit --target es2023 --lib ES2023,DOM --module nodenext --moduleResolution nodenext --types node --skipLibCheck api/chat.ts
+      - run: npm run lint
