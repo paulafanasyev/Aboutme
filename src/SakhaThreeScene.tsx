@@ -80,6 +80,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     moon.shadow.camera.top = 8
     moon.shadow.camera.bottom = -8
     moon.shadow.bias = -0.0002
+    moon.shadow.camera.updateProjectionMatrix()
     scene.add(moon)
     const auroraLight = new THREE.PointLight(0x48d6bd, 2.4, 15)
     auroraLight.position.set(1.6, 3.4, -1.8)
@@ -111,7 +112,6 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     for (let segment = 0; segment < groundSegments; segment += 1) {
       const current = 1 + segment
       const next = 1 + (segment + 1) % groundSegments
-      groundGeometry.userData.centerIndex = 0
       ;(groundGeometry.userData.indices ||= []).push(0, current, next)
     }
     const groundIndices = groundGeometry.userData.indices
