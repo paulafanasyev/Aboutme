@@ -176,7 +176,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
         'vWaterPosition = worldPosition.xyz;',
         'gl_Position = projectionMatrix * viewMatrix * worldPosition;',
         '}',
-      ].join('\\n'),
+      ].join('\n'),
       fragmentShader: [
         'uniform float uTime;',
         'uniform vec3 uDeep;',
@@ -191,7 +191,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
         'vec3 color = mix(uDeep, uGlint, glint * 0.27 + edge * 0.12);',
         'gl_FragColor = vec4(color, 0.97);',
         '}',
-      ].join('\\n'),
+      ].join('\n'),
       transparent: true,
       depthWrite: false,
       side: THREE.DoubleSide,
