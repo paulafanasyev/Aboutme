@@ -1,0 +1,209 @@
+/* ========== LIGHT THEME ========== */
+.site[data-theme="light"] {
+  --sakha-night: #f4f8f6;
+  --sakha-deep: #e8f2ee;
+  --sakha-teal: #1a7a6d;
+  --sakha-ice: #14323a;
+  --sakha-gold: #c48a2e;
+  --sakha-rust: #a34f36;
+  --sakha-line: rgba(26, 122, 109, .18);
+  --fg: #14323a;
+  --muted: #4a6b66;
+  --line: var(--sakha-line);
+  color: #14323a !important;
+  background:
+    radial-gradient(ellipse at 78% 6%, rgba(122, 210, 180, .22), transparent 36%),
+    radial-gradient(ellipse at 12% 28%, rgba(180, 220, 210, .28), transparent 42%),
+    linear-gradient(180deg, #f7fbf9 0%, #eef6f2 48%, #e6f0ec 100%) !important;
+}
+.site[data-theme="light"]::before {
+  opacity: .55;
+  background:
+    radial-gradient(ellipse at 68% 3%, rgba(90, 200, 160, .18), transparent 30%),
+    radial-gradient(ellipse at 82% 14%, rgba(120, 190, 175, .12), transparent 34%),
+    linear-gradient(155deg, transparent 0 30%, rgba(40, 140, 120, .06) 30.2% 30.6%, transparent 30.8%),
+    repeating-linear-gradient(135deg, transparent 0 46px, rgba(196, 138, 46, .04) 47px 48px, transparent 49px 94px);
+  mix-blend-mode: multiply;
+}
+.site[data-theme="light"]::after {
+  opacity: .55;
+  background:
+    linear-gradient(180deg, transparent, #e8f2ee 86%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 260' preserveAspectRatio='none'%3E%3Cpath d='M0 180 L90 110 150 158 260 60 350 150 470 75 570 165 700 48 810 155 930 84 1030 150 1140 55 1240 148 1330 90 1400 135 V260 H0Z' fill='%23c5ddd4'/%3E%3Cpath d='M0 215 L110 165 205 204 315 132 430 206 545 160 660 220 790 150 900 213 1030 164 1150 220 1260 155 1400 205 V260 H0Z' fill='%23e8f2ee'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
+}
+html:has(.site[data-theme="light"]),
+body:has(.site[data-theme="light"]) {
+  background: #f4f8f6 !important;
+}
+.site[data-theme="light"] .nav {
+  background: rgba(244, 248, 246, .92) !important;
+  border-color: rgba(26, 122, 109, .16) !important;
+  box-shadow: 0 1px 0 rgba(26, 122, 109, .1);
+}
+.site[data-theme="light"] .brandSakha { color: #14323a; text-shadow: none; }
+.site[data-theme="light"] .brandSubtitle { color: #4a6b66; }
+.site[data-theme="light"] .navlinks,
+.site[data-theme="light"] .githubLink,
+.site[data-theme="light"] .micro,
+.site[data-theme="light"] .sectionLabel,
+.site[data-theme="light"] .eyebrow,
+.site[data-theme="light"] .heroFoot,
+.site[data-theme="light"] .factGrid b,
+.site[data-theme="light"] .serviceNumber,
+.site[data-theme="light"] .projectIndex,
+.site[data-theme="light"] .footer,
+.site[data-theme="light"] .lightText {
+  color: #4a6b66 !important;
+}
+.site[data-theme="light"] .navlinks a:hover,
+.site[data-theme="light"] .githubLink:hover { color: var(--sakha-gold) !important; }
+.site[data-theme="light"] .hero h1,
+.site[data-theme="light"] .aboutIntro h2,
+.site[data-theme="light"] .sectionHeading h2,
+.site[data-theme="light"] .learn h2,
+.site[data-theme="light"] .cta h2,
+.site[data-theme="light"] .serviceRow h3,
+.site[data-theme="light"] .projectMain h3 {
+  color: #14323a !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+}
+.site[data-theme="light"] .hero h1 em,
+.site[data-theme="light"] .sectionHeading em,
+.site[data-theme="light"] .aboutIntro h2 em,
+.site[data-theme="light"] .learn h2 em,
+.site[data-theme="light"] .cta h2 em {
+  color: var(--sakha-gold) !important;
+  text-shadow: none !important;
+}
+.site[data-theme="light"] .lead,
+.site[data-theme="light"] .aboutLead,
+.site[data-theme="light"] .aboutText p,
+.site[data-theme="light"] .sectionHeading p,
+.site[data-theme="light"] .serviceRow p,
+.site[data-theme="light"] .projectMain p,
+.site[data-theme="light"] .learnGrid p,
+.site[data-theme="light"] .ctaSide p {
+  color: #3d5c58 !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  opacity: 1 !important;
+  font-weight: 450 !important;
+}
+.site[data-theme="light"] .nav,
+.site[data-theme="light"] .heroFoot,
+.site[data-theme="light"] .aboutGrid,
+.site[data-theme="light"] .sectionLabel,
+.site[data-theme="light"] .serviceList,
+.site[data-theme="light"] .projectGrid {
+  border-color: rgba(26, 122, 109, .16) !important;
+}
+.site[data-theme="light"] .contactPill,
+.site[data-theme="light"] .ghostButton,
+.site[data-theme="light"] .menuButton,
+.site[data-theme="light"] .serviceArrow,
+.site[data-theme="light"] .projectArrow,
+.site[data-theme="light"] .tags span {
+  color: #14323a !important;
+  border-color: rgba(26, 122, 109, .28) !important;
+  background: rgba(255, 255, 255, .72) !important;
+}
+.site[data-theme="light"] .contactPill:hover,
+.site[data-theme="light"] .serviceRow:hover .serviceArrow,
+.site[data-theme="light"] .projectCard:hover .projectArrow {
+  background: var(--sakha-gold) !important;
+  color: #fff !important;
+  border-color: var(--sakha-gold) !important;
+}
+.site[data-theme="light"] .primaryButton,
+.site[data-theme="light"] .ctaButton {
+  background: var(--sakha-gold) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(196, 138, 46, .22);
+}
+.site[data-theme="light"] .heroFoot {
+  background: rgba(255, 255, 255, .88) !important;
+  border: 1px solid rgba(26, 122, 109, .18) !important;
+}
+.site[data-theme="light"] .heroFoot span { color: #14323a !important; }
+.site[data-theme="light"] .serviceRow { border-color: rgba(26, 122, 109, .14) !important; }
+.site[data-theme="light"] .serviceRow:hover { background: rgba(26, 122, 109, .04) !important; }
+.site[data-theme="light"] .projectCard { border-color: rgba(26, 122, 109, .16) !important; background: rgba(255,255,255,.55); }
+.site[data-theme="light"] .chatLauncher {
+  background: var(--sakha-gold) !important;
+  border-color: rgba(196,138,46,.7) !important;
+  color: #fff !important;
+}
+.site[data-theme="light"] .clientChat {
+  border-color: rgba(26,122,109,.22) !important;
+  background: rgba(255, 255, 255, .96) !important;
+  color: #14323a !important;
+}
+.site[data-theme="light"] .chatBubble.bot {
+  background: rgba(26,122,109,.08) !important;
+  border-color: rgba(26,122,109,.14) !important;
+  color: #14323a !important;
+}
+.site[data-theme="light"] .chatBubble.user {
+  background: var(--sakha-gold) !important;
+  color: #fff !important;
+}
+.site[data-theme="light"] .languageSwitch {
+  border-color: rgba(26,122,109,.22) !important;
+  background: rgba(255,255,255,.7) !important;
+}
+.site[data-theme="light"] .languageSwitch button.active {
+  background: var(--sakha-gold) !important;
+  color: #fff !important;
+}
+.site[data-theme="light"] .alasMap {
+  border-color: rgba(26, 122, 109, .28);
+  background: #d8ebe4;
+  box-shadow: inset 0 0 50px rgba(255,255,255,.35), 0 18px 48px rgba(20,50,58,.1);
+}
+.site[data-theme="light"] .alasSky {
+  background:
+    radial-gradient(ellipse at 72% 8%, rgba(255, 230, 180, .45), transparent 36%),
+    radial-gradient(ellipse at 30% 4%, rgba(180, 230, 220, .35), transparent 40%),
+    linear-gradient(180deg, #b8dde8 0%, #c8e8de 45%, #d4ebe2 100%);
+}
+.site[data-theme="light"] .alasLandmark {
+  border-color: rgba(26, 122, 109, .22);
+  background: linear-gradient(155deg, rgba(255,255,255,.92), rgba(240,248,245,.88));
+  color: #14323a !important;
+}
+.site[data-theme="light"] .sceneControlsHint,
+.site[data-theme="light"] .sceneLoading {
+  border-color: rgba(26,122,109,.2);
+  background: rgba(255,255,255,.9);
+  color: #14323a;
+}
+.site[data-theme="light"] .scenePad button,
+.site[data-theme="light"] .sceneRunButton,
+.site[data-theme="light"] .sceneJumpButton,
+.site[data-theme="light"] .sceneInteract,
+.site[data-theme="light"] .sceneFullscreen {
+  border-color: rgba(26,122,109,.3) !important;
+  background: rgba(255,255,255,.9) !important;
+  color: #14323a !important;
+}
+.themeToggle {
+  appearance: none;
+  border: 1px solid rgba(117, 224, 207, .4);
+  border-radius: 999px;
+  background: rgba(7, 25, 35, .55);
+  color: #d9f4ef;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 7px 11px;
+  cursor: pointer;
+  line-height: 1;
+}
+.themeToggle:hover { transform: translateY(-1px); }
+.site[data-theme="light"] .themeToggle {
+  border-color: rgba(26, 122, 109, .28);
+  background: rgba(255, 255, 255, .75);
+  color: #14323a;
+}
