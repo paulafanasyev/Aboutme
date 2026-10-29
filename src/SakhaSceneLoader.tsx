@@ -44,7 +44,7 @@ export default function SakhaSceneLoader({ lang = 'ru' }: { lang?: SceneLanguage
   return (
     <div ref={hostRef} className="sakhaSceneLoader">
       {shouldLoad && (
-        <Suspense fallback={<div className="sceneLoading" role="status">{loadingLabel}</div>}>
+        <Suspense fallback={<div className="sceneLoading" role="status"><img src={import.meta.env.BASE_URL + 'logo-pavel.svg'} alt=""/><span>{loadingLabel}</span></div>}>
           <DeferredSakhaThreeScene lang={lang} />
         </Suspense>
       )}
