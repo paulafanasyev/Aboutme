@@ -10,9 +10,9 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
   const mountRef = useRef(null)
   const [sceneReady, setSceneReady] = useState(false)
   const controlCopy = ({
-    ru: { label: 'Управление сценой', hint: 'WASD / стрелки · E — открыть рядом', up: 'Вперёд', down: 'Назад', left: 'Влево', right: 'Вправо', interact: 'Открыть ближайший ориентир' },
-    en: { label: 'Scene controls', hint: 'WASD / arrows · E — interact nearby', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open nearest landmark' },
-    vi: { label: 'Điều khiển cảnh', hint: 'WASD / phím mũi tên · E — tương tác gần nhất', up: 'Tiến lên', down: 'Lùi lại', left: 'Sang trái', right: 'Sang phải', interact: 'Mở địa điểm gần nhất' },
+    ru: { label: 'Игровое управление', hint: 'Джойстик · удерживай БЕГ · A — прыжок · E — открыть', up: 'Вперёд', down: 'Назад', left: 'Влево', right: 'Вправо', interact: 'Открыть ориентир', run: 'БЕГ', jump: 'ПРЫЖОК', fullscreen: 'На весь экран', exitFullscreen: 'Свернуть' },
+    en: { label: 'Game controls', hint: 'Joystick · hold RUN · A — jump · E — interact', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open landmark', run: 'RUN', jump: 'JUMP', fullscreen: 'Fullscreen', exitFullscreen: 'Exit fullscreen' },
+    vi: { label: 'Điều khiển trò chơi', hint: 'Joystick · giữ CHẠY · A — nhảy · E — tương tác', up: 'Tiến lên', down: 'Lùi lại', left: 'Sang trái', right: 'Sang phải', interact: 'Mở địa điểm', run: 'CHẠY', jump: 'NHẢY', fullscreen: 'Toàn màn hình', exitFullscreen: 'Thoát toàn màn hình' },
   })[lang] || { label: 'Scene controls', hint: 'WASD / arrows · E — interact nearby', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open nearest landmark' }
   const loadingLabel = ({ ru: 'Создаю мир Саха…', en: 'Building the Sakha world…', vi: 'Đang dựng không gian Saha…' })[lang] || 'Building the Sakha world…'
 
@@ -372,10 +372,27 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     pack.position.set(0, 0.43, -0.19)
     player.add(pack)
     const legMaterial = new THREE.MeshStandardMaterial({ color: 0x102d35, roughness: 0.95 })
+    const legPivots = []
     ;[-0.09, 0.09].forEach((x) => {
-      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.07, 0.23, 6), legMaterial)
-      leg.position.set(x, 0.13, 0)
-      player.add(leg)
+      const pivot = new THREE.Group()
+      pivot.position.set(x, 0.25, 0)
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.07, 0.25, 8), legMaterial)
+      leg.position.y = -0.12
+      const boot = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.07, 0.19), playerDarkMaterial)
+      boot.position.set(0, -0.23, 0.035)
+      pivot.add(leg, boot)
+      player.add(pivot)
+      legPivots.push(pivot)
+    })
+    const armPivots = []
+    ;[-0.22, 0.22].forEach((x) => {
+      const pivot = new THREE.Group()
+      pivot.position.set(x, 0.55, 0)
+      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.065, 0.29, 7), playerBodyMaterial)
+      sleeve.position.y = -0.13
+      pivot.add(sleeve)
+      player.add(pivot)
+      armPivots.push(pivot)
     })
     const feetHalo = new THREE.Mesh(
       new THREE.RingGeometry(0.24, 0.3, 32),
@@ -386,7 +403,47 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     player.add(feetHalo)
     player.position.set(0.05, -1.34, 2.1)
     scene.add(player)
-    const worldBounds = { minX: -3.15, maxX: 3.15, minZ: -2.5, maxZ: 3.15 }
+    const worldBounds = { minX: -7.1, maxX: 7.1, minZ: -5.8, maxZ: 4.4 }
+    const basePlayerY = -1.34
+    let jumpVelocity = 0
+    let jumpHeight = 0
+    let runHeld = false
+    let moveVector = { x: 0, y: 0 }
+    let joystickPointerId = null
+    const joystick = map.querySelector('.sceneJoystick')
+    const joystickKnob = map.querySelector('.sceneJoystickKnob')
+    const runButton = map.querySelector('[data-scene-action="run"]')
+    const jumpButton = map.querySelector('[data-scene-action="jump"]')
+    const fullscreenButton = map.querySelector('[data-scene-action="fullscreen"]')
+    const setJoystick = (x, y) => {
+      const magnitude = Math.hypot(x, y)
+      const scale = magnitude > 1 ? 1 / magnitude : 1
+      moveVector = { x: x * scale, y: y * scale }
+      if (joystickKnob) {
+        joystickKnob.style.transform = `translate(${moveVector.x * 34}px, ${moveVector.y * 34}px)`
+      }
+    }
+    const startJump = () => { if (jumpHeight <= 0.001) jumpVelocity = 4.5 }
+    const toggleFullscreen = async () => {
+      try {
+        if (document.fullscreenElement === map) await document.exitFullscreen()
+        else if (map.requestFullscreen) await map.requestFullscreen()
+      } catch { /* Fullscreen can be blocked by the browser or embedded preview. */ }
+    }
+    const syncFullscreenLabel = () => {
+      if (!fullscreenButton) return
+      const isFullscreen = document.fullscreenElement === map
+      fullscreenButton.textContent = isFullscreen ? controlCopy.exitFullscreen : controlCopy.fullscreen
+      fullscreenButton.setAttribute('aria-label', fullscreenButton.textContent)
+    }
+    const movePlayer = (direction, distance) => {
+      const vectors = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }
+      const vector = vectors[direction]
+      if (vector) setJoystick(vector[0], vector[1])
+      player.position.x = THREE.MathUtils.clamp(player.position.x + moveVector.x * distance, worldBounds.minX, worldBounds.maxX)
+      player.position.z = THREE.MathUtils.clamp(player.position.z + moveVector.y * distance, worldBounds.minZ, worldBounds.maxZ)
+      if (Math.hypot(moveVector.x, moveVector.y) > 0.05) player.rotation.y = Math.atan2(moveVector.x, moveVector.y)
+    }
     const movePlayer = (direction, distance) => {
       if (direction === 'up') player.position.z -= distance
       if (direction === 'down') player.position.z += distance
@@ -520,14 +577,10 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       if (isEditing || !(map.contains(active) || map.matches(':hover'))) return
       if (direction) {
         event.preventDefault()
-        if (reduceMotion) {
-          if (!event.repeat) movePlayer(direction, 0.22)
-          renderer.render(scene, camera)
-        } else {
-          pressedDirections.add(direction)
-        }
+        pressedDirections.add(direction)
         return
       }
+      if (event.code === 'Space' && !event.repeat) { event.preventDefault(); startJump(); return }
       if ((event.key === 'e' || event.key === 'E') && !event.repeat) {
         event.preventDefault()
         openSection(nearestSection())
@@ -537,6 +590,28 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       const direction = keyDirection(event.key)
       if (direction) pressedDirections.delete(direction)
     }
+    const onJoystickDown = (event) => {
+      if (!joystick) return
+      event.preventDefault()
+      joystickPointerId = event.pointerId
+      joystick.setPointerCapture?.(event.pointerId)
+      onJoystickMove(event)
+    }
+    const onJoystickMove = (event) => {
+      if (joystickPointerId !== event.pointerId || !joystick) return
+      const rect = joystick.getBoundingClientRect()
+      const radius = Math.max(1, Math.min(rect.width, rect.height) * 0.38)
+      setJoystick((event.clientX - (rect.left + rect.width / 2)) / radius, (event.clientY - (rect.top + rect.height / 2)) / radius)
+    }
+    const onJoystickUp = (event) => {
+      if (joystickPointerId !== event.pointerId) return
+      joystickPointerId = null
+      setJoystick(0, 0)
+    }
+    const onRunDown = (event) => { event.preventDefault(); runHeld = true; runButton?.classList.add('is-active') }
+    const onRunUp = () => { runHeld = false; runButton?.classList.remove('is-active') }
+    const onJump = (event) => { event.preventDefault(); startJump() }
+    const onFullscreenClick = (event) => { event.preventDefault(); toggleFullscreen() }
     const onPadDown = (event) => {
       const control = event.target.closest?.('[data-scene-dir]')
       if (!control || !map.contains(control)) return
@@ -560,7 +635,19 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
         openSection(nearestSection())
       }
     }
-    const clearDirections = () => pressedDirections.clear()
+    const clearDirections = () => { pressedDirections.clear(); runHeld = false; setJoystick(0, 0) }
+    joystick?.addEventListener('pointerdown', onJoystickDown)
+    joystick?.addEventListener('pointermove', onJoystickMove)
+    joystick?.addEventListener('pointerup', onJoystickUp)
+    joystick?.addEventListener('pointercancel', onJoystickUp)
+    runButton?.addEventListener('pointerdown', onRunDown)
+    runButton?.addEventListener('pointerup', onRunUp)
+    runButton?.addEventListener('pointercancel', onRunUp)
+    runButton?.addEventListener('pointerleave', onRunUp)
+    jumpButton?.addEventListener('click', onJump)
+    fullscreenButton?.addEventListener('click', onFullscreenClick)
+    document.addEventListener('fullscreenchange', syncFullscreenLabel)
+    syncFullscreenLabel()
     map.addEventListener('pointermove', onPointerMove, { passive: true })
     map.addEventListener('pointerleave', onPointerLeave, { passive: true })
     map.addEventListener('pointerdown', onPadDown)
@@ -588,15 +675,30 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       frameId = window.requestAnimationFrame(animate)
       const delta = lastFrame ? Math.min((timestamp - lastFrame) / 1000, 0.05) : 0
       lastFrame = timestamp
-      const directionX = Number(pressedDirections.has('right')) - Number(pressedDirections.has('left'))
-      const directionZ = Number(pressedDirections.has('down')) - Number(pressedDirections.has('up'))
-      const magnitude = Math.hypot(directionX, directionZ) || 1
-      if (directionX || directionZ) {
-        const distance = 2.25 * delta / magnitude
-        player.position.x = THREE.MathUtils.clamp(player.position.x + directionX * distance, worldBounds.minX, worldBounds.maxX)
-        player.position.z = THREE.MathUtils.clamp(player.position.z + directionZ * distance, worldBounds.minZ, worldBounds.maxZ)
+      const keyboardX = Number(pressedDirections.has('right')) - Number(pressedDirections.has('left'))
+      const keyboardZ = Number(pressedDirections.has('down')) - Number(pressedDirections.has('up'))
+      const directionX = Math.abs(moveVector.x) > 0.03 ? moveVector.x : keyboardX
+      const directionZ = Math.abs(moveVector.y) > 0.03 ? moveVector.y : keyboardZ
+      const magnitude = Math.hypot(directionX, directionZ)
+      const isMoving = magnitude > 0.04
+      if (isMoving) {
+        const distance = (runHeld ? 5.6 : 3.0) * delta
+        player.position.x = THREE.MathUtils.clamp(player.position.x + directionX / Math.max(1, magnitude) * distance, worldBounds.minX, worldBounds.maxX)
+        player.position.z = THREE.MathUtils.clamp(player.position.z + directionZ / Math.max(1, magnitude) * distance, worldBounds.minZ, worldBounds.maxZ)
         player.rotation.y = Math.atan2(directionX, directionZ)
       }
+      if (jumpVelocity !== 0 || jumpHeight > 0) {
+        jumpHeight = Math.max(0, jumpHeight + jumpVelocity * delta)
+        jumpVelocity -= 11.5 * delta
+        if (jumpHeight === 0) jumpVelocity = 0
+      }
+      player.position.y = basePlayerY + jumpHeight
+      const gait = isMoving ? Math.sin(timestamp * 0.013 * (runHeld ? 1.55 : 1)) : 0
+      const gaitAmount = isMoving ? (runHeld ? 0.82 : 0.48) : 0
+      legPivots.forEach((pivot, index) => { pivot.rotation.x = gait * gaitAmount * (index === 0 ? 1 : -1) })
+      armPivots.forEach((pivot, index) => { pivot.rotation.x = -gait * gaitAmount * (index === 0 ? 1 : -1) })
+      torso.rotation.z = isMoving ? Math.sin(timestamp * 0.013 * (runHeld ? 1.55 : 1)) * (runHeld ? 0.055 : 0.025) : 0
+      feetHalo.material.opacity = jumpHeight > 0 ? 0.3 : 0.68
       const time = performance.now() * 0.001
       waterMaterial.uniforms.uTime.value = time
       aurora.position.x = Math.sin(time * 0.19) * 0.16
@@ -640,6 +742,17 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       window.removeEventListener('blur', clearDirections)
       window.removeEventListener('pointerup', clearDirections)
       window.removeEventListener('pointercancel', clearDirections)
+      document.removeEventListener('fullscreenchange', syncFullscreenLabel)
+      joystick?.removeEventListener('pointerdown', onJoystickDown)
+      joystick?.removeEventListener('pointermove', onJoystickMove)
+      joystick?.removeEventListener('pointerup', onJoystickUp)
+      joystick?.removeEventListener('pointercancel', onJoystickUp)
+      runButton?.removeEventListener('pointerdown', onRunDown)
+      runButton?.removeEventListener('pointerup', onRunUp)
+      runButton?.removeEventListener('pointercancel', onRunUp)
+      runButton?.removeEventListener('pointerleave', onRunUp)
+      jumpButton?.removeEventListener('click', onJump)
+      fullscreenButton?.removeEventListener('click', onFullscreenClick)
       map.removeEventListener('pointermove', onPointerMove)
       map.removeEventListener('pointerleave', onPointerLeave)
       map.removeEventListener('pointerdown', onPadDown)
@@ -668,15 +781,15 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       {!sceneReady && <div className="sceneLoading" role="status"><img src={import.meta.env.BASE_URL + 'logo-pavel.svg'} alt=""/><span>{loadingLabel}</span></div>}
       <div className="sceneControls" aria-label={controlCopy.label}>
         <span className="sceneControlsHint">{controlCopy.hint}</span>
-        <div className="scenePad" role="group" aria-label={controlCopy.label}>
-          <span />
-          <button type="button" data-scene-dir="up" aria-label={controlCopy.up}>↑</button>
-          <span />
-          <button type="button" data-scene-dir="left" aria-label={controlCopy.left}>←</button>
-          <button type="button" data-scene-dir="down" aria-label={controlCopy.down}>↓</button>
-          <button type="button" data-scene-dir="right" aria-label={controlCopy.right}>→</button>
+        <button type="button" className="sceneFullscreen" data-scene-action="fullscreen" aria-label={controlCopy.fullscreen}>⛶ {controlCopy.fullscreen}</button>
+        <div className="sceneJoystick" role="group" aria-label={controlCopy.label}>
+          <span className="sceneJoystickRing"><span className="sceneJoystickKnob" /></span>
         </div>
-        <button type="button" className="sceneInteract" data-scene-action="interact">E · {controlCopy.interact}</button>
+        <div className="sceneActionButtons">
+          <button type="button" className="sceneRunButton" data-scene-action="run">{controlCopy.run}</button>
+          <button type="button" className="sceneJumpButton" data-scene-action="jump">A<br/><small>{controlCopy.jump}</small></button>
+          <button type="button" className="sceneInteract" data-scene-action="interact">E · {controlCopy.interact}</button>
+        </div>
       </div>
     </>
   )
