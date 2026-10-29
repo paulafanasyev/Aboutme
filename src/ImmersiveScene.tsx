@@ -61,7 +61,8 @@ export default function ImmersiveScene({ onReady, onError }: Props) {
           const shortWave = Math.sin(x * 0.11 - z * 0.065) * 0.56
           const distantRidge = 8.5 * Math.exp(-Math.pow((z + 77 + 8 * Math.sin(x * 0.027)) / 20, 2))
           const sideDunes = 2.5 * Math.exp(-Math.pow((Math.abs(x) - 41) / 13, 2)) * Math.exp(-Math.pow((z + 25) / 36, 2))
-          return -1.9 + longWave + shortWave + distantRidge + sideDunes
+          const lakeBasin = 1.75 * Math.exp(-Math.pow((x - 2.5) / 29, 2) - Math.pow((z + 20) / 13, 2))
+          return -1.9 + longWave + shortWave + distantRidge + sideDunes - lakeBasin
         }
 
         const terrainGeometry = new THREE.BufferGeometry()
@@ -81,7 +82,7 @@ export default function ImmersiveScene({ onReady, onError }: Props) {
         }
         for (let z = 0; z < terrainZ; z++) for (let x = 0; x < terrainX; x++) {
           const a = z * (terrainX + 1) + x, b = a + 1, c = a + terrainX + 1, d = c + 1
-          indices.push(a, c, b, b, c, d)
+          indices.push(a, b, c, b, d, c)
         }
         terrainGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
         terrainGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
@@ -169,7 +170,7 @@ export default function ImmersiveScene({ onReady, onError }: Props) {
         })
         const lake = new THREE.Mesh(lakeGeometry, lakeMaterial)
         lake.rotation.x = -Math.PI / 2
-        lake.position.set(2.5, 0.03, -20)
+        lake.position.set(2.5, -2.55, -20)
         scene.add(lake)
 
         const createWood = (color: string, roughness = 0.72) => new THREE.MeshStandardMaterial({ color, roughness, metalness: 0.08 })
@@ -186,7 +187,7 @@ export default function ImmersiveScene({ onReady, onError }: Props) {
           group.add(finial)
           for (let ring = 0; ring < 4; ring++) {
             const band = new THREE.Mesh(new THREE.TorusGeometry((0.24 + ring * 0.075) * scale, 0.045 * scale, 8, 32), timberLight)
-            band.rotation.x = Math.PI / 2
+            band.rotation.x = -Math.PI / 2
             band.position.set(0, ground + shaftHeight * (0.53 + ring * 0.085), 0)
             group.add(band)
           }
@@ -203,8 +204,8 @@ export default function ImmersiveScene({ onReady, onError }: Props) {
           group.position.set(x, 0, z)
           scene.add(group)
         }
-        makeSierge(-17, -10, 1.1)
-        makeSierge(19, -34, 0.7)
+        makeSierge(-42, -1, 1.1)
+        makeSierge(31, -39, 0.7)
 
         const treeCount = 1020
         const trunkGeometry = new THREE.CylinderGeometry(0.07, 0.14, 2.1, 6)
