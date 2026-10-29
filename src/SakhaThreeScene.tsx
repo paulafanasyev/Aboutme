@@ -444,17 +444,6 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       player.position.z = THREE.MathUtils.clamp(player.position.z + moveVector.y * distance, worldBounds.minZ, worldBounds.maxZ)
       if (Math.hypot(moveVector.x, moveVector.y) > 0.05) player.rotation.y = Math.atan2(moveVector.x, moveVector.y)
     }
-    const movePlayer = (direction, distance) => {
-      if (direction === 'up') player.position.z -= distance
-      if (direction === 'down') player.position.z += distance
-      if (direction === 'left') player.position.x -= distance
-      if (direction === 'right') player.position.x += distance
-      player.position.x = THREE.MathUtils.clamp(player.position.x, worldBounds.minX, worldBounds.maxX)
-      player.position.z = THREE.MathUtils.clamp(player.position.z, worldBounds.minZ, worldBounds.maxZ)
-      const forward = direction === 'up' ? -1 : direction === 'down' ? 1 : 0
-      const side = direction === 'left' ? -1 : direction === 'right' ? 1 : 0
-      if (forward || side) player.rotation.y = Math.atan2(side, forward)
-    }
     const nearestSection = () => {
       let nearest = null
       let nearestDistance = Infinity
@@ -617,12 +606,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       if (!control || !map.contains(control)) return
       event.preventDefault()
       const direction = control.dataset.sceneDir
-      if (reduceMotion) {
-        movePlayer(direction, 0.22)
-        renderer.render(scene, camera)
-      } else {
-        pressedDirections.add(direction)
-      }
+      pressedDirections.add(direction)
     }
     const onPadUp = (event) => {
       const control = event.target.closest?.('[data-scene-dir]')
