@@ -91,3 +91,37 @@
 .footer, .footerBrand, .footer > a {
   opacity: 1 !important;
 }
+
+/* Logo-only loading state while the immersive scene initializes. */
+.sceneLoader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: #07110e;
+  color: #f6f3e8;
+  font: 500 10px 'DM Mono', monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  animation: loaderFadeIn .35s ease both;
+}
+.sceneLoader img {
+  display: block;
+  width: clamp(84px, 13vw, 132px);
+  height: auto;
+  animation: logoPulse 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(255, 227, 154, .25));
+}
+.sceneLoader span { opacity: .78; text-align: center; padding: 0 20px; }
+@keyframes logoPulse {
+  0%, 100% { transform: scale(.96); opacity: .72; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+@keyframes loaderFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .sceneLoader, .sceneLoader img { animation: none; }
+}
