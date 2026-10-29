@@ -125,3 +125,160 @@
 @media (prefers-reduced-motion: reduce) {
   .sceneLoader, .sceneLoader img { animation: none; }
 }
+
+
+/* Immersive Yakutian scene and branded startup state. */
+.scene3d {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #07120f;
+}
+.scene3dCanvas { display:block; width:100%; height:100%; }
+.scene3dFailed {
+  background:
+    radial-gradient(ellipse at 72% 23%, rgba(99,143,136,.22), transparent 28%),
+    radial-gradient(ellipse at 52% 100%, rgba(51,83,55,.52), transparent 48%),
+    linear-gradient(180deg, #08141b 0%, #112820 58%, #101c14 100%);
+}
+.sceneFallback {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse at 72% 22%, rgba(99,143,136,.25), transparent 28%),
+    radial-gradient(ellipse at 51% 100%, rgba(51,83,55,.56), transparent 48%),
+    linear-gradient(180deg, #08141b 0%, #112820 58%, #101c14 100%);
+}
+.sceneLoader {
+  position:fixed; inset:0; z-index:1000;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+  background:#07110e; color:#f6f3e8;
+  font:500 10px 'DM Mono',monospace; letter-spacing:.16em; text-transform:uppercase;
+  animation:loaderFadeIn .35s ease both;
+}
+.sceneLoader img {
+  display:block; width:clamp(84px,13vw,132px); height:auto;
+  animation:logoPulse 1.8s ease-in-out infinite;
+  filter:drop-shadow(0 0 24px rgba(255,227,154,.25));
+}
+.sceneLoader span { opacity:.78; text-align:center; padding:0 20px; }
+@keyframes logoPulse {
+  0%,100% { transform:scale(.96); opacity:.72; }
+  50% { transform:scale(1.04); opacity:1; }
+}
+@keyframes loaderFadeIn { from { opacity:0; } to { opacity:1; } }
+
+/* The gallery remains closed until the explicit entry action is clicked. */
+.projectGate {
+  position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);
+  align-items:center; gap:32px; min-height:410px; margin-top:70px; padding:clamp(26px,5vw,62px);
+  overflow:hidden; isolation:isolate; border:1px solid rgba(235,239,215,.38); border-radius:20px;
+  background:linear-gradient(115deg,rgba(7,20,17,.94),rgba(9,26,23,.82) 56%,rgba(11,30,27,.67));
+  box-shadow:0 28px 100px rgba(0,0,0,.24);
+}
+.projectGateScene { position:absolute; inset:0; z-index:-1; overflow:hidden; opacity:.9; perspective:900px; }
+.projectGateScene:before {
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(90deg,rgba(5,16,14,.3),rgba(5,16,14,.08) 54%,rgba(5,16,14,.34)),
+    radial-gradient(ellipse at 72% 42%,rgba(89,158,142,.2),transparent 38%),
+    repeating-linear-gradient(0deg,transparent 0 32px,rgba(183,214,189,.045) 33px 34px);
+}
+.gateMoon {
+  position:absolute; right:16%; top:12%; width:68px; aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#f2edce,#9aaea0 62%,rgba(128,155,145,.12) 100%);
+  box-shadow:0 0 48px rgba(182,221,201,.22),0 0 125px rgba(107,177,162,.1);
+}
+.gateMountain {
+  position:absolute; bottom:12%; width:85%; height:58%; left:8%;
+  clip-path:polygon(0 68%,9% 51%,16% 62%,27% 24%,35% 53%,44% 37%,55% 68%,66% 28%,77% 61%,88% 43%,100% 67%,100% 100%,0 100%);
+  transform:rotateX(5deg); transform-origin:bottom;
+}
+.gateMountainBack { bottom:20%; background:linear-gradient(180deg,#304f46,#132921); opacity:.78; }
+.gateMountainFront {
+  left:-5%; bottom:2%; width:110%; height:46%;
+  clip-path:polygon(0 48%,13% 29%,25% 51%,38% 24%,50% 48%,67% 32%,81% 57%,100% 35%,100% 100%,0 100%);
+  background:linear-gradient(180deg,#355846,#10271f 78%);
+}
+.gateLake {
+  position:absolute; right:4%; bottom:7%; width:46%; height:24%; border-radius:50%;
+  background:radial-gradient(ellipse at 52% 15%,rgba(181,217,201,.62),rgba(49,111,102,.75) 25%,rgba(16,54,49,.94) 72%);
+  transform:rotate(-6deg) skewX(-11deg); filter:blur(.3px);
+  box-shadow:0 0 42px rgba(79,151,135,.15);
+}
+.gateLake:after {
+  content:""; position:absolute; left:12%; right:12%; top:34%; height:1px;
+  background:rgba(217,236,213,.52); box-shadow:0 10px 0 rgba(217,236,213,.16),0 -7px 0 rgba(217,236,213,.2);
+}
+.gateSierge {
+  position:absolute; left:63%; bottom:24%; height:35%; width:5px;
+  background:linear-gradient(90deg,#533a23,#c79b5e,#674525);
+  box-shadow:0 0 15px rgba(216,169,96,.24);
+  transform:rotate(2deg);
+}
+.gateSierge:before {
+  content:""; position:absolute; left:-17px; top:18%; width:37px; height:4px;
+  background:#bd9159; transform:rotate(-10deg);
+  box-shadow:0 20px 0 #9c764a;
+}
+.gateSierge:after {
+  content:""; position:absolute; left:-8px; top:-7px; width:19px; height:15px;
+  background:#d3ac70; clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+.projectGateCopy { position:relative; z-index:1; grid-column:2; }
+.projectGateEyebrow {
+  display:block; margin-bottom:18px; color:#d8c58f;
+  font:500 9px 'DM Mono',monospace; letter-spacing:.16em;
+}
+.projectGateCopy h3 {
+  max-width:520px; margin:0 0 18px; color:#fff;
+  font:400 clamp(35px,4.4vw,61px)/.95 'Instrument Serif',Georgia,serif; letter-spacing:-.035em;
+}
+.projectGateCopy p { max-width:450px; margin:0 0 24px; color:#e3e9dd; font-size:12px; line-height:1.8; }
+.projectEnterButton { border:0; cursor:pointer; }
+.projectGateCounter {
+  position:absolute; left:clamp(26px,5vw,62px); bottom:28px;
+  display:flex; align-items:center; gap:13px; color:#e4eadf;
+  font:500 9px 'DM Mono',monospace; letter-spacing:.11em;
+}
+.projectGateCounter span:first-child { font:italic 32px 'Instrument Serif',Georgia,serif; color:#e2c98d; }
+.projectModeBar {
+  display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+  margin-top:55px; padding:14px 0; border-top:1px solid rgba(255,255,255,.4);
+  color:#f4e2af; font:500 9px 'DM Mono',monospace; letter-spacing:.1em;
+}
+.projectModeBar .projectExitButton { cursor:pointer; }
+.projectScreenshot {
+  position:relative; margin:0 0 22px; height:clamp(150px,25vw,300px); overflow:hidden;
+  border:1px solid rgba(255,255,255,.28); border-radius:12px; background:rgba(7,15,15,.82);
+  box-shadow:0 12px 42px rgba(0,0,0,.18);
+}
+.projectScreenshot img { display:block; width:100%; height:100%; object-fit:cover; object-position:center; opacity:.95; transition:transform .65s cubic-bezier(.2,.7,.2,1),opacity .3s; }
+.projectCard:hover .projectScreenshot img { transform:scale(1.035); opacity:1; }
+.projectScreenshot span {
+  position:absolute; left:10px; bottom:10px; padding:6px 8px; border:1px solid rgba(255,255,255,.28);
+  border-radius:4px; background:rgba(7,15,13,.76); color:#f8f3dc;
+  font:500 7px 'DM Mono',monospace; letter-spacing:.11em;
+}
+.projectCard .projectMain { min-width:0; }
+.projectCard:has(.projectScreenshot) { grid-template-columns:55px minmax(0,1fr) 42px; }
+@media(max-width:720px) {
+  .projectGate { grid-template-columns:1fr; min-height:510px; gap:0; padding:26px 24px 88px; }
+  .projectGateScene { opacity:.74; }
+  .projectGateCopy { grid-column:1; align-self:end; padding-top:150px; }
+  .projectGateCopy h3 { max-width:410px; font-size:clamp(36px,10vw,50px); }
+  .projectGateCopy p { max-width:520px; font-size:11px; }
+  .projectGateCounter { bottom:22px; left:24px; }
+  .projectGateScene:before { background:linear-gradient(180deg,rgba(5,16,14,.03),rgba(5,16,14,.55) 45%,rgba(5,16,14,.92)); }
+  .projectModeBar { margin-top:40px; }
+  .projectScreenshot { height:220px; }
+}
+@media(max-width:560px) {
+  .sceneLoader { letter-spacing:.12em; font-size:9px; }
+  .projectScreenshot { height:185px; }
+  .projectCard:has(.projectScreenshot) { grid-template-columns:28px minmax(0,1fr) 30px; gap:10px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .sceneLoader,.sceneLoader img { animation:none; }
+  .projectScreenshot img { transition:none; }
+}
