@@ -671,7 +671,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     setSceneReady(true)
 
     const animate = (timestamp = performance.now()) => {
-      if (disposed || !visible || reduceMotion) return
+      if (disposed || !visible) return
       frameId = window.requestAnimationFrame(animate)
       const delta = lastFrame ? Math.min((timestamp - lastFrame) / 1000, 0.05) : 0
       lastFrame = timestamp
@@ -719,7 +719,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     if ('IntersectionObserver' in window) {
       visibilityObserver = new IntersectionObserver((entries) => {
         visible = Boolean(entries[0]?.isIntersecting)
-        if (visible && !reduceMotion && !frameId) frameId = window.requestAnimationFrame(animate)
+        if (visible && !frameId) frameId = window.requestAnimationFrame(animate)
         if (!visible && frameId) {
           window.cancelAnimationFrame(frameId)
           frameId = 0
@@ -727,7 +727,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
         if (visible) renderer.render(scene, camera)
       }, { threshold: 0.02 })
       visibilityObserver.observe(map)
-    } else if (!reduceMotion) {
+    } else {
       frameId = window.requestAnimationFrame(animate)
     }
 
