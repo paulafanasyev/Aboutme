@@ -39,7 +39,7 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'light' }) {
         depthWrite: false,
         depthTest: false,
         fog: false,
-        vertexShader: 'varying float vSkyHeight; void main() { vec4 worldPosition = modelMatrix * vec4(position * 65.0, 1.0); vSkyHeight = normalize(worldPosition.xyz - cameraPosition).y; gl_Position = projectionMatrix * viewMatrix * worldPosition; }',
+        vertexShader: 'varying float vSkyHeight; void main() { vec4 worldPosition = modelMatrix * vec4(position, 1.0); vSkyHeight = normalize(worldPosition.xyz - cameraPosition).y; gl_Position = projectionMatrix * viewMatrix * worldPosition; }',
         fragmentShader: 'varying float vSkyHeight; void main() { float upper = smoothstep(-0.18, 0.72, vSkyHeight); vec3 horizon = vec3(0.84, 0.93, 0.97); vec3 zenith = vec3(0.22, 0.55, 0.82); vec3 sky = mix(horizon, zenith, upper); float warmth = (1.0 - smoothstep(-0.12, 0.24, vSkyHeight)) * 0.10; sky = mix(sky, vec3(1.0, 0.91, 0.76), warmth); gl_FragColor = vec4(sky, 1.0); }'
       })
     )
