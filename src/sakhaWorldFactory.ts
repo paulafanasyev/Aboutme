@@ -11,7 +11,7 @@ export function buildSakhaWorld(scene, isLight) {
   const groundRings = 40
   const groundPositions = [0, 0, 0]
   const groundColors = []
-  const c0 = new THREE.Color(isLight ? 0x3f916c : 0x1b5147)
+  const c0 = new THREE.Color(isLight ? 0x579d69 : 0x1b5147)
   groundColors.push(c0.r, c0.g, c0.b)
   for (let ring = 1; ring <= groundRings; ring += 1) {
     const radius = 9.4 * ring / groundRings
@@ -27,9 +27,9 @@ export function buildSakhaWorld(scene, isLight) {
       const falloff = 1 - ring / (groundRings * 1.26)
       const elevation = (e1 + e2 + e3 + e4 + e5) * falloff
       groundPositions.push(x, z, elevation)
-      const base = isLight ? 0x3f916c : 0x1b5147
-      const edge = isLight ? 0x7eb89a : 0x0a2830
-      const high = isLight ? 0x6fbf8c : 0x4a7b5a
+      const base = isLight ? 0x579d69 : 0x1b5147
+      const edge = isLight ? 0x9bc89a : 0x0a2830
+      const high = isLight ? 0x9bcf82 : 0x4a7b5a
       const moss = isLight ? 0x8a9a7a : 0x2a4038
       const darkPatch = isLight ? 0x4a7a5c : 0x14302c
       const color = new THREE.Color(base).lerp(new THREE.Color(edge), Math.min(0.84, radius / 12.5))
@@ -168,8 +168,8 @@ export function buildSakhaWorld(scene, isLight) {
 
   // ── Pines (5–6 crown tiers, color variation, denser stands) ────────────────
   const trunkMat = new THREE.MeshStandardMaterial({ color: isLight ? 0x8b6540 : 0x815d39, roughness: 0.94 })
-  const pineMatA = new THREE.MeshStandardMaterial({ color: isLight ? 0x1c5244 : 0x0a292e, roughness: isLight ? 0.86 : 1, flatShading: true })
-  const pineMatB = new THREE.MeshStandardMaterial({ color: isLight ? 0x164a3c : 0x082228, roughness: isLight ? 0.88 : 1, flatShading: true })
+  const pineMatA = new THREE.MeshStandardMaterial({ color: isLight ? 0x286c43 : 0x0a292e, roughness: isLight ? 0.86 : 1, flatShading: true })
+  const pineMatB = new THREE.MeshStandardMaterial({ color: isLight ? 0x1d5c39 : 0x082228, roughness: isLight ? 0.88 : 1, flatShading: true })
   const addPine = (x, z, size = 1, seed = 0) => {
     const pine = new THREE.Group()
     const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.028 * size, 0.052 * size, 0.48 * size, 7), trunkMat)
@@ -289,7 +289,7 @@ export function buildSakhaWorld(scene, isLight) {
   // ── Stones (interactive + scatter) ─────────────────────────────────────────
   const stoneMat = new THREE.MeshStandardMaterial({
     color: isLight ? 0x3aafa0 : 0x5bc8b8, emissive: isLight ? 0x1a6b62 : 0x0d534e,
-    emissiveIntensity: isLight ? 0.2 : 0.52, roughness: 0.38, metalness: isLight ? 0.22 : 0.28,
+    emissiveIntensity: isLight ? 0.08 : 0.52, roughness: 0.38, metalness: isLight ? 0.22 : 0.28,
   })
   const rockMat = new THREE.MeshStandardMaterial({
     color: isLight ? 0x6a8a7a : 0x2a4038, roughness: 0.92, flatShading: true,
@@ -319,7 +319,7 @@ export function buildSakhaWorld(scene, isLight) {
   }
 
   const hearth = new THREE.Mesh(new THREE.OctahedronGeometry(0.22, 0), new THREE.MeshStandardMaterial({
-    color: 0xe9b86e, emissive: 0xd67f39, emissiveIntensity: isLight ? 1.15 : 1.75, roughness: 0.26,
+    color: 0xe9b86e, emissive: 0xd67f39, emissiveIntensity: isLight ? 0.45 : 1.75, roughness: 0.26,
   }))
   hearth.position.set(0, -0.75, 1.1); scene.add(hearth)
   ;[[-0.18, -0.95, 1.05], [0.2, -0.94, 1.08], [0.02, -0.96, 1.28]].forEach(([x, y, z], i) => {
