@@ -36,7 +36,7 @@ export function buildPlayer(isLight) {
   })
 
   // ── Torso / breastplate (heroic Pixar proportions) ───────────────────────
-  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.24, 0.42, 12), armor)
+  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.24, 0.42, 20, 3), armor)
   torso.position.y = 0.48
   player.add(torso)
   const chest = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.28, 0.12), armorDark)
@@ -58,7 +58,7 @@ export function buildPlayer(isLight) {
     padRim.rotation.x = Math.PI / 2
     player.add(padRim)
   })
-  const belt = new THREE.Mesh(new THREE.CylinderGeometry(0.245, 0.245, 0.06, 12), leather)
+  const belt = new THREE.Mesh(new THREE.CylinderGeometry(0.245, 0.245, 0.06, 24), leather)
   belt.position.y = 0.28
   player.add(belt)
   const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.07, 0.04), gold)
@@ -72,7 +72,7 @@ export function buildPlayer(isLight) {
   })
 
   // ── Head + warrior helmet ────────────────────────────────────────────────
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.135, 14, 12), skin)
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.135, 24, 18), skin)
   head.position.y = 0.82
   player.add(head)
   ;[-0.045, 0.045].forEach((x) => {
@@ -87,7 +87,7 @@ export function buildPlayer(isLight) {
   nose.position.set(0, 0.81, 0.13)
   nose.rotation.x = Math.PI / 2
   player.add(nose)
-  const helm = new THREE.Mesh(new THREE.SphereGeometry(0.155, 12, 10, 0, Math.PI * 2, 0, Math.PI * 0.58), armorDark)
+  const helm = new THREE.Mesh(new THREE.SphereGeometry(0.155, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.58), armorDark)
   helm.position.set(0, 0.88, -0.01)
   player.add(helm)
   const crest = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 0.22), gold)
@@ -103,10 +103,41 @@ export function buildPlayer(isLight) {
   collar.rotation.x = Math.PI / 2
   player.add(collar)
 
+  // Fine Yakut-inspired craft details: etched chest bands, rivets and layered leather.
+  ;[-1, 1].forEach((side) => {
+    const rivet = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), gold)
+    rivet.position.set(side * 0.115, 0.5, 0.19)
+    player.add(rivet)
+    const kneeGuard = new THREE.Mesh(new THREE.SphereGeometry(0.062, 14, 10), armor)
+    kneeGuard.scale.set(0.9, 0.72, 0.48)
+    kneeGuard.position.set(side * 0.1, 0.075, 0.065)
+    player.add(kneeGuard)
+    const kneeMark = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.012, 0.012), gold)
+    kneeMark.position.set(side * 0.1, 0.075, 0.095)
+    player.add(kneeMark)
+    const bootCuff = new THREE.Mesh(new THREE.TorusGeometry(0.052, 0.012, 8, 14), gold)
+    bootCuff.position.set(side * 0.1, -0.105, 0.01)
+    bootCuff.rotation.x = Math.PI / 2
+    player.add(bootCuff)
+  })
+  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.008, 0.008), dark)
+  mouth.position.set(0, 0.775, 0.126)
+  player.add(mouth)
+  const helmetBand = new THREE.Mesh(new THREE.TorusGeometry(0.132, 0.012, 8, 24), gold)
+  helmetBand.position.set(0, 0.88, -0.005)
+  helmetBand.rotation.x = Math.PI / 2
+  player.add(helmetBand)
+  const crestGem = new THREE.Mesh(new THREE.OctahedronGeometry(0.035, 1), new THREE.MeshStandardMaterial({ color: 0x3eaaa0, roughness: 0.24, metalness: 0.45 }))
+  crestGem.position.set(0, 0.965, 0.105)
+  player.add(crestGem)
+
   // ── Pack ─────────────────────────────────────────────────────────────────
   const pack = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.26, 0.1), leather)
   pack.position.set(0, 0.48, -0.18)
   player.add(pack)
+  const packSeam = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.012, 0.012), gold)
+  packSeam.position.set(0, 0.55, -0.125)
+  player.add(packSeam)
   const packStrap = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.35, 0.02), leather)
   packStrap.position.set(0.12, 0.52, -0.08)
   packStrap.rotation.x = 0.2
@@ -117,7 +148,7 @@ export function buildPlayer(isLight) {
   ;[-0.1, 0.1].forEach((x) => {
     const pivot = new THREE.Group()
     pivot.position.set(x, 0.26, 0)
-    const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.055, 0.2, 8), cloth)
+    const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.055, 0.2, 12, 2), cloth)
     thigh.position.y = -0.1
     pivot.add(thigh)
     const knee = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 6), armor)
@@ -141,13 +172,13 @@ export function buildPlayer(isLight) {
   ;[-1, 1].forEach((side) => {
     const pivot = new THREE.Group()
     pivot.position.set(side * 0.26, 0.6, 0)
-    const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.045, 0.18, 8), armor)
+    const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.045, 0.18, 12, 2), armor)
     upper.position.y = -0.1
     pivot.add(upper)
     const elbow = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 6), armorDark)
     elbow.position.y = -0.2
     pivot.add(elbow)
-    const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.038, 0.16, 8), armorDark)
+    const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.038, 0.16, 12, 2), armorDark)
     forearm.position.y = -0.3
     pivot.add(forearm)
     const bracer = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.04, 8), gold)
@@ -248,6 +279,7 @@ export function buildPlayer(isLight) {
       sword.rotation.z = 0.12
       sword.rotation.x = 0.08
       sword.rotation.y = -0.05
+      sword.scale.setScalar(0.58) // compact one-handed short sword
       pivot.add(sword)
     }
 
