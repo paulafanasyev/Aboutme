@@ -131,9 +131,9 @@ export function buildSakhaWorld(scene, isLight) {
   scene.add(waterLight)
 
   // ── Mountains (more peaks, secondary cones, better snow) ───────────────────
-  const mountainMatA = new THREE.MeshStandardMaterial({ color: isLight ? 0x2d635c : 0x123e43, roughness: isLight ? 0.88 : 1, flatShading: true })
-  const mountainMatB = new THREE.MeshStandardMaterial({ color: isLight ? 0x245850 : 0x0e353a, roughness: isLight ? 0.9 : 1, flatShading: true })
-  const snowMat = new THREE.MeshStandardMaterial({ color: isLight ? 0xe8f4ef : 0xc8e8e0, roughness: 0.82, flatShading: true })
+  const mountainMatA = new THREE.MeshStandardMaterial({ color: isLight ? 0x527f79 : 0x123e43, roughness: isLight ? 0.88 : 1, flatShading: true })
+  const mountainMatB = new THREE.MeshStandardMaterial({ color: isLight ? 0x416d69 : 0x0e353a, roughness: isLight ? 0.9 : 1, flatShading: true })
+  const snowMat = new THREE.MeshStandardMaterial({ color: isLight ? 0xf2f8f4 : 0xc8e8e0, roughness: 0.82, flatShading: true })
   const mountainData = [
     [-5.9, -0.42, -4.4, 1.55, 2.15, 1.25, 0], [-3.9, -0.42, -4.9, 2.2, 3.15, 1.1, 1],
     [-1.55, -0.52, -4.3, 1.7, 2.2, 0.98, 0], [0.45, -0.48, -4.7, 2.1, 2.95, 1.18, 1],
@@ -168,8 +168,8 @@ export function buildSakhaWorld(scene, isLight) {
 
   // ── Pines (5–6 crown tiers, color variation, denser stands) ────────────────
   const trunkMat = new THREE.MeshStandardMaterial({ color: isLight ? 0x8b6540 : 0x815d39, roughness: 0.94 })
-  const pineMatA = new THREE.MeshStandardMaterial({ color: isLight ? 0x286c43 : 0x0a292e, roughness: isLight ? 0.86 : 1, flatShading: true })
-  const pineMatB = new THREE.MeshStandardMaterial({ color: isLight ? 0x1d5c39 : 0x082228, roughness: isLight ? 0.88 : 1, flatShading: true })
+  const pineMatA = new THREE.MeshStandardMaterial({ color: isLight ? 0x347b43 : 0x0a292e, roughness: isLight ? 0.86 : 1, flatShading: true })
+  const pineMatB = new THREE.MeshStandardMaterial({ color: isLight ? 0x286b3d : 0x082228, roughness: isLight ? 0.88 : 1, flatShading: true })
   const addPine = (x, z, size = 1, seed = 0) => {
     const pine = new THREE.Group()
     const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.028 * size, 0.052 * size, 0.48 * size, 7), trunkMat)
