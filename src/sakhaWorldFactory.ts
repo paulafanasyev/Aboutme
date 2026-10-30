@@ -251,6 +251,42 @@ export function buildSakhaWorld(scene, isLight) {
     if (i % 2 === 0) addGrassClump(x + 0.22, z + 0.15, 0.7, i * 5 + 1)
   })
 
+  // ── Low shrubs and wildflowers add scale and natural ground detail ─────────
+  const shrubMatA = new THREE.MeshStandardMaterial({ color: 0x397b48, roughness: 0.94, flatShading: true })
+  const shrubMatB = new THREE.MeshStandardMaterial({ color: 0x65965a, roughness: 0.92, flatShading: true })
+  const berryMat = new THREE.MeshStandardMaterial({ color: 0xd9a85f, roughness: 0.42, metalness: 0.08 })
+  const addShrub = (x, z, size = 1, seed = 0) => {
+    const shrub = new THREE.Group()
+    const crownCount = 4 + seed % 3
+    for (let leaf = 0; leaf < crownCount; leaf += 1) {
+      const angle = leaf / crownCount * Math.PI * 2 + seed * 0.31
+      const radius = (0.075 + (leaf % 2) * 0.025) * size
+      const crown = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(radius, 1),
+        (leaf + seed) % 2 ? shrubMatA : shrubMatB
+      )
+      crown.position.set(Math.cos(angle) * 0.105 * size, -1.19 + (leaf % 3) * 0.055 * size, Math.sin(angle) * 0.085 * size)
+      crown.scale.set(1.15, 0.82, 0.95)
+      crown.rotation.set(leaf * 0.2, angle, leaf * 0.13)
+      crown.castShadow = true
+      shrub.add(crown)
+    }
+    if (seed % 3 === 0) {
+      const berry = new THREE.Mesh(new THREE.SphereGeometry(0.022 * size, 8, 6), berryMat)
+      berry.position.set(0.035 * size, -1.12, 0.09 * size)
+      shrub.add(berry)
+    }
+    shrub.position.set(x, 0, z)
+    shrub.traverse((part) => { if (part.isMesh) part.receiveShadow = true })
+    scene.add(shrub)
+  }
+  ;[
+    [-3.35, -0.82], [-2.9, 1.35], [-2.15, 1.65], [-1.35, 1.82], [-0.55, 1.95],
+    [0.65, 1.9], [1.45, 1.72], [2.25, 1.48], [3.15, 0.92], [3.45, -0.65],
+    [-3.6, -1.65], [-2.65, -1.85], [-1.85, -1.72], [1.95, -1.75], [2.8, -1.55],
+    [-4.2, 0.25], [4.25, 0.2], [-5.7, 1.7], [5.7, 1.65], [-4.7, -1.9], [4.6, -1.85],
+  ].forEach(([x, z], index) => addShrub(x, z, 0.72 + (index % 4) * 0.12, index))
+
   // ── Serge posts (traditional with rings) ───────────────────────────────────
   const sergeMat = new THREE.MeshStandardMaterial({
     color: isLight ? 0xc9955a : 0xd1a46b, roughness: isLight ? 0.42 : 0.52, metalness: isLight ? 0.12 : 0.14,
