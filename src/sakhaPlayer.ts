@@ -25,6 +25,12 @@ export function buildPlayer(isLight) {
     color: isLight ? 0x1a5a50 : 0x123f3a, roughness: 0.8, metalness: 0.05,
   })
   const dark = new THREE.MeshStandardMaterial({ color: 0x1a1510, roughness: 0.9 })
+  const steel = new THREE.MeshStandardMaterial({
+    color: isLight ? 0xc8d4dc : 0xa8b8c4, roughness: 0.28, metalness: 0.85,
+  })
+  const steelEdge = new THREE.MeshStandardMaterial({
+    color: isLight ? 0xe8f0f4 : 0xd0dce4, roughness: 0.18, metalness: 0.9,
+  })
 
   // ── Torso / breastplate (heroic Pixar proportions) ───────────────────────
   const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.24, 0.42, 12), armor)
@@ -147,6 +153,56 @@ export function buildPlayer(isLight) {
     const hand = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 6), skin)
     hand.position.y = -0.4
     pivot.add(hand)
+
+    // Sword in right hand (side === 1)
+    if (side === 1) {
+      const sword = new THREE.Group()
+      // blade
+      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.52, 0.012), steel)
+      blade.position.y = -0.28
+      sword.add(blade)
+      // fuller / center ridge
+      const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.48, 0.014), steelEdge)
+      ridge.position.y = -0.28
+      sword.add(ridge)
+      // tip
+      const tip = new THREE.Mesh(new THREE.ConeGeometry(0.02, 0.08, 4), steel)
+      tip.position.y = -0.58
+      tip.rotation.y = Math.PI / 4
+      sword.add(tip)
+      // crossguard
+      const guard = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.025, 0.03), gold)
+      guard.position.y = -0.02
+      sword.add(guard)
+      const guardTipL = new THREE.Mesh(new THREE.SphereGeometry(0.018, 6, 5), gold)
+      guardTipL.position.set(-0.07, -0.02, 0)
+      sword.add(guardTipL)
+      const guardTipR = new THREE.Mesh(new THREE.SphereGeometry(0.018, 6, 5), gold)
+      guardTipR.position.set(0.07, -0.02, 0)
+      sword.add(guardTipR)
+      // grip
+      const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.02, 0.12, 8), leather)
+      grip.position.y = 0.06
+      sword.add(grip)
+      // grip wrap rings
+      ;[0.02, 0.06, 0.1].forEach((y) => {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.006, 5, 10), gold)
+        ring.position.y = y
+        ring.rotation.x = Math.PI / 2
+        sword.add(ring)
+      })
+      // pommel
+      const pommel = new THREE.Mesh(new THREE.SphereGeometry(0.028, 8, 6), gold)
+      pommel.position.y = 0.14
+      sword.add(pommel)
+
+      // hold pointing down-forward from the hand
+      sword.position.set(0.02, -0.42, 0.02)
+      sword.rotation.z = 0.15
+      sword.rotation.x = 0.05
+      pivot.add(sword)
+    }
+
     pivot.rotation.x = 0.12
     pivot.rotation.z = side * 0.08
     player.add(pivot)
