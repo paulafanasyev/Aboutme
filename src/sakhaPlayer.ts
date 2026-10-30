@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as THREE from 'three'
 
-/** Pixar-style Yakut Bootur warrior in stylized armor. */
+/** Grounded, stylized-realistic Yakut Bootur warrior with articulated armor. */
 export function buildPlayer(isLight) {
   const player = new THREE.Group()
 
@@ -58,9 +58,9 @@ export function buildPlayer(isLight) {
   chestRidge.position.set(0, 0.5, 0.196)
   player.add(chestRidge)
   ;[-1, 1].forEach((side) => {
-    const pad = new THREE.Mesh(new THREE.SphereGeometry(0.11, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.7), armor)
+    const pad = new THREE.Mesh(new THREE.SphereGeometry(0.105, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.7), armor)
     pad.position.set(side * 0.22, 0.62, 0)
-    pad.scale.set(1.1, 0.7, 1.15)
+    pad.scale.set(1.02, 0.66, 1.08)
     player.add(pad)
     const padRim = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.015, 6, 14), gold)
     padRim.position.set(side * 0.22, 0.62, 0.02)
@@ -104,6 +104,7 @@ export function buildPlayer(isLight) {
   // ── Head + warrior helmet ────────────────────────────────────────────────
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.135, 24, 18), skin)
   head.position.y = 0.82
+  head.scale.set(0.94, 1.08, 0.95)
   player.add(head)
   const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.064, 0.072, 0.12, 16), skin)
   neck.position.set(0, 0.69, 0)
@@ -140,7 +141,7 @@ export function buildPlayer(isLight) {
   noseTip.scale.set(0.9, 0.7, 0.85)
   noseTip.position.set(0, 0.802, 0.145)
   player.add(noseTip)
-  const helm = new THREE.Mesh(new THREE.SphereGeometry(0.155, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.58), armorDark)
+  const helm = new THREE.Mesh(new THREE.SphereGeometry(0.155, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.44), armorDark)
   helm.position.set(0, 0.88, -0.01)
   player.add(helm)
   const crest = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.034, 0.13, 7), gold)
@@ -181,7 +182,7 @@ export function buildPlayer(isLight) {
   mouth.position.set(0, 0.758, 0.137)
   player.add(mouth)
   const helmetBand = new THREE.Mesh(new THREE.TorusGeometry(0.132, 0.012, 8, 24), gold)
-  helmetBand.position.set(0, 0.88, -0.005)
+  helmetBand.position.set(0, 0.925, -0.005)
   helmetBand.rotation.x = Math.PI / 2
   player.add(helmetBand)
   const crestGem = new THREE.Mesh(new THREE.OctahedronGeometry(0.035, 1), new THREE.MeshStandardMaterial({ color: 0x3eaaa0, roughness: 0.24, metalness: 0.45 }))
