@@ -26,10 +26,13 @@ export function buildPlayer(isLight) {
   })
   const dark = new THREE.MeshStandardMaterial({ color: 0x1a1510, roughness: 0.9 })
   const steel = new THREE.MeshStandardMaterial({
-    color: isLight ? 0xc8d4dc : 0xa8b8c4, roughness: 0.28, metalness: 0.85,
+    color: isLight ? 0xb8c4cc : 0x8a98a4, roughness: 0.22, metalness: 0.92,
   })
-  const steelEdge = new THREE.MeshStandardMaterial({
-    color: isLight ? 0xe8f0f4 : 0xd0dce4, roughness: 0.18, metalness: 0.9,
+  const steelDark = new THREE.MeshStandardMaterial({
+    color: isLight ? 0x7a8894 : 0x5a6874, roughness: 0.3, metalness: 0.88,
+  })
+  const steelBright = new THREE.MeshStandardMaterial({
+    color: isLight ? 0xdce4ea : 0xc0ccd4, roughness: 0.12, metalness: 0.95,
   })
 
   // ── Torso / breastplate (heroic Pixar proportions) ───────────────────────
@@ -154,52 +157,97 @@ export function buildPlayer(isLight) {
     hand.position.y = -0.4
     pivot.add(hand)
 
-    // Sword in right hand (side === 1)
+    // Realistic sword in right hand
     if (side === 1) {
       const sword = new THREE.Group()
-      // blade
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.52, 0.012), steel)
-      blade.position.y = -0.28
-      sword.add(blade)
-      // fuller / center ridge
-      const ridge = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.48, 0.014), steelEdge)
-      ridge.position.y = -0.28
-      sword.add(ridge)
-      // tip
-      const tip = new THREE.Mesh(new THREE.ConeGeometry(0.02, 0.08, 4), steel)
-      tip.position.y = -0.58
-      tip.rotation.y = Math.PI / 4
-      sword.add(tip)
-      // crossguard
-      const guard = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.025, 0.03), gold)
-      guard.position.y = -0.02
-      sword.add(guard)
-      const guardTipL = new THREE.Mesh(new THREE.SphereGeometry(0.018, 6, 5), gold)
-      guardTipL.position.set(-0.07, -0.02, 0)
-      sword.add(guardTipL)
-      const guardTipR = new THREE.Mesh(new THREE.SphereGeometry(0.018, 6, 5), gold)
-      guardTipR.position.set(0.07, -0.02, 0)
-      sword.add(guardTipR)
-      // grip
-      const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.02, 0.12, 8), leather)
-      grip.position.y = 0.06
-      sword.add(grip)
-      // grip wrap rings
-      ;[0.02, 0.06, 0.1].forEach((y) => {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.006, 5, 10), gold)
-        ring.position.y = y
-        ring.rotation.x = Math.PI / 2
-        sword.add(ring)
-      })
-      // pommel
-      const pommel = new THREE.Mesh(new THREE.SphereGeometry(0.028, 8, 6), gold)
-      pommel.position.y = 0.14
-      sword.add(pommel)
 
-      // hold pointing down-forward from the hand
-      sword.position.set(0.02, -0.42, 0.02)
-      sword.rotation.z = 0.15
-      sword.rotation.x = 0.05
+      // Tapered blade: 4 segments, wider near guard → narrow at tip
+      const bladeSegs = [
+        { y: -0.08, w: 0.042, t: 0.014, h: 0.12 },
+        { y: -0.2, w: 0.038, t: 0.012, h: 0.14 },
+        { y: -0.34, w: 0.03, t: 0.01, h: 0.14 },
+        { y: -0.46, w: 0.02, t: 0.008, h: 0.1 },
+      ]
+      bladeSegs.forEach(({ y, w, t, h }) => {
+        const seg = new THREE.Mesh(new THREE.BoxGeometry(w, h, t), steel)
+        seg.position.y = y
+        sword.add(seg)
+        // edge bevels (slightly brighter, thinner)
+        const edgeL = new THREE.Mesh(new THREE.BoxGeometry(0.006, h * 0.98, t * 0.7), steelBright)
+        edgeL.position.set(-w * 0.48, y, 0)
+        sword.add(edgeL)
+        const edgeR = new THREE.Mesh(new THREE.BoxGeometry(0.006, h * 0.98, t * 0.7), steelBright)
+        edgeR.position.set(w * 0.48, y, 0)
+        sword.add(edgeR)
+      })
+
+      // Fuller (central groove) — darker recessed look
+      const fuller = new THREE.Mesh(new THREE.BoxGeometry(0.01, 0.42, 0.016), steelDark)
+      fuller.position.set(0, -0.26, 0)
+      sword.add(fuller)
+
+      // Pointed tip
+      const tip = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.07, 6), steelBright)
+      tip.position.y = -0.545
+      tip.rotation.y = Math.PI / 6
+      sword.add(tip)
+
+      // Ricasso (flat section above guard)
+      const ricasso = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.04, 0.013), steel)
+      ricasso.position.y = -0.01
+      sword.add(ricasso)
+
+      // Crossguard — slightly curved quillons
+      const guardBar = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.022, 0.028), gold)
+      guardBar.position.y = 0.02
+      sword.add(guardBar)
+      // quillon ends bend slightly toward blade
+      ;[-1, 1].forEach((s) => {
+        const quillon = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.01, 0.05, 6), gold)
+        quillon.position.set(s * 0.09, 0.005, 0)
+        quillon.rotation.z = s * 0.35
+        sword.add(quillon)
+        const qTip = new THREE.Mesh(new THREE.SphereGeometry(0.014, 6, 5), gold)
+        qTip.position.set(s * 0.115, -0.01, 0)
+        sword.add(qTip)
+      })
+      // central langet toward blade
+      const langet = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.035, 0.02), gold)
+      langet.position.y = -0.005
+      sword.add(langet)
+
+      // Grip — tapered octagonal feel
+      const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.02, 0.13, 8), leather)
+      grip.position.y = 0.1
+      sword.add(grip)
+      // leather wrap bands
+      ;[0.05, 0.085, 0.12, 0.155].forEach((y, i) => {
+        const band = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.021, 0.021, 0.012, 8),
+          i % 2 ? dark : leather
+        )
+        band.position.y = y
+        sword.add(band)
+      })
+
+      // Wheel pommel
+      const pommelDisk = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.022, 12), gold)
+      pommelDisk.position.y = 0.19
+      pommelDisk.rotation.x = Math.PI / 2
+      sword.add(pommelDisk)
+      const pommelCap = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 6), gold)
+      pommelCap.position.y = 0.21
+      sword.add(pommelCap)
+      // peen / rivet on pommel
+      const peen = new THREE.Mesh(new THREE.SphereGeometry(0.008, 6, 5), steelDark)
+      peen.position.y = 0.225
+      sword.add(peen)
+
+      // Hold: blade down, slight natural angle in the hand
+      sword.position.set(0.025, -0.42, 0.015)
+      sword.rotation.z = 0.12
+      sword.rotation.x = 0.08
+      sword.rotation.y = -0.05
       pivot.add(sword)
     }
 
