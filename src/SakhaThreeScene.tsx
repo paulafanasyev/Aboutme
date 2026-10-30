@@ -7,7 +7,7 @@ import { buildPlayer } from './sakhaPlayer'
 export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
   const mountRef = useRef(null)
   const [sceneReady, setSceneReady] = useState(false)
-  const isLight = theme === 'light'
+  const isLight = true
   const controlCopy = ({
     ru: { label: 'Игровое управление', hint: 'Джойстик · БЕГ · A — прыжок · E — открыть', interact: 'Открыть ориентир', run: 'БЕГ', jump: 'ПРЫЖОК', fullscreen: 'На весь экран', exitFullscreen: 'Свернуть' },
     en: { label: 'Game controls', hint: 'Joystick · RUN · A — jump · E — interact', interact: 'Open landmark', run: 'RUN', jump: 'JUMP', fullscreen: 'Fullscreen', exitFullscreen: 'Exit fullscreen' },
@@ -26,7 +26,7 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(isLight ? 0xb8d9ce : 0x071923, isLight ? 10 : 8.5, isLight ? 26 : 23)
+    scene.fog = new THREE.Fog(0xc9e5df, 13, 34)
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 90)
     camera.position.set(0, 1.65, 9.5)
     camera.lookAt(0, 0.15, 0)
@@ -46,15 +46,15 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = isLight ? 1.08 : 1.15
+    renderer.toneMappingExposure = 1.18
     renderer.domElement.className = 'sakhaWorldCanvas'
     renderer.domElement.setAttribute('aria-hidden', 'true')
     mount.dataset.fallback = 'false'
     mount.appendChild(renderer.domElement)
 
-    scene.add(new THREE.HemisphereLight(isLight ? 0xeaf6f1 : 0xb7eee2, isLight ? 0xa8cfc0 : 0x071923, isLight ? 1.25 : 1.55))
-    const key = new THREE.DirectionalLight(isLight ? 0xfff1d6 : 0xd0f8ed, isLight ? 2.15 : 1.6)
-    key.position.set(isLight ? 5.8 : -4, isLight ? 10.5 : 8, isLight ? 3.5 : 5)
+    scene.add(new THREE.HemisphereLight(0xf4fbff, 0x789b70, 1.65))
+    const key = new THREE.DirectionalLight(0xfff4dc, 2.65)
+    key.position.set(-7, 12, 5)
     key.castShadow = true
     key.shadow.mapSize.set(2048, 2048)
     key.shadow.camera.near = 0.5; key.shadow.camera.far = 32
@@ -63,13 +63,13 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
     key.shadow.bias = -0.0003; key.shadow.normalBias = 0.025
     key.shadow.camera.updateProjectionMatrix()
     scene.add(key)
-    const fill = new THREE.PointLight(isLight ? 0x9fd4c4 : 0x48d6bd, isLight ? 1.2 : 2.4, isLight ? 18 : 15)
+    const fill = new THREE.PointLight(0xc5e9ff, 0.75, 22)
     fill.position.set(1.6, isLight ? 4.4 : 3.4, -1.8)
     scene.add(fill)
-    const hearthLight = new THREE.PointLight(0xe9b86e, isLight ? 0.9 : 1.55, 4.2)
+    const hearthLight = new THREE.PointLight(0xffc77b, 0.55, 4.2)
     hearthLight.position.set(0, -0.1, 1.2)
     scene.add(hearthLight)
-    if (isLight) {
+    if (true) {
       const rim = new THREE.DirectionalLight(0xb5e0d4, 0.6)
       rim.position.set(-6.5, 3.2, -4); scene.add(rim)
       const bounce = new THREE.DirectionalLight(0xf5e6c8, 0.35)
