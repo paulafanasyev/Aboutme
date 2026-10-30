@@ -36,18 +36,27 @@ export function buildPlayer(isLight) {
   })
 
   // ── Torso / breastplate (heroic Pixar proportions) ───────────────────────
-  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.24, 0.42, 20, 3), armor)
+  const torsoProfile = [
+    new THREE.Vector2(0.16, -0.22), new THREE.Vector2(0.205, -0.16),
+    new THREE.Vector2(0.22, -0.04), new THREE.Vector2(0.205, 0.1),
+    new THREE.Vector2(0.17, 0.21), new THREE.Vector2(0, 0.22),
+  ]
+  const torso = new THREE.Mesh(new THREE.LatheGeometry(torsoProfile, 28), armor)
   torso.position.y = 0.48
   player.add(torso)
-  const chest = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.28, 0.12), armorDark)
-  chest.position.set(0, 0.5, 0.12)
+  const chest = new THREE.Mesh(new THREE.SphereGeometry(0.205, 24, 18), armorDark)
+  chest.position.set(0, 0.5, 0.115)
+  chest.scale.set(1.0, 0.72, 0.38)
   player.add(chest)
-  const chestTrim = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.04, 0.13), gold)
-  chestTrim.position.set(0, 0.58, 0.125)
-  player.add(chestTrim)
-  const chestTrim2 = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.04, 0.13), gold)
-  chestTrim2.position.set(0, 0.42, 0.125)
-  player.add(chestTrim2)
+  ;[0.58, 0.42].forEach((y) => {
+    const chestTrim = new THREE.Mesh(new THREE.TorusGeometry(0.145, 0.012, 7, 24, Math.PI), gold)
+    chestTrim.position.set(0, y, 0.145)
+    chestTrim.rotation.z = Math.PI
+    player.add(chestTrim)
+  })
+  const chestRidge = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.19, 0.012), gold)
+  chestRidge.position.set(0, 0.5, 0.196)
+  player.add(chestRidge)
   ;[-1, 1].forEach((side) => {
     const pad = new THREE.Mesh(new THREE.SphereGeometry(0.11, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.7), armor)
     pad.position.set(side * 0.22, 0.62, 0)
@@ -70,33 +79,84 @@ export function buildPlayer(isLight) {
     flap.rotation.x = 0.15
     player.add(flap)
   })
+  const tabardShape = new THREE.Shape()
+  tabardShape.moveTo(-0.115, 0.13)
+  tabardShape.lineTo(0.115, 0.13)
+  tabardShape.lineTo(0.1, -0.105)
+  tabardShape.lineTo(0, -0.19)
+  tabardShape.lineTo(-0.1, -0.105)
+  tabardShape.closePath()
+  const tabard = new THREE.Mesh(new THREE.ExtrudeGeometry(tabardShape, { depth: 0.018, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.008, bevelThickness: 0.006 }), leather)
+  tabard.position.set(0, 0.18, 0.125)
+  player.add(tabard)
+  const tabardStripe = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.24, 0.012), gold)
+  tabardStripe.position.set(0, 0.18, 0.154)
+  player.add(tabardStripe)
+  ;[-1, 1].forEach((side) => {
+    const pouch = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.09, 0.065), leather)
+    pouch.position.set(side * 0.18, 0.25, 0.06)
+    player.add(pouch)
+    const pouchFlap = new THREE.Mesh(new THREE.BoxGeometry(0.078, 0.024, 0.07), gold)
+    pouchFlap.position.set(side * 0.18, 0.292, 0.067)
+    player.add(pouchFlap)
+  })
 
   // ── Head + warrior helmet ────────────────────────────────────────────────
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.135, 24, 18), skin)
   head.position.y = 0.82
   player.add(head)
-  ;[-0.045, 0.045].forEach((x) => {
-    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.022, 8, 6), dark)
-    eye.position.set(x, 0.84, 0.12)
-    player.add(eye)
-    const pupil = new THREE.Mesh(new THREE.SphereGeometry(0.01, 6, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }))
-    pupil.position.set(x + 0.006, 0.845, 0.135)
-    player.add(pupil)
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.064, 0.072, 0.12, 16), skin)
+  neck.position.set(0, 0.69, 0)
+  player.add(neck)
+  ;[-1, 1].forEach((side) => {
+    const ear = new THREE.Mesh(new THREE.SphereGeometry(0.032, 12, 10), skin)
+    ear.scale.set(0.62, 1, 0.7)
+    ear.position.set(side * 0.132, 0.81, 0.005)
+    player.add(ear)
+    const eyeWhite = new THREE.Mesh(new THREE.SphereGeometry(0.023, 12, 10), new THREE.MeshStandardMaterial({ color: 0xf6eee0, roughness: 0.38 }))
+    eyeWhite.scale.set(1.0, 0.68, 0.55)
+    eyeWhite.position.set(side * 0.045, 0.84, 0.118)
+    player.add(eyeWhite)
+    const iris = new THREE.Mesh(new THREE.SphereGeometry(0.012, 12, 10), dark)
+    iris.position.set(side * 0.045, 0.84, 0.132)
+    player.add(iris)
+    const catchlight = new THREE.Mesh(new THREE.SphereGeometry(0.0045, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff }))
+    catchlight.position.set(side * 0.045 - 0.003, 0.845, 0.141)
+    player.add(catchlight)
+    const brow = new THREE.Mesh(new THREE.BoxGeometry(0.052, 0.012, 0.018), dark)
+    brow.position.set(side * 0.045, 0.872, 0.115)
+    brow.rotation.z = side * -0.12
+    player.add(brow)
+    const cheekHighlight = new THREE.Mesh(new THREE.SphereGeometry(0.035, 10, 8), new THREE.MeshStandardMaterial({ color: 0xd9ae8d, roughness: 0.82 }))
+    cheekHighlight.scale.set(1.0, 0.55, 0.35)
+    cheekHighlight.position.set(side * 0.082, 0.795, 0.092)
+    player.add(cheekHighlight)
   })
-  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.02, 0.04, 5), skin)
-  nose.position.set(0, 0.81, 0.13)
-  nose.rotation.x = Math.PI / 2
-  player.add(nose)
+  const noseBridge = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), skin)
+  noseBridge.scale.set(0.72, 1.45, 0.72)
+  noseBridge.position.set(0, 0.824, 0.128)
+  player.add(noseBridge)
+  const noseTip = new THREE.Mesh(new THREE.SphereGeometry(0.022, 10, 8), skin)
+  noseTip.scale.set(0.9, 0.7, 0.85)
+  noseTip.position.set(0, 0.802, 0.145)
+  player.add(noseTip)
   const helm = new THREE.Mesh(new THREE.SphereGeometry(0.155, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.58), armorDark)
   helm.position.set(0, 0.88, -0.01)
   player.add(helm)
-  const crest = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.08, 0.22), gold)
-  crest.position.set(0, 0.98, -0.02)
+  const crest = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.034, 0.13, 7), gold)
+  crest.position.set(0, 0.99, -0.015)
   player.add(crest)
+  const helmetRidge = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.12, 0.19), steelDark)
+  helmetRidge.position.set(0, 0.94, -0.01)
+  player.add(helmetRidge)
   ;[-1, 1].forEach((side) => {
-    const cheek = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.1, 0.08), armorDark)
-    cheek.position.set(side * 0.12, 0.78, 0.05)
+    const cheek = new THREE.Mesh(new THREE.SphereGeometry(0.065, 14, 10), armorDark)
+    cheek.scale.set(0.55, 1.05, 0.72)
+    cheek.position.set(side * 0.12, 0.78, 0.045)
     player.add(cheek)
+    const cheekRivet = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6), gold)
+    cheekRivet.position.set(side * 0.135, 0.78, 0.105)
+    player.add(cheekRivet)
   })
   const collar = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.045, 8, 16), fur)
   collar.position.set(0, 0.66, 0)
@@ -109,8 +169,16 @@ export function buildPlayer(isLight) {
     rivet.position.set(side * 0.115, 0.5, 0.19)
     player.add(rivet)
   })
-  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.008, 0.008), dark)
-  mouth.position.set(0, 0.775, 0.126)
+  const moustacheMat = new THREE.MeshStandardMaterial({ color: 0x493629, roughness: 0.92 })
+  ;[-1, 1].forEach((side) => {
+    const moustache = new THREE.Mesh(new THREE.SphereGeometry(0.027, 10, 8), moustacheMat)
+    moustache.scale.set(1.1, 0.42, 0.45)
+    moustache.position.set(side * 0.022, 0.779, 0.137)
+    moustache.rotation.z = side * -0.16
+    player.add(moustache)
+  })
+  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.006, 0.006), dark)
+  mouth.position.set(0, 0.758, 0.137)
   player.add(mouth)
   const helmetBand = new THREE.Mesh(new THREE.TorusGeometry(0.132, 0.012, 8, 24), gold)
   helmetBand.position.set(0, 0.88, -0.005)
@@ -153,8 +221,9 @@ export function buildPlayer(isLight) {
     const shin = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.055, 0.18, 8), armorDark)
     shin.position.y = -0.3
     pivot.add(shin)
-    const boot = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.16), leather)
-    boot.position.set(0, -0.4, 0.03)
+    const boot = new THREE.Mesh(new THREE.SphereGeometry(0.075, 16, 12), leather)
+    boot.scale.set(0.82, 0.62, 1.35)
+    boot.position.set(0, -0.4, 0.045)
     pivot.add(boot)
     const bootCuff = new THREE.Mesh(new THREE.TorusGeometry(0.052, 0.012, 8, 14), gold)
     bootCuff.position.set(0, -0.34, 0.015)
@@ -184,9 +253,16 @@ export function buildPlayer(isLight) {
     const bracer = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.04, 8), gold)
     bracer.position.y = -0.28
     pivot.add(bracer)
-    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 6), skin)
+    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.04, 14, 10), skin)
+    hand.scale.set(0.82, 0.9, 0.72)
     hand.position.y = -0.4
     pivot.add(hand)
+    ;[-1, -0.33, 0.33, 1].forEach((finger, index) => {
+      const digit = new THREE.Mesh(new THREE.CapsuleGeometry(0.008, 0.025, 3, 6), skin)
+      digit.position.set(finger * 0.021, -0.43 - (index === 1 || index === 2 ? 0.006 : 0), 0.014)
+      digit.rotation.z = finger * 0.16
+      pivot.add(digit)
+    })
 
     // Realistic sword in right hand
     if (side === 1) {
@@ -303,7 +379,13 @@ export function buildPlayer(isLight) {
   feetHalo.position.y = 0.02
   player.add(feetHalo)
 
+  player.scale.setScalar(1.12)
   player.position.set(0.05, -1.34, 2.1)
-  player.traverse((p) => { if (p.isMesh) p.castShadow = true })
+  player.traverse((part) => {
+    if (part.isMesh) {
+      part.castShadow = true
+      part.receiveShadow = true
+    }
+  })
   return { player, legPivots, armPivots, feetHalo, basePlayerY: -1.34 }
 }
