@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import { buildSakhaWorld } from './sakhaWorldFactory'
 import { buildPlayer } from './sakhaPlayer'
 
-export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
+export default function SakhaThreeScene({ lang = 'ru', theme = 'light' }) {
   const mountRef = useRef(null)
   const [sceneReady, setSceneReady] = useState(false)
   const isLight = true
@@ -26,13 +26,41 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0xc9e5df, 13, 34)
+    // Opaque daytime sky: never expose the dark page background through WebGL.
+    const skyHorizon = new THREE.Color(0xd7edf5)
+    scene.background = skyHorizon
+    scene.fog = new THREE.Fog(0xd7edf5, 18, 42)
+
+    // Blue daytime sky dome with a soft warm horizon gradient.
+    const skyDome = new THREE.Mesh(
+      new THREE.SphereGeometry(65, 40, 24),
+      new THREE.ShaderMaterial({
+        side: THREE.BackSide,
+        depthWrite: false,
+        depthTest: false,
+        fog: false,
+        vertexShader: 'varying float vSkyHeight; void main() { vec4 worldPosition = modelMatrix * vec4(position * 65.0, 1.0); vSkyHeight = normalize(worldPosition.xyz - cameraPosition).y; gl_Position = projectionMatrix * viewMatrix * worldPosition; }',
+        fragmentShader: 'varying float vSkyHeight; void main() { float upper = smoothstep(-0.18, 0.72, vSkyHeight); vec3 horizon = vec3(0.84, 0.93, 0.97); vec3 zenith = vec3(0.22, 0.55, 0.82); vec3 sky = mix(horizon, zenith, upper); float warmth = (1.0 - smoothstep(-0.12, 0.24, vSkyHeight)) * 0.10; sky = mix(sky, vec3(1.0, 0.91, 0.76), warmth); gl_FragColor = vec4(sky, 1.0); }'
+      })
+    )
+    skyDome.renderOrder = -100
+    scene.add(skyDome)
+
+    // Visible sun disc and soft atmospheric halo.
+    const sun = new THREE.Group()
+    sun.position.set(-5.6, 4.55, -11.5)
+    const sunDisc = new THREE.Mesh(new THREE.SphereGeometry(0.62, 32, 24), new THREE.MeshBasicMaterial({ color: 0xfff2cf, fog: false, toneMapped: false }))
+    sun.add(sunDisc)
+    const sunHalo = new THREE.Mesh(new THREE.SphereGeometry(1.05, 32, 24), new THREE.MeshBasicMaterial({ color: 0xffe6ad, transparent: true, opacity: 0.16, depthWrite: false, fog: false, toneMapped: false }))
+    sun.add(sunHalo)
+    scene.add(sun)
+
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 90)
     camera.position.set(0, 1.65, 9.5)
     camera.lookAt(0, 0.15, 0)
 
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance', precision: 'highp' })
+      renderer = new THREE.WebGLRenderer({ alpha: false, antialias: true, powerPreference: 'high-performance', precision: 'highp' })
     } catch {
       mount.dataset.fallback = 'true'
       if (controlsEl) controlsEl.hidden = true
@@ -40,7 +68,7 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
       return undefined
     }
     if (controlsEl) controlsEl.hidden = false
-    renderer.setClearColor(0x000000, 0)
+    renderer.setClearColor(0xd7edf5, 1)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.shadowMap.enabled = true
@@ -52,9 +80,9 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
     mount.dataset.fallback = 'false'
     mount.appendChild(renderer.domElement)
 
-    scene.add(new THREE.HemisphereLight(0xf4fbff, 0x789b70, 1.65))
-    const key = new THREE.DirectionalLight(0xfff4dc, 2.65)
-    key.position.set(-7, 12, 5)
+    scene.add(new THREE.HemisphereLight(0xdff3ff, 0x91a978, 1.9))
+    const key = new THREE.DirectionalLight(0xfff1d8, 3.1)
+    key.position.set(-8, 15, 7)
     key.castShadow = true
     key.shadow.mapSize.set(2048, 2048)
     key.shadow.camera.near = 0.5; key.shadow.camera.far = 32
