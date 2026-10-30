@@ -58,7 +58,6 @@ body:has(.site[data-theme="light"]) {
 .site[data-theme="light"] .hero h1,
 .site[data-theme="light"] .aboutIntro h2,
 .site[data-theme="light"] .sectionHeading h2,
-.site[data-theme="light"] .learn h2,
 .site[data-theme="light"] .cta h2,
 .site[data-theme="light"] .serviceRow h3,
 .site[data-theme="light"] .projectMain h3 {
@@ -69,17 +68,14 @@ body:has(.site[data-theme="light"]) {
 .site[data-theme="light"] .hero h1 em,
 .site[data-theme="light"] .sectionHeading em,
 .site[data-theme="light"] .aboutIntro h2 em,
-.site[data-theme="light"] .learn h2 em,
 .site[data-theme="light"] .cta h2 em {
   color: var(--sakha-gold) !important;
 }
 .site[data-theme="light"] .lead,
 .site[data-theme="light"] .aboutLead,
-.site[data-theme="light"] .aboutText p,
 .site[data-theme="light"] .sectionHeading p,
 .site[data-theme="light"] .serviceRow p,
 .site[data-theme="light"] .projectMain p,
-.site[data-theme="light"] .learnGrid p,
 .site[data-theme="light"] .ctaSide p {
   color: #3d5c58 !important;
   text-shadow: none !important;
@@ -87,8 +83,6 @@ body:has(.site[data-theme="light"]) {
 .site[data-theme="light"] .contactPill,
 .site[data-theme="light"] .ghostButton,
 .site[data-theme="light"] .menuButton,
-.site[data-theme="light"] .serviceArrow,
-.site[data-theme="light"] .projectArrow,
 .site[data-theme="light"] .tags span {
   color: #14323a !important;
   border-color: rgba(26, 122, 109, .28) !important;
@@ -133,14 +127,14 @@ body:has(.site[data-theme="light"]) {
 }
 .site[data-theme="light"] .alasMap {
   border-color: rgba(26, 122, 109, .28);
-  background: #d8ebe4;
-  box-shadow: inset 0 0 50px rgba(255,255,255,.35), 0 18px 48px rgba(20,50,58,.1);
+  background: #cfe6dc;
+  box-shadow: inset 0 0 50px rgba(255,255,255,.4), 0 18px 48px rgba(20,50,58,.1);
 }
 .site[data-theme="light"] .alasSky {
   background:
-    radial-gradient(ellipse at 72% 8%, rgba(255, 230, 180, .45), transparent 36%),
-    radial-gradient(ellipse at 30% 4%, rgba(180, 230, 220, .35), transparent 40%),
-    linear-gradient(180deg, #b8dde8 0%, #c8e8de 45%, #d4ebe2 100%);
+    radial-gradient(ellipse at 72% 8%, rgba(255, 230, 180, .5), transparent 36%),
+    radial-gradient(ellipse at 30% 4%, rgba(180, 230, 220, .4), transparent 40%),
+    linear-gradient(180deg, #a8d4e4 0%, #bfe5d8 45%, #d0ebe2 100%);
 }
 .site[data-theme="light"] .alasLandmark {
   border-color: rgba(26, 122, 109, .22);
@@ -162,10 +156,10 @@ body:has(.site[data-theme="light"]) {
   background: rgba(255,255,255,.9) !important;
   color: #14323a !important;
 }
-/* Daytime look for the existing night scene without rewriting 35KB of Three.js */
+/* Mild polish only — scene already has daytime lights/materials */
 .site[data-theme="light"] .threeSceneMount canvas,
 .site[data-theme="light"] .sakhaWorldCanvas {
-  filter: brightness(1.32) saturate(0.88) contrast(1.06) hue-rotate(-6deg);
+  filter: brightness(1.06) saturate(1.02) contrast(1.03);
 }
 .themeToggle {
   appearance: none;
