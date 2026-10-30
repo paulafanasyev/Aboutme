@@ -1,514 +1,124 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { buildSakhaWorld, buildPlayer } from './sakhaWorldFactory'
 
-/**
- * Lightweight WebGL layer for the Sakha-inspired alas. The CSS landscape is
- * deliberately kept underneath as a graceful fallback when WebGL is blocked.
- */
-export default function SakhaThreeScene({ lang = 'ru' }) {
+export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
   const mountRef = useRef(null)
   const [sceneReady, setSceneReady] = useState(false)
+  const isLight = theme === 'light'
   const controlCopy = ({
-    ru: { label: 'Игровое управление', hint: 'Джойстик · удерживай БЕГ · A — прыжок · E — открыть', up: 'Вперёд', down: 'Назад', left: 'Влево', right: 'Вправо', interact: 'Открыть ориентир', run: 'БЕГ', jump: 'ПРЫЖОК', fullscreen: 'На весь экран', exitFullscreen: 'Свернуть' },
-    en: { label: 'Game controls', hint: 'Joystick · hold RUN · A — jump · E — interact', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open landmark', run: 'RUN', jump: 'JUMP', fullscreen: 'Fullscreen', exitFullscreen: 'Exit fullscreen' },
-    vi: { label: 'Điều khiển trò chơi', hint: 'Joystick · giữ CHẠY · A — nhảy · E — tương tác', up: 'Tiến lên', down: 'Lùi lại', left: 'Sang trái', right: 'Sang phải', interact: 'Mở địa điểm', run: 'CHẠY', jump: 'NHẢY', fullscreen: 'Toàn màn hình', exitFullscreen: 'Thoát toàn màn hình' },
-  })[lang] || { label: 'Scene controls', hint: 'WASD / arrows · E — interact nearby', up: 'Forward', down: 'Back', left: 'Left', right: 'Right', interact: 'Open nearest landmark' }
-  const loadingLabel = ({ ru: 'Создаю мир Саха…', en: 'Building the Sakha world…', vi: 'Đang dựng không gian Saha…' })[lang] || 'Building the Sakha world…'
+    ru: { label: 'Игровое управление', hint: 'Джойстик · БЕГ · A — прыжок · E — открыть', interact: 'Открыть ориентир', run: 'БЕГ', jump: 'ПРЫЖОК', fullscreen: 'На весь экран', exitFullscreen: 'Свернуть' },
+    en: { label: 'Game controls', hint: 'Joystick · RUN · A — jump · E — interact', interact: 'Open landmark', run: 'RUN', jump: 'JUMP', fullscreen: 'Fullscreen', exitFullscreen: 'Exit fullscreen' },
+    vi: { label: 'Điều khiển', hint: 'Joystick · CHẠY · A — nhảy · E — tương tác', interact: 'Mở địa điểm', run: 'CHẠY', jump: 'NHẢY', fullscreen: 'Toàn màn hình', exitFullscreen: 'Thoát' },
+  })[lang] || { label: 'Controls', hint: 'WASD · E interact', interact: 'Open', run: 'RUN', jump: 'JUMP', fullscreen: 'Fullscreen', exitFullscreen: 'Exit' }
+  const loadingLabel = ({ ru: 'Создаю мир Саха…', en: 'Building the Sakha world…', vi: 'Đang dựng không gian Saha…' })[lang] || 'Building…'
 
   useEffect(() => {
     const mount = mountRef.current
     const map = mount?.closest('.alasMap')
     if (!mount || !map) return undefined
-    const controls = map.querySelector('.sceneControls')
-
-    let renderer
-    let frameId = 0
-    let resizeObserver
-    let visibilityObserver
-    let disposed = false
-    let visible = !('IntersectionObserver' in window)
-    let pointerX = 0
-    let pointerY = 0
-    let lastFrame = 0
+    const controlsEl = map.querySelector('.sceneControls')
+    let renderer, frameId = 0, disposed = false, visible = !('IntersectionObserver' in window)
+    let pointerX = 0, pointerY = 0, lastFrame = 0
     const pressedDirections = new Set()
-    const interactiveTargets = []
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0x071923, 8.5, 23)
+    scene.fog = new THREE.Fog(isLight ? 0xb8d9ce : 0x071923, isLight ? 10 : 8.5, isLight ? 26 : 23)
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 90)
     camera.position.set(0, 1.65, 9.5)
     camera.lookAt(0, 0.15, 0)
 
     try {
-      renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: 'high-performance',
-        precision: 'highp',
-      })
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance', precision: 'highp' })
     } catch {
       mount.dataset.fallback = 'true'
-      if (controls) controls.hidden = true
+      if (controlsEl) controlsEl.hidden = true
       setSceneReady(true)
       return undefined
     }
-
-    if (controls) controls.hidden = false
+    if (controlsEl) controlsEl.hidden = false
     renderer.setClearColor(0x000000, 0)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.12
+    renderer.toneMappingExposure = isLight ? 1.08 : 1.15
     renderer.domElement.className = 'sakhaWorldCanvas'
     renderer.domElement.setAttribute('aria-hidden', 'true')
     mount.dataset.fallback = 'false'
     mount.appendChild(renderer.domElement)
 
-    scene.add(new THREE.HemisphereLight(0xb7eee2, 0x071923, 1.6))
-    const moon = new THREE.DirectionalLight(0xd0f8ed, 1.55)
-    moon.position.set(-4, 8, 5)
-    moon.castShadow = true
-    moon.shadow.mapSize.set(2048, 2048)
-    moon.shadow.camera.near = 0.5
-    moon.shadow.camera.far = 30
-    moon.shadow.camera.left = -9
-    moon.shadow.camera.right = 9
-    moon.shadow.camera.top = 8
-    moon.shadow.camera.bottom = -8
-    moon.shadow.bias = -0.0002
-    moon.shadow.camera.updateProjectionMatrix()
-    scene.add(moon)
-    const auroraLight = new THREE.PointLight(0x48d6bd, 2.4, 15)
-    auroraLight.position.set(1.6, 3.4, -1.8)
-    scene.add(auroraLight)
-    const hearthLight = new THREE.PointLight(0xe9b86e, 1.5, 4)
+    scene.add(new THREE.HemisphereLight(isLight ? 0xeaf6f1 : 0xb7eee2, isLight ? 0xa8cfc0 : 0x071923, isLight ? 1.25 : 1.55))
+    const key = new THREE.DirectionalLight(isLight ? 0xfff1d6 : 0xd0f8ed, isLight ? 2.15 : 1.6)
+    key.position.set(isLight ? 5.8 : -4, isLight ? 10.5 : 8, isLight ? 3.5 : 5)
+    key.castShadow = true
+    key.shadow.mapSize.set(2048, 2048)
+    key.shadow.camera.near = 0.5; key.shadow.camera.far = 32
+    key.shadow.camera.left = -10; key.shadow.camera.right = 10
+    key.shadow.camera.top = 9; key.shadow.camera.bottom = -9
+    key.shadow.bias = -0.0003; key.shadow.normalBias = 0.025
+    key.shadow.camera.updateProjectionMatrix()
+    scene.add(key)
+    const fill = new THREE.PointLight(isLight ? 0x9fd4c4 : 0x48d6bd, isLight ? 1.2 : 2.4, isLight ? 18 : 15)
+    fill.position.set(1.6, isLight ? 4.4 : 3.4, -1.8)
+    scene.add(fill)
+    const hearthLight = new THREE.PointLight(0xe9b86e, isLight ? 0.9 : 1.55, 4.2)
     hearthLight.position.set(0, -0.1, 1.2)
     scene.add(hearthLight)
-
-    const groundGeometry = new THREE.BufferGeometry()
-    const groundSegments = 128
-    const groundRings = 30
-    const groundPositions = [0, 0, 0]
-    const groundColors = []
-    const centerGroundColor = new THREE.Color(0x1b5147)
-    groundColors.push(centerGroundColor.r, centerGroundColor.g, centerGroundColor.b)
-    for (let ring = 1; ring <= groundRings; ring += 1) {
-      const radius = 8.5 * ring / groundRings
-      for (let segment = 0; segment < groundSegments; segment += 1) {
-        const angle = segment / groundSegments * Math.PI * 2
-        const x = Math.cos(angle) * radius
-        const z = Math.sin(angle) * radius
-        const elevation = (Math.sin(x * 1.55 + z * 0.62) * 0.065 + Math.cos(z * 2.0 - x * 0.52) * 0.035) * (1 - ring / (groundRings * 1.35))
-        groundPositions.push(x, z, elevation)
-        const color = new THREE.Color(0x1b5147).lerp(new THREE.Color(0x0a2830), Math.min(0.8, radius / 11))
-        color.lerp(new THREE.Color(0x4a7b5a), Math.max(0, elevation) * 1.5)
-        groundColors.push(color.r, color.g, color.b)
-      }
-    }
-    for (let segment = 0; segment < groundSegments; segment += 1) {
-      const current = 1 + segment
-      const next = 1 + (segment + 1) % groundSegments
-      ;(groundGeometry.userData.indices ||= []).push(0, current, next)
-    }
-    const groundIndices = groundGeometry.userData.indices
-    for (let ring = 1; ring < groundRings; ring += 1) {
-      const innerBase = 1 + (ring - 1) * groundSegments
-      const outerBase = 1 + ring * groundSegments
-      for (let segment = 0; segment < groundSegments; segment += 1) {
-        const next = (segment + 1) % groundSegments
-        const a = innerBase + segment
-        const b = innerBase + next
-        const c = outerBase + segment
-        const d = outerBase + next
-        groundIndices.push(a, c, b, b, c, d)
-      }
-    }
-    groundGeometry.setAttribute('position', new THREE.Float32BufferAttribute(groundPositions, 3))
-    groundGeometry.setAttribute('color', new THREE.Float32BufferAttribute(groundColors, 3))
-    groundGeometry.setIndex(groundIndices)
-    groundGeometry.rotateX(-Math.PI / 2)
-    groundGeometry.computeVertexNormals()
-    const groundMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff, vertexColors: true, roughness: 0.88, metalness: 0.04,
-    })
-    const ground = new THREE.Mesh(groundGeometry, groundMaterial)
-    ground.position.y = -1.36
-    ground.scale.set(1, 0.72, 1)
-    ground.receiveShadow = true
-    scene.add(ground)
-
-    const contourMaterial = new THREE.MeshBasicMaterial({
-      color: 0x75e0cf,
-      transparent: true,
-      opacity: 0.13,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    })
-    ;[2.1, 3.35, 4.6, 5.85].forEach((radius) => {
-      const contour = new THREE.Mesh(new THREE.RingGeometry(radius - 0.012, radius, 90), contourMaterial)
-      contour.rotation.x = -Math.PI / 2
-      contour.position.y = -1.325
-      contour.scale.set(1, 0.72, 1)
-      scene.add(contour)
-    })
-    const waterGeometry = new THREE.CircleGeometry(1, 128)
-    waterGeometry.scale(2.45, 0.82, 1)
-    const waterMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uDeep: { value: new THREE.Color(0x0c3b45) },
-        uGlint: { value: new THREE.Color(0x9cebd9) },
-      },
-      vertexShader: [
-        'uniform float uTime;',
-        'varying vec2 vUv;',
-        'varying vec3 vWaterPosition;',
-        'void main() {',
-        'vUv = uv;',
-        'vec3 p = position;',
-        'p.z += sin(p.x * 4.5 + uTime * 0.8) * 0.012;',
-        'p.z += sin(p.y * 7.2 - uTime * 0.65) * 0.008;',
-        'vec4 worldPosition = modelMatrix * vec4(p, 1.0);',
-        'vWaterPosition = worldPosition.xyz;',
-        'gl_Position = projectionMatrix * viewMatrix * worldPosition;',
-        '}',
-      ].join('\n'),
-      fragmentShader: [
-        'uniform float uTime;',
-        'uniform vec3 uDeep;',
-        'uniform vec3 uGlint;',
-        'varying vec2 vUv;',
-        'varying vec3 vWaterPosition;',
-        'void main() {',
-        'float waveA = sin(vWaterPosition.x * 7.2 + uTime * 0.65 + cos(vWaterPosition.z * 5.1)) * 0.5 + 0.5;',
-        'float waveB = sin(vWaterPosition.z * 10.0 - uTime * 0.45) * 0.5 + 0.5;',
-        'float glint = smoothstep(0.75, 0.97, waveA * 0.67 + waveB * 0.33);',
-        'float edge = 1.0 - smoothstep(0.32, 0.51, length(vUv - vec2(0.5)));',
-        'vec3 color = mix(uDeep, uGlint, glint * 0.27 + edge * 0.12);',
-        'gl_FragColor = vec4(color, 0.97);',
-        '}',
-      ].join('\n'),
-      transparent: true,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    })
-    const water = new THREE.Mesh(waterGeometry, waterMaterial)
-    water.rotation.x = -Math.PI / 2
-    water.position.set(0, -1.255, -1.45)
-    water.renderOrder = 1
-    scene.add(water)
-    const waterLight = new THREE.PointLight(0x4dc6bc, 0.85, 5.8)
-    waterLight.position.set(0, -0.25, -1.3)
-    scene.add(waterLight)
-
-
-    const mountainMaterial = new THREE.MeshStandardMaterial({
-      color: 0x123e43,
-      roughness: 1,
-      flatShading: true,
-    })
-    const mountainPositions = [
-      [-5.8, -0.45, -4.3, 1.5, 2.0, 1.2],
-      [-3.8, -0.45, -4.8, 2.1, 2.9, 1.0],
-      [-1.5, -0.55, -4.2, 1.6, 2.0, 0.95],
-      [0.4, -0.5, -4.6, 2.0, 2.7, 1.1],
-      [2.9, -0.55, -4.2, 1.55, 2.1, 1.0],
-      [5.1, -0.5, -4.6, 2.0, 2.55, 1.0],
-      [6.6, -0.65, -3.5, 1.3, 1.7, 1.0],
-    ]
-    mountainPositions.forEach(([x, y, z, sx, sy, sz], index) => {
-      const mountain = new THREE.Mesh(new THREE.ConeGeometry(1, 1, index % 2 ? 4 : 5), mountainMaterial)
-      mountain.position.set(x, y, z)
-      mountain.scale.set(sx, sy, sz)
-      mountain.rotation.y = index * 0.34
-      scene.add(mountain)
-    })
-
-    const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x815d39, roughness: 1 })
-    const pineMaterial = new THREE.MeshStandardMaterial({
-      color: 0x0a292e,
-      roughness: 1,
-      flatShading: true,
-    })
-    const addPine = (x, z, size = 1) => {
-      const pine = new THREE.Group()
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.055, 0.42, 5), trunkMaterial)
-      trunk.position.y = -1.06
-      pine.add(trunk)
-      ;[
-        [0.48, 0.88, 0.44],
-        [0.2, 0.7, 0.34],
-        [-0.06, 0.5, 0.25],
-      ].forEach(([y, height, radius]) => {
-        const crown = new THREE.Mesh(new THREE.ConeGeometry(radius, height, 5), pineMaterial)
-        crown.position.y = y - 0.5
-        crown.castShadow = true
-        pine.add(crown)
-      })
-      pine.position.set(x, 0, z)
-      pine.scale.setScalar(size)
-      pine.traverse((part) => { if (part.isMesh) { part.castShadow = true; part.receiveShadow = true } })
-      scene.add(pine)
-    }
-    ;[
-      [-5.2, 0.6, 1.05], [-4.4, -0.25, 0.75], [-3.5, 0.8, 0.7],
-      [3.4, 0.7, 0.85], [4.3, 0.0, 1.0], [5.3, 0.8, 0.7],
-      [-2.8, -1.0, 0.55], [2.5, -1.0, 0.6], [-5.9, -1.0, 0.6],
-      [5.9, -1.0, 0.65],
-    ].forEach(([x, z, scale]) => addPine(x, z, scale))
-    for (let row = 0; row < 4; row += 1) {
-      const z = -3.45 + row * 0.68
-      for (let side = -1; side <= 1; side += 2) {
-        for (let tree = 0; tree < 4; tree += 1) {
-          const x = side * (4.25 + tree * 0.57 + (row % 2) * 0.19)
-          const size = 0.38 + ((tree + row * 2) % 4) * 0.12
-          addPine(x, z, size)
-        }
-      }
+    if (isLight) {
+      const rim = new THREE.DirectionalLight(0xb5e0d4, 0.6)
+      rim.position.set(-6.5, 3.2, -4); scene.add(rim)
+      const bounce = new THREE.DirectionalLight(0xf5e6c8, 0.35)
+      bounce.position.set(2, 1.5, 6); scene.add(bounce)
     }
 
-    const sergeMaterial = new THREE.MeshStandardMaterial({
-      color: 0xd1a46b,
-      roughness: 0.55,
-      metalness: 0.12,
-    })
-    const registerInteractive = (object, section) => {
-      object.traverse((child) => {
-        if (child.isMesh) {
-          child.userData.section = section
-          interactiveTargets.push(child)
-        }
-      })
-    }
-    const addSerge = (x, z, scale = 1, section = 'about') => {
-      const serge = new THREE.Group()
-      const post = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.09, 1.85, 6), sergeMaterial)
-      post.position.y = -0.42
-      serge.add(post)
-      ;[0.05, 0.34].forEach((y, index) => {
-        const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, index ? 0.86 : 0.66, 5), sergeMaterial)
-        arm.position.set(index ? 0.07 : -0.04, y, 0)
-        arm.rotation.z = Math.PI / 2
-        serge.add(arm)
-      })
-      serge.position.set(x, 0, z)
-      serge.scale.setScalar(scale)
-      scene.add(serge)
-      registerInteractive(serge, section)
-    }
-    addSerge(-2.45, 0.05, 0.82, 'about')
-    addSerge(2.5, 0.0, 0.88, 'contact')
-
-    const stoneMaterial = new THREE.MeshStandardMaterial({
-      color: 0x5bc8b8,
-      emissive: 0x0d534e,
-      emissiveIntensity: 0.6,
-      roughness: 0.38,
-      metalness: 0.25,
-    })
-    const stones = []
-    ;[
-      [-1.55, -0.98, 1.25], [-0.54, -1.02, 1.5], [0.62, -0.97, 1.25], [1.6, -0.99, 1.55],
-    ].forEach(([x, y, z], index) => {
-      const stone = new THREE.Mesh(new THREE.IcosahedronGeometry(index % 2 ? 0.18 : 0.23, 0), stoneMaterial)
-      stone.position.set(x, y, z)
-      stone.rotation.set(index * 0.4, index * 0.6, index * 0.2)
-      scene.add(stone)
-      if (index === 0 || index === 1) {
-        stone.userData.section = index === 0 ? 'services' : 'projects'
-        interactiveTargets.push(stone)
-      }
-      stones.push({ mesh: stone, baseY: y, phase: index * 1.2 })
-    })
-
-    const hearth = new THREE.Mesh(
-      new THREE.OctahedronGeometry(0.22, 0),
-      new THREE.MeshStandardMaterial({
-        color: 0xe9b86e,
-        emissive: 0xd67f39,
-        emissiveIntensity: 1.8,
-        roughness: 0.3,
-      }),
-    )
-    hearth.position.set(0, -0.75, 1.1)
-    scene.add(hearth)
-
-    const player = new THREE.Group()
-    const playerBodyMaterial = new THREE.MeshStandardMaterial({
-      color: 0x16796f,
-      roughness: 0.75,
-      metalness: 0.05,
-    })
-    const playerTrimMaterial = new THREE.MeshStandardMaterial({
-      color: 0xe9b86e,
-      roughness: 0.42,
-      metalness: 0.14,
-    })
-    const playerFaceMaterial = new THREE.MeshStandardMaterial({
-      color: 0xe4c5a0,
-      roughness: 0.8,
-    })
-    const playerDarkMaterial = new THREE.MeshStandardMaterial({
-      color: 0x09232d,
-      roughness: 0.9,
-    })
-    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.23, 0.48, 7), playerBodyMaterial)
-    torso.position.y = 0.43
-    player.add(torso)
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.145, 8, 6), playerFaceMaterial)
-    head.position.y = 0.78
-    player.add(head)
-    const hood = new THREE.Mesh(new THREE.SphereGeometry(0.16, 7, 5, 0, Math.PI * 2, 0, Math.PI * 0.62), playerDarkMaterial)
-    hood.position.set(0, 0.82, -0.025)
-    player.add(hood)
-    const scarf = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.075, 0.21), playerTrimMaterial)
-    scarf.position.set(0, 0.59, 0.015)
-    player.add(scarf)
-    const pack = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.28, 0.12), playerDarkMaterial)
-    pack.position.set(0, 0.43, -0.19)
-    player.add(pack)
-    const legMaterial = new THREE.MeshStandardMaterial({ color: 0x102d35, roughness: 0.95 })
-    const legPivots = []
-    ;[-0.09, 0.09].forEach((x) => {
-      const pivot = new THREE.Group()
-      pivot.position.set(x, 0.25, 0)
-      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.07, 0.25, 8), legMaterial)
-      leg.position.y = -0.12
-      const boot = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.07, 0.19), playerDarkMaterial)
-      boot.position.set(0, -0.23, 0.035)
-      pivot.add(leg, boot)
-      player.add(pivot)
-      legPivots.push(pivot)
-    })
-    const armPivots = []
-    ;[-0.22, 0.22].forEach((x) => {
-      const pivot = new THREE.Group()
-      pivot.position.set(x, 0.55, 0)
-      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.065, 0.29, 7), playerBodyMaterial)
-      sleeve.position.y = -0.13
-      pivot.add(sleeve)
-      player.add(pivot)
-      armPivots.push(pivot)
-    })
-    const feetHalo = new THREE.Mesh(
-      new THREE.RingGeometry(0.24, 0.3, 32),
-      new THREE.MeshBasicMaterial({ color: 0x75e0cf, transparent: true, opacity: 0.68, side: THREE.DoubleSide }),
-    )
-    feetHalo.rotation.x = -Math.PI / 2
-    feetHalo.position.y = 0.025
-    player.add(feetHalo)
-    player.position.set(0.05, -1.34, 2.1)
+    const { waterMaterial, stones, hearth, interactiveTargets } = buildSakhaWorld(scene, isLight)
+    const { player, legPivots, armPivots, feetHalo, basePlayerY } = buildPlayer(isLight)
     scene.add(player)
+
     const worldBounds = { minX: -7.1, maxX: 7.1, minZ: -5.8, maxZ: 4.4 }
-    const basePlayerY = -1.34
-    let jumpVelocity = 0
-    let jumpHeight = 0
-    let runHeld = false
-    let moveVector = { x: 0, y: 0 }
-    let joystickPointerId = null
+    let jumpVelocity = 0, jumpHeight = 0, runHeld = false
+    let moveVector = { x: 0, y: 0 }, joystickPointerId = null
     const joystick = map.querySelector('.sceneJoystick')
     const joystickKnob = map.querySelector('.sceneJoystickKnob')
     const runButton = map.querySelector('[data-scene-action="run"]')
     const jumpButton = map.querySelector('[data-scene-action="jump"]')
     const fullscreenButton = map.querySelector('[data-scene-action="fullscreen"]')
+
     const setJoystick = (x, y) => {
-      const magnitude = Math.hypot(x, y)
-      const scale = magnitude > 1 ? 1 / magnitude : 1
-      moveVector = { x: x * scale, y: y * scale }
-      if (joystickKnob) {
-        joystickKnob.style.transform = `translate(${moveVector.x * 34}px, ${moveVector.y * 34}px)`
-      }
+      const m = Math.hypot(x, y), s = m > 1 ? 1 / m : 1
+      moveVector = { x: x * s, y: y * s }
+      if (joystickKnob) joystickKnob.style.transform = `translate(${moveVector.x * 34}px, ${moveVector.y * 34}px)`
     }
     const startJump = () => { if (jumpHeight <= 0.001) jumpVelocity = 4.5 }
     const toggleFullscreen = async () => {
       try {
         if (document.fullscreenElement === map) await document.exitFullscreen()
         else if (map.requestFullscreen) await map.requestFullscreen()
-      } catch { /* Fullscreen can be blocked by the browser or embedded preview. */ }
+      } catch { /* */ }
     }
     const syncFullscreenLabel = () => {
       if (!fullscreenButton) return
-      const isFullscreen = document.fullscreenElement === map
-      fullscreenButton.textContent = isFullscreen ? controlCopy.exitFullscreen : controlCopy.fullscreen
-      fullscreenButton.setAttribute('aria-label', fullscreenButton.textContent)
-    }
-    const movePlayer = (direction, distance) => {
-      const vectors = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }
-      const vector = vectors[direction]
-      if (vector) setJoystick(vector[0], vector[1])
-      player.position.x = THREE.MathUtils.clamp(player.position.x + moveVector.x * distance, worldBounds.minX, worldBounds.maxX)
-      player.position.z = THREE.MathUtils.clamp(player.position.z + moveVector.y * distance, worldBounds.minZ, worldBounds.maxZ)
-      if (Math.hypot(moveVector.x, moveVector.y) > 0.05) player.rotation.y = Math.atan2(moveVector.x, moveVector.y)
-    }
-    const nearestSection = () => {
-      let nearest = null
-      let nearestDistance = Infinity
-      const worldPosition = new THREE.Vector3()
-      interactiveTargets.forEach((target) => {
-        if (!target.userData.section) return
-        target.getWorldPosition(worldPosition)
-        const distance = Math.hypot(worldPosition.x - player.position.x, worldPosition.z - player.position.z)
-        if (distance < nearestDistance) {
-          nearestDistance = distance
-          nearest = target.userData.section
-        }
-      })
-      return nearestDistance <= 1.7 ? nearest : null
+      fullscreenButton.textContent = document.fullscreenElement === map ? controlCopy.exitFullscreen : controlCopy.fullscreen
     }
     const openSection = (section) => {
       if (!section) return
-      const destination = document.getElementById(section)
-      destination?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
+      const el = document.getElementById(section)
+      if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
     }
-    const keyDirection = (key) => ({
-      ArrowUp: 'up', KeyW: 'up', w: 'up', W: 'up',
-      ArrowDown: 'down', KeyS: 'down', s: 'down', S: 'down',
-      ArrowLeft: 'left', KeyA: 'left', a: 'left', A: 'left',
-      ArrowRight: 'right', KeyD: 'right', d: 'right', D: 'right',
-    })[key] || null
-
-    const starPositions = new Float32Array(270)
-    for (let i = 0; i < 90; i += 1) {
-      starPositions[i * 3] = Math.sin(i * 127.1) * 7.2
-      starPositions[i * 3 + 1] = 1.4 + ((i * 37) % 41) / 10
-      starPositions[i * 3 + 2] = -5.5 + ((i * 19) % 30) / 10
+    const nearestSection = () => {
+      let nearest = null, dMin = Infinity
+      const wp = new THREE.Vector3()
+      interactiveTargets.forEach((obj) => {
+        obj.getWorldPosition(wp)
+        const d = Math.hypot(wp.x - player.position.x, wp.z - player.position.z)
+        if (d < dMin && d < 1.8) { dMin = d; nearest = obj.userData.section }
+      })
+      return nearest
     }
-    const starGeometry = new THREE.BufferGeometry()
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3))
-    const stars = new THREE.Points(
-      starGeometry,
-      new THREE.PointsMaterial({ color: 0xd6f5e9, size: 0.035, transparent: true, opacity: 0.82, depthWrite: false }),
-    )
-    scene.add(stars)
-
-    const aurora = new THREE.Group()
-    const auroraColors = [0x67e8cb, 0x2eb4a6, 0x5a9dba]
-    auroraColors.forEach((color, layer) => {
-      const points = []
-      for (let i = 0; i <= 18; i += 1) {
-        const x = -5.7 + i * 0.63
-        const y = 2.0 + Math.sin(i * 0.54 + layer * 0.8) * (0.48 + layer * 0.12) + layer * 0.22
-        const z = -3.4 - layer * 0.42 + Math.cos(i * 0.42 + layer) * 0.18
-        points.push(new THREE.Vector3(x, y, z))
-      }
-      const curve = new THREE.CatmullRomCurve3(points)
-      const ribbon = new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 84, 0.035 + layer * 0.012, 5, false),
-        new THREE.MeshBasicMaterial({
-          color,
-          transparent: true,
-          opacity: 0.34 - layer * 0.055,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending,
-        }),
-      )
-      aurora.add(ribbon)
-    })
-    scene.add(aurora)
 
     const raycaster = new THREE.Raycaster()
     const rayPointer = new THREE.Vector2()
@@ -517,247 +127,135 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       rayPointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1
       rayPointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1)
       raycaster.setFromCamera(rayPointer, camera)
-      const hit = raycaster.intersectObjects(interactiveTargets, false)[0]
-      return hit?.object?.userData?.section || null
+      return raycaster.intersectObjects(interactiveTargets, false)[0]?.object?.userData?.section || null
     }
-    const onSceneClick = (event) => {
-      const section = sectionAtPointer(event)
-      if (section) openSection(section)
+
+    const onKeyDown = (e) => {
+      if (!map.contains(document.activeElement) && !map.matches(':hover')) return
+      const mapKey = { ArrowUp: 'up', KeyW: 'up', w: 'up', ArrowDown: 'down', KeyS: 'down', s: 'down', ArrowLeft: 'left', KeyA: 'left', a: 'left', ArrowRight: 'right', KeyD: 'right', d: 'right' }
+      const dir = mapKey[e.key] || mapKey[e.code]
+      if (dir) { pressedDirections.add(dir); e.preventDefault() }
+      if (e.code === 'KeyE' || e.key === 'e') { openSection(nearestSection()); e.preventDefault() }
+      if (e.code === 'Space') startJump()
+      if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') runHeld = true
     }
-    const onScenePointerMove = (event) => {
-      const section = sectionAtPointer(event)
-      renderer.domElement.style.cursor = section ? 'pointer' : 'grab'
+    const onKeyUp = (e) => {
+      const mapKey = { ArrowUp: 'up', KeyW: 'up', w: 'up', ArrowDown: 'down', KeyS: 'down', s: 'down', ArrowLeft: 'left', KeyA: 'left', a: 'left', ArrowRight: 'right', KeyD: 'right', d: 'right' }
+      const dir = mapKey[e.key] || mapKey[e.code]
+      if (dir) pressedDirections.delete(dir)
+      if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') runHeld = false
     }
-    const resize = () => {
-      if (!renderer || disposed) return
-      const rect = mount.getBoundingClientRect()
-      const width = Math.max(1, rect.width)
-      const height = Math.max(1, rect.height)
-      renderer.setSize(width, height, false)
-      camera.aspect = width / height
-      camera.updateProjectionMatrix()
-      if (reduceMotion || !visible) renderer.render(scene, camera)
-    }
-    const onPointerMove = (event) => {
+    const onPointerMove = (e) => {
       const rect = map.getBoundingClientRect()
-      pointerX = ((event.clientX - rect.left) / Math.max(1, rect.width) - 0.5) * 2
-      pointerY = ((event.clientY - rect.top) / Math.max(1, rect.height) - 0.5) * 2
-      if (reduceMotion) {
-        camera.position.x = pointerX * 0.28
-        camera.position.y = 1.65 - pointerY * 0.12
-        camera.lookAt(0, 0.15, 0)
-        renderer.render(scene, camera)
-      }
+      pointerX = ((e.clientX - rect.left) / rect.width - 0.5) * 2
+      pointerY = ((e.clientY - rect.top) / rect.height - 0.5) * 2
     }
-    const onPointerLeave = () => {
-      pointerX = 0
-      pointerY = 0
-      if (reduceMotion) {
-        camera.position.set(0, 1.65, 9.5)
-        camera.lookAt(0, 0.15, 0)
-        renderer.render(scene, camera)
-      }
+    const onJoystickDown = (e) => { joystickPointerId = e.pointerId; joystick?.setPointerCapture?.(e.pointerId); e.preventDefault() }
+    const onJoystickMove = (e) => {
+      if (joystickPointerId !== e.pointerId || !joystick) return
+      const rect = joystick.getBoundingClientRect(), r = rect.width / 2
+      setJoystick((e.clientX - (rect.left + r)) / r, (e.clientY - (rect.top + r)) / r)
     }
-    map.tabIndex = map.tabIndex >= 0 ? map.tabIndex : 0
-    const onKeyDown = (event) => {
-      const direction = keyDirection(event.key)
-      const active = document.activeElement
-      const isEditing = active && (['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) || active.isContentEditable)
-      if (isEditing || !(map.contains(active) || map.matches(':hover'))) return
-      if (direction) {
-        event.preventDefault()
-        pressedDirections.add(direction)
-        return
-      }
-      if (event.code === 'Space' && !event.repeat) { event.preventDefault(); startJump(); return }
-      if ((event.key === 'e' || event.key === 'E') && !event.repeat) {
-        event.preventDefault()
-        openSection(nearestSection())
-      }
-    }
-    const onKeyUp = (event) => {
-      const direction = keyDirection(event.key)
-      if (direction) pressedDirections.delete(direction)
-    }
-    const onJoystickDown = (event) => {
-      if (!joystick) return
-      event.preventDefault()
-      joystickPointerId = event.pointerId
-      joystick.setPointerCapture?.(event.pointerId)
-      onJoystickMove(event)
-    }
-    const onJoystickMove = (event) => {
-      if (joystickPointerId !== event.pointerId || !joystick) return
-      const rect = joystick.getBoundingClientRect()
-      const radius = Math.max(1, Math.min(rect.width, rect.height) * 0.38)
-      setJoystick((event.clientX - (rect.left + rect.width / 2)) / radius, (event.clientY - (rect.top + rect.height / 2)) / radius)
-    }
-    const onJoystickUp = (event) => {
-      if (joystickPointerId !== event.pointerId) return
-      joystickPointerId = null
-      setJoystick(0, 0)
-    }
-    const onRunDown = (event) => { event.preventDefault(); runHeld = true; runButton?.classList.add('is-active') }
-    const onRunUp = () => { runHeld = false; runButton?.classList.remove('is-active') }
-    const onJump = (event) => { event.preventDefault(); startJump() }
-    const onFullscreenClick = (event) => { event.preventDefault(); toggleFullscreen() }
-    const onPadDown = (event) => {
-      const control = event.target.closest?.('[data-scene-dir]')
-      if (!control || !map.contains(control)) return
-      event.preventDefault()
-      const direction = control.dataset.sceneDir
-      pressedDirections.add(direction)
-    }
-    const onPadUp = (event) => {
-      const control = event.target.closest?.('[data-scene-dir]')
-      if (control?.dataset?.sceneDir) pressedDirections.delete(control.dataset.sceneDir)
-    }
-    const onPadClick = (event) => {
-      const action = event.target.closest?.('[data-scene-action="interact"]')
-      if (action) {
-        event.preventDefault()
-        openSection(nearestSection())
-      }
-    }
-    const clearDirections = () => { pressedDirections.clear(); runHeld = false; setJoystick(0, 0) }
+    const onJoystickUp = (e) => { if (joystickPointerId === e.pointerId) { joystickPointerId = null; setJoystick(0, 0) } }
+    const onPadDown = (e) => { const c = e.target.closest?.('[data-scene-dir]'); if (c && map.contains(c)) { e.preventDefault(); pressedDirections.add(c.dataset.sceneDir) } }
+    const onPadUp = (e) => { const c = e.target.closest?.('[data-scene-dir]'); if (c?.dataset?.sceneDir) pressedDirections.delete(c.dataset.sceneDir) }
+
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    map.addEventListener('pointermove', onPointerMove, { passive: true })
+    map.addEventListener('pointerleave', () => { pointerX = 0; pointerY = 0 }, { passive: true })
     joystick?.addEventListener('pointerdown', onJoystickDown)
     joystick?.addEventListener('pointermove', onJoystickMove)
     joystick?.addEventListener('pointerup', onJoystickUp)
     joystick?.addEventListener('pointercancel', onJoystickUp)
-    runButton?.addEventListener('pointerdown', onRunDown)
-    runButton?.addEventListener('pointerup', onRunUp)
-    runButton?.addEventListener('pointercancel', onRunUp)
-    runButton?.addEventListener('pointerleave', onRunUp)
-    jumpButton?.addEventListener('click', onJump)
-    fullscreenButton?.addEventListener('click', onFullscreenClick)
+    runButton?.addEventListener('pointerdown', (e) => { e.preventDefault(); runHeld = true; runButton.classList.add('is-active') })
+    runButton?.addEventListener('pointerup', () => { runHeld = false; runButton.classList.remove('is-active') })
+    runButton?.addEventListener('pointerleave', () => { runHeld = false; runButton.classList.remove('is-active') })
+    jumpButton?.addEventListener('click', (e) => { e.preventDefault(); startJump() })
+    fullscreenButton?.addEventListener('click', (e) => { e.preventDefault(); toggleFullscreen() })
     document.addEventListener('fullscreenchange', syncFullscreenLabel)
     syncFullscreenLabel()
-    map.addEventListener('pointermove', onPointerMove, { passive: true })
-    map.addEventListener('pointerleave', onPointerLeave, { passive: true })
     map.addEventListener('pointerdown', onPadDown)
     map.addEventListener('pointerup', onPadUp)
     map.addEventListener('pointercancel', onPadUp)
-    map.addEventListener('click', onPadClick)
-    renderer.domElement.addEventListener('click', onSceneClick)
-    renderer.domElement.addEventListener('pointermove', onScenePointerMove, { passive: true })
-    window.addEventListener('keydown', onKeyDown)
-    window.addEventListener('keyup', onKeyUp)
-    window.addEventListener('blur', clearDirections)
-    window.addEventListener('pointerup', clearDirections)
-    window.addEventListener('pointercancel', clearDirections)
-    window.addEventListener('resize', resize, { passive: true })
-    if ('ResizeObserver' in window) {
-      resizeObserver = new ResizeObserver(resize)
-      resizeObserver.observe(mount)
+    map.addEventListener('click', (e) => { if (e.target.closest?.('[data-scene-action="interact"]')) openSection(nearestSection()) })
+    renderer.domElement.addEventListener('click', (e) => { const s = sectionAtPointer(e); if (s) openSection(s) })
+    renderer.domElement.addEventListener('pointermove', (e) => { renderer.domElement.style.cursor = sectionAtPointer(e) ? 'pointer' : 'grab' })
+
+    const resize = () => {
+      const w = mount.clientWidth || 1, h = mount.clientHeight || 1
+      camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false)
     }
     resize()
-    renderer.render(scene, camera)
-    setSceneReady(true)
+    const ro = new ResizeObserver(resize); ro.observe(mount)
+    let vo
+    if ('IntersectionObserver' in window) {
+      vo = new IntersectionObserver((entries) => { visible = entries.some((e) => e.isIntersecting) }, { threshold: 0.01 })
+      vo.observe(map)
+    }
 
-    const animate = (timestamp = performance.now()) => {
+    const animate = (time) => {
+      frameId = requestAnimationFrame(animate)
       if (disposed || !visible) return
-      frameId = window.requestAnimationFrame(animate)
-      const delta = lastFrame ? Math.min((timestamp - lastFrame) / 1000, 0.05) : 0
-      lastFrame = timestamp
-      const keyboardX = Number(pressedDirections.has('right')) - Number(pressedDirections.has('left'))
-      const keyboardZ = Number(pressedDirections.has('down')) - Number(pressedDirections.has('up'))
-      const directionX = Math.abs(moveVector.x) > 0.03 ? moveVector.x : keyboardX
-      const directionZ = Math.abs(moveVector.y) > 0.03 ? moveVector.y : keyboardZ
-      const magnitude = Math.hypot(directionX, directionZ)
-      const isMoving = magnitude > 0.04
-      if (isMoving) {
-        const distance = (runHeld ? 5.6 : 3.0) * delta
-        player.position.x = THREE.MathUtils.clamp(player.position.x + directionX / Math.max(1, magnitude) * distance, worldBounds.minX, worldBounds.maxX)
-        player.position.z = THREE.MathUtils.clamp(player.position.z + directionZ / Math.max(1, magnitude) * distance, worldBounds.minZ, worldBounds.maxZ)
-        player.rotation.y = Math.atan2(directionX, directionZ)
+      const dt = Math.min(0.05, (time - lastFrame) / 1000 || 0.016)
+      lastFrame = time
+      const t = time * 0.001
+      let dx = moveVector.x, dz = moveVector.y
+      if (pressedDirections.has('left')) dx -= 1
+      if (pressedDirections.has('right')) dx += 1
+      if (pressedDirections.has('up')) dz -= 1
+      if (pressedDirections.has('down')) dz += 1
+      const len = Math.hypot(dx, dz)
+      if (len > 0.01) {
+        dx /= len; dz /= len
+        const speed = (runHeld ? 3.2 : 1.7) * dt
+        player.position.x = THREE.MathUtils.clamp(player.position.x + dx * speed, worldBounds.minX, worldBounds.maxX)
+        player.position.z = THREE.MathUtils.clamp(player.position.z + dz * speed, worldBounds.minZ, worldBounds.maxZ)
+        player.rotation.y = Math.atan2(dx, dz)
+        const swing = Math.sin(t * (runHeld ? 14 : 9)) * 0.35
+        legPivots[0].rotation.x = swing; legPivots[1].rotation.x = -swing
+        armPivots[0].rotation.x = -swing * 0.6; armPivots[1].rotation.x = swing * 0.6
+      } else {
+        legPivots.forEach((p) => { p.rotation.x *= 0.85 })
+        armPivots.forEach((p) => { p.rotation.x *= 0.85 })
       }
-      if (jumpVelocity !== 0 || jumpHeight > 0) {
-        jumpHeight = Math.max(0, jumpHeight + jumpVelocity * delta)
-        jumpVelocity -= 11.5 * delta
-        if (jumpHeight === 0) jumpVelocity = 0
-      }
+      jumpVelocity -= 14 * dt
+      jumpHeight = Math.max(0, jumpHeight + jumpVelocity * dt)
+      if (jumpHeight <= 0) { jumpHeight = 0; jumpVelocity = 0 }
       player.position.y = basePlayerY + jumpHeight
-      const gait = isMoving ? Math.sin(timestamp * 0.013 * (runHeld ? 1.55 : 1)) : 0
-      const gaitAmount = isMoving ? (runHeld ? 0.82 : 0.48) : 0
-      legPivots.forEach((pivot, index) => { pivot.rotation.x = gait * gaitAmount * (index === 0 ? 1 : -1) })
-      armPivots.forEach((pivot, index) => { pivot.rotation.x = -gait * gaitAmount * (index === 0 ? 1 : -1) })
-      torso.rotation.z = isMoving ? Math.sin(timestamp * 0.013 * (runHeld ? 1.55 : 1)) * (runHeld ? 0.055 : 0.025) : 0
-      feetHalo.material.opacity = jumpHeight > 0 ? 0.3 : 0.68
-      const time = performance.now() * 0.001
-      waterMaterial.uniforms.uTime.value = time
-      aurora.position.x = Math.sin(time * 0.19) * 0.16
-      aurora.rotation.y = Math.sin(time * 0.12) * 0.025
-      auroraLight.intensity = 2.1 + Math.sin(time * 0.7) * 0.35
-      hearth.rotation.y += 0.004
-      stones.forEach(({ mesh, baseY, phase }) => {
-        mesh.position.y = baseY + Math.sin(time * 0.8 + phase) * 0.045
-        mesh.rotation.y += 0.003
-      })
-      camera.position.x += (player.position.x * 0.12 + pointerX * 0.25 - camera.position.x) * 0.025
-      camera.position.y += (1.65 - pointerY * 0.13 - camera.position.y) * 0.025
-      camera.position.z += (9.5 + (player.position.z - 2.1) * 0.08 - camera.position.z) * 0.025
+      if (!reduceMotion) {
+        waterMaterial.uniforms.uTime.value = t
+        stones.forEach((s) => { s.mesh.position.y = s.baseY + Math.sin(t * 1.4 + s.phase) * 0.04; s.mesh.rotation.y += dt * 0.25 })
+        hearth.rotation.y += dt * 0.8
+        hearth.rotation.x = Math.sin(t * 2.2) * 0.08
+        feetHalo.material.opacity = 0.45 + Math.sin(t * 2.5) * 0.2
+      }
+      camera.position.x += (player.position.x * 0.12 + pointerX * 0.25 - camera.position.x) * 0.06
+      camera.position.y += (1.65 + jumpHeight * 0.15 - camera.position.y) * 0.06
+      camera.position.z += (9.5 + (player.position.z - 2.1) * 0.08 - camera.position.z) * 0.06
       camera.lookAt(player.position.x * 0.12, 0.15, (player.position.z - 2.1) * 0.12)
       renderer.render(scene, camera)
     }
-
-    if ('IntersectionObserver' in window) {
-      visibilityObserver = new IntersectionObserver((entries) => {
-        visible = Boolean(entries[0]?.isIntersecting)
-        if (visible && !frameId) frameId = window.requestAnimationFrame(animate)
-        if (!visible && frameId) {
-          window.cancelAnimationFrame(frameId)
-          frameId = 0
-        }
-        if (visible) renderer.render(scene, camera)
-      }, { threshold: 0.02 })
-      visibilityObserver.observe(map)
-    } else {
-      frameId = window.requestAnimationFrame(animate)
-    }
+    setSceneReady(true)
+    frameId = requestAnimationFrame(animate)
 
     return () => {
       disposed = true
-      if (frameId) window.cancelAnimationFrame(frameId)
-      visibilityObserver?.disconnect()
-      resizeObserver?.disconnect()
-      window.removeEventListener('resize', resize)
+      cancelAnimationFrame(frameId)
+      ro.disconnect(); vo?.disconnect()
       window.removeEventListener('keydown', onKeyDown)
       window.removeEventListener('keyup', onKeyUp)
-      window.removeEventListener('blur', clearDirections)
-      window.removeEventListener('pointerup', clearDirections)
-      window.removeEventListener('pointercancel', clearDirections)
       document.removeEventListener('fullscreenchange', syncFullscreenLabel)
-      joystick?.removeEventListener('pointerdown', onJoystickDown)
-      joystick?.removeEventListener('pointermove', onJoystickMove)
-      joystick?.removeEventListener('pointerup', onJoystickUp)
-      joystick?.removeEventListener('pointercancel', onJoystickUp)
-      runButton?.removeEventListener('pointerdown', onRunDown)
-      runButton?.removeEventListener('pointerup', onRunUp)
-      runButton?.removeEventListener('pointercancel', onRunUp)
-      runButton?.removeEventListener('pointerleave', onRunUp)
-      jumpButton?.removeEventListener('click', onJump)
-      fullscreenButton?.removeEventListener('click', onFullscreenClick)
-      map.removeEventListener('pointermove', onPointerMove)
-      map.removeEventListener('pointerleave', onPointerLeave)
-      map.removeEventListener('pointerdown', onPadDown)
-      map.removeEventListener('pointerup', onPadUp)
-      map.removeEventListener('pointercancel', onPadUp)
-      map.removeEventListener('click', onPadClick)
-      renderer.domElement.removeEventListener('click', onSceneClick)
-      renderer.domElement.removeEventListener('pointermove', onScenePointerMove)
-      const geometries = new Set()
-      const materials = new Set()
-      scene.traverse((object) => {
-        if (object.geometry) geometries.add(object.geometry)
-        if (Array.isArray(object.material)) object.material.forEach((material) => materials.add(material))
-        else if (object.material) materials.add(object.material)
+      const geos = new Set(), mats = new Set()
+      scene.traverse((o) => {
+        if (o.geometry) geos.add(o.geometry)
+        if (Array.isArray(o.material)) o.material.forEach((m) => mats.add(m))
+        else if (o.material) mats.add(o.material)
       })
-      geometries.forEach((geometry) => geometry.dispose())
-      materials.forEach((material) => material.dispose())
-      renderer.dispose()
-      renderer.domElement.remove()
+      geos.forEach((g) => g.dispose()); mats.forEach((m) => m.dispose())
+      renderer.dispose(); renderer.domElement.remove()
     }
-  }, [])
+  }, [theme])
 
   return (
     <>
@@ -765,7 +263,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       {!sceneReady && <div className="sceneLoading" role="status"><img src={import.meta.env.BASE_URL + 'logo-pavel.svg'} alt=""/><span>{loadingLabel}</span></div>}
       <div className="sceneControls" aria-label={controlCopy.label}>
         <span className="sceneControlsHint">{controlCopy.hint}</span>
-        <button type="button" className="sceneFullscreen" data-scene-action="fullscreen" aria-label={controlCopy.fullscreen}>⛶ {controlCopy.fullscreen}</button>
+        <button type="button" className="sceneFullscreen" data-scene-action="fullscreen">⛶ {controlCopy.fullscreen}</button>
         <div className="sceneJoystick" role="group" aria-label={controlCopy.label}>
           <span className="sceneJoystickRing"><span className="sceneJoystickKnob" /></span>
         </div>
