@@ -69,12 +69,10 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
     const hearthLight = new THREE.PointLight(0xffc77b, 0.55, 4.2)
     hearthLight.position.set(0, -0.1, 1.2)
     scene.add(hearthLight)
-    if (true) {
-      const rim = new THREE.DirectionalLight(0xb5e0d4, 0.6)
-      rim.position.set(-6.5, 3.2, -4); scene.add(rim)
-      const bounce = new THREE.DirectionalLight(0xf5e6c8, 0.35)
-      bounce.position.set(2, 1.5, 6); scene.add(bounce)
-    }
+    const rim = new THREE.DirectionalLight(0xb5e0d4, 0.6)
+    rim.position.set(-6.5, 3.2, -4); scene.add(rim)
+    const bounce = new THREE.DirectionalLight(0xf5e6c8, 0.35)
+    bounce.position.set(2, 1.5, 6); scene.add(bounce)
 
     const { waterMaterial, stones, hearth, interactiveTargets } = buildSakhaWorld(scene, isLight)
     const { player, legPivots, armPivots, feetHalo, basePlayerY } = buildPlayer(isLight)
