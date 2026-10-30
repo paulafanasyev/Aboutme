@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { buildSakhaWorld, buildPlayer } from './sakhaWorldFactory'
+import { buildSakhaWorld } from './sakhaWorldFactory'
+import { buildPlayer } from './sakhaPlayer'
 
 export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
   const mountRef = useRef(null)
@@ -212,12 +213,12 @@ export default function SakhaThreeScene({ lang = 'ru', theme = 'dark' }) {
         player.position.x = THREE.MathUtils.clamp(player.position.x + dx * speed, worldBounds.minX, worldBounds.maxX)
         player.position.z = THREE.MathUtils.clamp(player.position.z + dz * speed, worldBounds.minZ, worldBounds.maxZ)
         player.rotation.y = Math.atan2(dx, dz)
-        const swing = Math.sin(t * (runHeld ? 14 : 9)) * 0.35
+        const swing = Math.sin(t * (runHeld ? 14 : 9)) * 0.4
         legPivots[0].rotation.x = swing; legPivots[1].rotation.x = -swing
-        armPivots[0].rotation.x = -swing * 0.6; armPivots[1].rotation.x = swing * 0.6
+        armPivots[0].rotation.x = 0.12 - swing * 0.7; armPivots[1].rotation.x = 0.12 + swing * 0.7
       } else {
         legPivots.forEach((p) => { p.rotation.x *= 0.85 })
-        armPivots.forEach((p) => { p.rotation.x *= 0.85 })
+        armPivots.forEach((p, i) => { p.rotation.x = THREE.MathUtils.lerp(p.rotation.x, 0.12, 0.12) })
       }
       jumpVelocity -= 14 * dt
       jumpHeight = Math.max(0, jumpHeight + jumpVelocity * dt)
