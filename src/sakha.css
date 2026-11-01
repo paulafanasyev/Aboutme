@@ -280,7 +280,7 @@ body { color: var(--sakha-ice); }
   position: relative;
   isolation: isolate;
   min-width: 0;
-  min-height: 300px;
+  min-height: min(72vh, 680px);
   overflow: hidden;
   perspective: 1100px;
   border: 1px solid rgba(117, 224, 207, .35);
@@ -469,6 +469,7 @@ body { color: var(--sakha-ice); }
   display: block;
   width: 100%;
   height: 100%;
+  pointer-events: auto;
 }
 .site .threeSceneMount[data-fallback="true"] { display: none; }
 .site .alasLandmark { z-index: 2; }
