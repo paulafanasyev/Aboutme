@@ -36,7 +36,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0x071923, 14, 42)
+    scene.fog = new THREE.Fog(0xc5e4f5, 22, 58)
     const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 120)
     camera.position.set(0.15, 2.35, 7.4)
     camera.lookAt(0, 0.2, 1.2)
@@ -56,7 +56,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     }
 
     if (controls) controls.hidden = false
-    renderer.setClearColor(0x000000, 0)
+    renderer.setClearColor(0x8ec6ea, 1)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.shadowMap.enabled = true
@@ -68,8 +68,8 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     mount.dataset.fallback = 'false'
     mount.appendChild(renderer.domElement)
 
-    scene.add(new THREE.HemisphereLight(0xb7eee2, 0x071923, 1.6))
-    const moon = new THREE.DirectionalLight(0xd0f8ed, 1.55)
+    scene.add(new THREE.HemisphereLight(0xfff4dc, 0x6f9a48, 1.25))
+    const moon = new THREE.DirectionalLight(0xfff1d0, 2.05)
     moon.position.set(-4, 8, 5)
     moon.castShadow = true
     moon.shadow.mapSize.set(2048, 2048)
@@ -82,10 +82,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     moon.shadow.bias = -0.0002
     moon.shadow.camera.updateProjectionMatrix()
     scene.add(moon)
-    const auroraLight = new THREE.PointLight(0x48d6bd, 2.4, 15)
-    auroraLight.position.set(1.6, 3.4, -1.8)
-    scene.add(auroraLight)
-    const hearthLight = new THREE.PointLight(0xe9b86e, 1.5, 4)
+        const hearthLight = new THREE.PointLight(0xe9b86e, 1.5, 4)
     hearthLight.position.set(0, -0.1, 1.2)
     scene.add(hearthLight)
 
@@ -94,7 +91,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     const groundRings = 30
     const groundPositions = [0, 0, 0]
     const groundColors = []
-    const centerGroundColor = new THREE.Color(0x1b5147)
+    const centerGroundColor = new THREE.Color(0x8ed06a)
     groundColors.push(centerGroundColor.r, centerGroundColor.g, centerGroundColor.b)
     for (let ring = 1; ring <= groundRings; ring += 1) {
       const radius = 16.5 * ring / groundRings
@@ -104,8 +101,8 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
         const z = Math.sin(angle) * radius
         const elevation = (Math.sin(x * 1.55 + z * 0.62) * 0.065 + Math.cos(z * 2.0 - x * 0.52) * 0.035) * (1 - ring / (groundRings * 1.35))
         groundPositions.push(x, z, elevation)
-        const color = new THREE.Color(0x1b5147).lerp(new THREE.Color(0x0a2830), Math.min(0.8, radius / 11))
-        color.lerp(new THREE.Color(0x4a7b5a), Math.max(0, elevation) * 1.5)
+        const color = new THREE.Color(0x7ec85a).lerp(new THREE.Color(0xc9dd8a), Math.min(0.85, radius / 16))
+        color.lerp(new THREE.Color(0xf0e2a8), Math.max(0, elevation) * 0.8)
         groundColors.push(color.r, color.g, color.b)
       }
     }
@@ -160,7 +157,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     const waterMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uDeep: { value: new THREE.Color(0x0c3b45) },
+        uDeep: { value: new THREE.Color(0x1d6f92) },
         uGlint: { value: new THREE.Color(0x9cebd9) },
       },
       vertexShader: [
@@ -207,7 +204,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
 
 
     const mountainMaterial = new THREE.MeshStandardMaterial({
-      color: 0x123e43,
+      color: 0xb7c98a,
       roughness: 1,
       flatShading: true,
     })
@@ -230,7 +227,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
 
     const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x815d39, roughness: 1 })
     const pineMaterial = new THREE.MeshStandardMaterial({
-      color: 0x0a292e,
+      color: 0x3c8f46,
       roughness: 1,
       flatShading: true,
     })
@@ -287,38 +284,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
         }
       })
     }
-    const posterBoards = []
-    const makePoster = (title) => {
-      const canvas = document.createElement('canvas')
-      canvas.width = 640
-      canvas.height = 400
-      const g = canvas.getContext('2d')
-      g.fillStyle = '#0b2830'
-      g.fillRect(0, 0, 640, 400)
-      g.strokeStyle = '#e9b86e'
-      g.lineWidth = 10
-      g.strokeRect(18, 18, 604, 364)
-      g.strokeStyle = '#75e0cf'
-      g.lineWidth = 2
-      g.strokeRect(32, 32, 576, 336)
-      g.fillStyle = '#f6f1e6'
-      g.textAlign = 'center'
-      g.textBaseline = 'middle'
-      let size = 54
-      g.font = `700 ${size}px Georgia, serif`
-      while (g.measureText(title).width > 520 && size > 28) {
-        size -= 2
-        g.font = `700 ${size}px Georgia, serif`
-      }
-      g.fillText(title, 320, 188)
-      g.font = '600 18px Georgia, serif'
-      g.fillStyle = '#9cebd9'
-      g.fillText('АЛГЫС КЫТЫЛЫТ', 320, 250)
-      const tex = new THREE.CanvasTexture(canvas)
-      tex.colorSpace = THREE.SRGBColorSpace
-      return tex
-    }
-    const addSerge = (x, z, scale = 1, meta = { section: 'projects', href: '', title: '', image: '' }) => {
+    const addSerge = (x, z, scale = 1, meta = { section: 'projects', href: '', title: '' }) => {
       const serge = new THREE.Group()
       const post = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.078, 2.05, 12), sergeMaterial)
       post.position.y = -0.32
@@ -337,22 +303,6 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       finial.position.set(0.08, 0.86, 0)
       finial.rotation.z = -0.55
       serge.add(finial)
-      const board = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.92, 0.58),
-        new THREE.MeshBasicMaterial({ map: makePoster(meta.title || 'Проект'), side: THREE.DoubleSide, toneMapped: false }),
-      )
-      board.position.set(0, 0.35, 0.01)
-      serge.add(board)
-      posterBoards.push(board)
-      if (meta.image) {
-        const loader = new THREE.TextureLoader()
-        loader.setCrossOrigin('anonymous')
-        loader.load(meta.image, (tex) => {
-          tex.colorSpace = THREE.SRGBColorSpace
-          board.material.map = tex
-          board.material.needsUpdate = true
-        })
-      }
       serge.position.set(x, 0, z)
       serge.scale.setScalar(scale)
       const face = Math.atan2(-x, -z)
@@ -361,12 +311,12 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       registerInteractive(serge, meta)
     }
     const exhibits = [
-      { title: 'Я-Зарядка', href: 'https://github.com/paulafanasyev/ya-zaryadka-ai', image: `${import.meta.env.BASE_URL}projects/ya-zaryadka-robot.png`, section: 'projects' },
-      { title: 'ИИ-репетитор', href: 'https://github.com/paulafanasyev/ai-english-teacher', image: '', section: 'projects' },
-      { title: 'Мост', href: 'https://github.com/paulafanasyev/bridges', image: 'https://raw.githubusercontent.com/paulafanasyev/Bridges/main/designs/preview-voice-call-interface.png', section: 'projects' },
-      { title: 'Глаз Бога', href: 'https://github.com/paulafanasyev', image: '', section: 'projects' },
-      { title: 'Мир Самозанятых', href: 'https://github.com/paulafanasyev/mir-samozanyatykh-', image: 'https://raw.githubusercontent.com/paulafanasyev/mir-samozanyatykh-/main/src/screenshots_jpg/svetlana.jpg', section: 'projects' },
-      { title: 'Светлана', href: 'https://github.com/paulafanasyev/Mobile-agent-russkiy-termuxMCP-OX', image: 'https://raw.githubusercontent.com/paulafanasyev/mir-samozanyatykh-/main/src/mobile/assets/images/svetlana-face.png', section: 'projects' },
+      { title: 'Я-Зарядка', href: 'https://github.com/paulafanasyev/ya-zaryadka-ai', section: 'projects' },
+      { title: 'ИИ-репетитор', href: 'https://github.com/paulafanasyev/ai-english-teacher', section: 'projects' },
+      { title: 'Мост', href: 'https://github.com/paulafanasyev/bridges', section: 'projects' },
+      { title: 'Глаз Бога', href: 'https://github.com/paulafanasyev', section: 'projects' },
+      { title: 'Мир Самозанятых', href: 'https://github.com/paulafanasyev/mir-samozanyatykh-', section: 'projects' },
+      { title: 'Светлана', href: 'https://github.com/paulafanasyev/Mobile-agent-russkiy-termuxMCP-OX', section: 'projects' },
     ]
     exhibits.forEach((item, index) => {
       const angle = -Math.PI / 2 + (index / exhibits.length) * Math.PI * 2
@@ -375,7 +325,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     })
     const grassGeo = new THREE.PlaneGeometry(0.16, 0.42, 1, 3)
     grassGeo.translate(0, 0.21, 0)
-    const grassMat = new THREE.MeshStandardMaterial({ color: 0x1f6a52, roughness: 1, side: THREE.DoubleSide })
+    const grassMat = new THREE.MeshStandardMaterial({ color: 0x4ea24a, roughness: 1, side: THREE.DoubleSide })
     const grass = new THREE.InstancedMesh(grassGeo, grassMat, 420)
     const grassDummy = new THREE.Object3D()
     for (let i = 0; i < 420; i += 1) {
@@ -390,7 +340,7 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
     grass.instanceMatrix.needsUpdate = true
     scene.add(grass)
     const birchMat = new THREE.MeshStandardMaterial({ color: 0xf3efe6, roughness: 0.8 })
-    const leafMat = new THREE.MeshStandardMaterial({ color: 0x2f6d4a, roughness: 1 })
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0x67b85a, roughness: 1 })
     for (let i = 0; i < 16; i += 1) {
       const ang = (i / 16) * Math.PI * 2
       const r = 9.2 + (i % 3) * 0.45
@@ -590,45 +540,6 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       ArrowRight: 'right', KeyD: 'right', d: 'right', D: 'right',
     })[key] || null
 
-    const starPositions = new Float32Array(270)
-    for (let i = 0; i < 90; i += 1) {
-      starPositions[i * 3] = Math.sin(i * 127.1) * 7.2
-      starPositions[i * 3 + 1] = 1.4 + ((i * 37) % 41) / 10
-      starPositions[i * 3 + 2] = -5.5 + ((i * 19) % 30) / 10
-    }
-    const starGeometry = new THREE.BufferGeometry()
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3))
-    const stars = new THREE.Points(
-      starGeometry,
-      new THREE.PointsMaterial({ color: 0xd6f5e9, size: 0.035, transparent: true, opacity: 0.82, depthWrite: false }),
-    )
-    scene.add(stars)
-
-    const aurora = new THREE.Group()
-    const auroraColors = [0x67e8cb, 0x2eb4a6, 0x5a9dba]
-    auroraColors.forEach((color, layer) => {
-      const points = []
-      for (let i = 0; i <= 18; i += 1) {
-        const x = -5.7 + i * 0.63
-        const y = 2.0 + Math.sin(i * 0.54 + layer * 0.8) * (0.48 + layer * 0.12) + layer * 0.22
-        const z = -3.4 - layer * 0.42 + Math.cos(i * 0.42 + layer) * 0.18
-        points.push(new THREE.Vector3(x, y, z))
-      }
-      const curve = new THREE.CatmullRomCurve3(points)
-      const ribbon = new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 84, 0.035 + layer * 0.012, 5, false),
-        new THREE.MeshBasicMaterial({
-          color,
-          transparent: true,
-          opacity: 0.34 - layer * 0.055,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending,
-        }),
-      )
-      aurora.add(ribbon)
-    })
-    scene.add(aurora)
-
     const raycaster = new THREE.Raycaster()
     const rayPointer = new THREE.Vector2()
     const sectionAtPointer = (event) => {
@@ -805,16 +716,10 @@ export default function SakhaThreeScene({ lang = 'ru' }) {
       feetHalo.material.opacity = jumpHeight > 0 ? 0.3 : 0.68
       const time = performance.now() * 0.001
       waterMaterial.uniforms.uTime.value = time
-      aurora.position.x = Math.sin(time * 0.19) * 0.16
-      aurora.rotation.y = Math.sin(time * 0.12) * 0.025
-      auroraLight.intensity = 2.1 + Math.sin(time * 0.7) * 0.35
       hearth.rotation.y += 0.004
       stones.forEach(({ mesh, baseY, phase }) => {
         mesh.position.y = baseY + Math.sin(time * 0.8 + phase) * 0.045
         mesh.rotation.y += 0.003
-      })
-      posterBoards.forEach((board) => {
-        board.lookAt(camera.position.x, board.getWorldPosition(new THREE.Vector3()).y, camera.position.z)
       })
       const yaw = player.rotation.y
       const camX = player.position.x - Math.sin(yaw) * 3.15 + pointerX * 0.18
