@@ -1487,8 +1487,9 @@ function createGame(stage, getLang, labels) {
   startFrames();
 
   if ("ResizeObserver" in window) {
-    new ResizeObserver(() => {
+    const ro = new ResizeObserver(() => {
       resize();
-    }).observe(stage);
+    });
+    ro.observe(stage);
   }
 }
