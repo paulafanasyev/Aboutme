@@ -1,7 +1,7 @@
 /* Three-world diagram: a small tablist with roving focus,
    a cross-fade panel and language-aware content. */
 
-import { WORLDS } from "./content.js";
+import { WORLDS } from "./content.v2.v2.js";
 
 /* One real photograph per world. The place names and the credits are proper
    nouns, so they stay the same in every language; the alt text is not a proper

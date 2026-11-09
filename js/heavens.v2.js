@@ -2,7 +2,7 @@
    perspective projection on a 2D canvas, no libraries, no WebGL.
    Fly through the hoops of the nine heavens; each four hoops is one heaven. */
 
-import { pluck, isSoundEnabled } from "./audio.js";
+import { pluck, isSoundEnabled } from "./audio.v2.js";
 
 const FOCAL = 620;
 const RING_STEP = 300;

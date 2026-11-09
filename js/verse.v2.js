@@ -1,7 +1,7 @@
 /* Recitation: eight lines, a speaking voice (when the browser has one),
    a timed visual fallback, progress ring and a responsive wave. */
 
-import { pluck, isSoundEnabled, setDuck } from "./audio.js";
+import { pluck, isSoundEnabled, setDuck } from "./audio.v2.js";
 
 const LABELS = {
   ru: {

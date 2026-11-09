@@ -1,7 +1,7 @@
 /* The craft orbit: 24 chips placed on three rings,
    with a live caption that explains each tool. */
 
-import { CRAFT } from "./content.js";
+import { CRAFT } from "./content.v2.v2.js";
 
 export function initCraft({ getLang }) {
   const orbit = document.getElementById("orbit");

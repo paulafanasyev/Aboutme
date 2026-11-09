@@ -1,5 +1,5 @@
-import { SAH, SAH_WORLDS, SAH_CRAFT } from "./lang-sah.js";
-import { VI, VI_WORLDS, VI_CRAFT } from "./lang-vi.js";
+import { SAH, SAH_WORLDS, SAH_CRAFT } from "./lang-sah.v2.js";
+import { VI, VI_WORLDS, VI_CRAFT } from "./lang-vi.v2.js";
 
 export const EN = {
   pageTitle: "Pavel Afanasyev — Full-Stack Developer | Web, Mobile, AI",

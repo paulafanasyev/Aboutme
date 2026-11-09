@@ -7,7 +7,7 @@
    one thing a jaw harp can do. The tape keeps running between presses, so each
    hold continues the same performance rather than restarting it. */
 
-import { getAudioContext } from "./audio.js";
+import { getAudioContext } from "./audio.v2.js";
 
 const SRC = "assets/audio/khomus-real.wav";
 const REED = 73;

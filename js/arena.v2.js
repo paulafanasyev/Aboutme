@@ -1,4 +1,4 @@
-import { pluck, isSoundEnabled } from "./audio.js";
+import { pluck, isSoundEnabled } from "./audio.v2.js";
 
 const TEXT = {
   ru: {
