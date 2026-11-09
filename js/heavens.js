@@ -1738,12 +1738,16 @@ export function initHeavens({ getLang }) {
   }
 
   function start() {
+    console.log("[heavens] start() called");
     stopIdle();
+    console.log("[heavens] stopIdle() done");
     resetRun();
+    console.log("[heavens] resetRun() done");
     phase = "play";
     running = true;
     last = performance.now();
     resize();
+    console.log("[heavens] resize() done, canvas:", canvas.width, canvas.height);
     stage.classList.add("is-live");
     document.body.classList.add("heavens-playing");
     /* The card holding the start button is about to leave the layout. If nothing
@@ -1821,9 +1825,13 @@ export function initHeavens({ getLang }) {
   }
 
   startBtn.addEventListener("click", () => {
+    console.log("[heavens] Start button clicked, phase:", phase);
     stopIdle();
     if (phase === "pause") resume();
-    else start();
+    else {
+      console.log("[heavens] Calling start()");
+      start();
+    }
   });
 
   /* The field is short, and a cursor that grazes its edge is the player asking
