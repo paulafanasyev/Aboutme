@@ -1946,5 +1946,12 @@ export function initHeavens({ getLang }) {
   draw();
   startIdle();
 
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(() => {
+      resize();
+      if (!running) draw();
+    }).observe(stage);
+  }
+
   return { start, pause, resume };
 }
