@@ -8,6 +8,7 @@
    inline script in the head still drops `no-js`, so the chrome appears either
    way and nothing flickers. */
 document.documentElement.classList.add("has-js");
+window.appJsLoaded = true;
 
 import { TRANSLATIONS } from "./content.js";
 import { initHero } from "./hero.js";
@@ -441,10 +442,17 @@ function init() {
 
   /* ---------- modules ---------- */
 
+  console.log("[app] Initializing modules...");
+  window.appInitStarted = true;
   initHero(document.getElementById("sky"));
+  console.log("[app] initHero done");
   initDeeds();
+  console.log("[app] initDeeds done");
   initWorlds({ getLang });
+  console.log("[app] initWorlds done");
   initHeavens({ getLang });
+  console.log("[app] initHeavens done");
+  window.appInitHeavensCalled = true;
   initArena({ getLang });
   initCraft({ getLang });
   initVerse({ getLang });
