@@ -1,0 +1,156 @@
+{
+  "khomus-playing.jpg": {
+    "file": "File:Playing the Khomus (8560225859).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Playing_the_Khomus_(8560225859).jpg",
+    "author": "Michael Coghlan",
+    "license": "CC BY-SA 2.0",
+    "original": "666x701",
+    "served": "314 KB jpg"
+  },
+  "../audio/khomus-real.wav": {
+    "file": "File:Klangdemonstration einer jakutischen Maultrommel - der Khomus aus Sibirien,-SPEKTRUM.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Klangdemonstration_einer_jakutischen_Maultrommel_-_der_Khomus_aus_Sibirien,-SPEKTRUM.jpg",
+    "author": "DrTrumpet",
+    "license": "CC BY-SA 4.0",
+    "original": "48 kHz stereo recording, 14.4 s after trimming",
+    "served": "900 KB 32 kHz mono 16-bit"
+  },
+  "olonkho-stage.webp": {
+    "file": "File:Olonkho - the oldest epic arts of the Yakut people.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Olonkho_-_the_oldest_epic_arts_of_the_Yakut_people.jpg",
+    "author": "Dariia Petukhova",
+    "license": "CC BY-SA 4.0",
+    "original": "5184x3456",
+    "served": "87 KB webp"
+  },
+  "yakut-bride-1908.webp": {
+    "file": "File:Jakutische Braut, im reichgeschmücktem Pelzmantel und reichgeschmücktem Pferd, 1908.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jakutische_Braut,_im_reichgeschm%C3%BCcktem_Pelzmantel_und_reichgeschm%C3%BCcktem_Pferd,_1908.jpg",
+    "author": "Unknown authorUnknown author",
+    "license": "Public domain",
+    "original": "1990x1401",
+    "served": "153 KB webp"
+  },
+  "lena-pillars.webp": {
+    "file": "File:Lenapilaren - uitzicht over de Lena (2).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Lenapilaren_-_uitzicht_over_de_Lena_(2).jpg",
+    "author": "Hardscarf",
+    "license": "CC BY-SA 4.0",
+    "original": "5839x3893",
+    "served": "183 KB webp"
+  },
+  "verkhoyansk.webp": {
+    "file": "File:Verkhoyansk Range, Republic of Sakha (Yakutia), Russia - 2019.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Verkhoyansk_Range,_Republic_of_Sakha_(Yakutia),_Russia_-_2019.jpg",
+    "author": "Ilya Varlamov",
+    "license": "CC BY-SA 3.0",
+    "original": "4894x3229",
+    "served": "169 KB webp"
+  },
+  "oymyakon.webp": {
+    "file": "File:Oymyakon - 190228 DSC 5957.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Oymyakon_-_190228_DSC_5957.jpg",
+    "author": "Ilya Varlamov",
+    "license": "CC BY-SA 4.0",
+    "original": "4090x2727",
+    "served": "105 KB webp"
+  },
+  "yakut-costume.webp": {
+    "file": "File:Yakut costume (2022-10-04) 02.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Yakut_costume_(2022-10-04)_02.jpg",
+    "author": "Vyacheslav Kirillin",
+    "license": "CC BY-SA 4.0",
+    "original": "3864x5152",
+    "served": "72 KB webp"
+  },
+  "yakutsk.webp": {
+    "file": "File:Якутск.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%AF%D0%BA%D1%83%D1%82%D1%81%D0%BA.jpg",
+    "author": "Якупова Инна",
+    "license": "CC BY-SA 4.0",
+    "original": "2000x1335",
+    "served": "185 KB webp"
+  },
+  "bootur.webp": {
+    "file": "File:Олонхо.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%9E%D0%BB%D0%BE%D0%BD%D1%85%D0%BE.jpg",
+    "author": "Aleksandr Ivanov",
+    "license": "CC BY-SA 2.0",
+    "original": "533x800",
+    "served": "48 KB webp"
+  },
+  "abaasy-stage.webp": {
+    "file": "File:Olonkho - the oldest epic arts of the Yakut people.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Olonkho_-_the_oldest_epic_arts_of_the_Yakut_people.jpg",
+    "author": "Dariia Petukhova",
+    "license": "CC BY-SA 4.0",
+    "original": "5184x3456",
+    "served": "46 KB webp, 650x1418"
+  },
+  "sprite-bootur.webp": {
+    "file": "File:Олонхо.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%D0%9E%D0%BB%D0%BE%D0%BD%D1%85%D0%BE.jpg",
+    "author": "Aleksandr Ivanov",
+    "license": "CC BY-SA 2.0",
+    "original": "533x800, cut to the warrior by _matte.py",
+    "served": "52 KB webp with alpha, 480x728"
+  },
+  "sprite-abaasy.webp": {
+    "file": "File:Olonkho - the oldest epic arts of the Yakut people.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Olonkho_-_the_oldest_epic_arts_of_the_Yakut_people.jpg",
+    "author": "Dariia Petukhova",
+    "license": "CC BY-SA 4.0",
+    "original": "5184x3456; cropped to the performer and cut head to boot by _matte.py",
+    "served": "60 KB webp with alpha, 535x1384"
+  },
+  "sprite-kutter.webp": {
+    "file": "File:Yhyakh celebration in Mayya (Yakutia).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Yhyakh_celebration_in_Mayya_(Yakutia).jpg",
+    "author": "Betta27",
+    "license": "CC BY-SA 4.0",
+    "original": "3648x2048, cut head to hem from one blessing dancer by _matte.py",
+    "served": "34 KB webp with alpha, 343x640"
+  },
+  "sprite-larch.webp": {
+    "file": "File:Larix gmelinii Tabaga.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Larix_gmelinii_Tabaga.jpg",
+    "author": "Trevbus",
+    "license": "CC0",
+    "original": "2126x2752, cut to one tree and re-lit for the dusk arena by _matte.py",
+    "served": "139 KB webp with alpha, 554x720"
+  },
+  "world-tree.webp": {
+    "file": "File:Larix gmelinii Tabaga.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Larix_gmelinii_Tabaga.jpg",
+    "author": "Trevbus",
+    "license": "CC0",
+    "original": "2126x2752, kept as a landscape and taken to night by _worldtree_asset.py for the cosmogony plate",
+    "served": "52 KB webp, 1100x1100"
+  },
+  "arena-ridge.jpg": {
+    "file": "File:Oymyakon forests.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Oymyakon_forests.jpg",
+    "author": "Maarten Takens",
+    "license": "CC BY-SA 2.0",
+    "original": "1500x1000, the range's slopes cut to a horizon strip and re-graded by _arena_assets.py",
+    "served": "36 KB jpg, 1500x200"
+  },
+  "arena-snow.jpg": {
+    "file": "File:Oymyakon forests.jpg + File:Oymyakon - 190228 DSC 5957.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Oymyakon_forests.jpg",
+    "author": "Maarten Takens (fog sea) and Ilya Varlamov (drifts)",
+    "license": "CC BY-SA 2.0 and CC BY-SA 4.0",
+    "original": "the valley's fog sea and the wind-carved drifts below Varlamov's horses, cross-faded into one floor strip by _arena_assets.py",
+    "served": "50 KB jpg, 1500x440",
+    "source2": "https://commons.wikimedia.org/wiki/File:Oymyakon_-_190228_DSC_5957.jpg"
+  },
+  "bark-larch.jpg": {
+    "file": "File:Bark of the European Larch (Larix decidua), Weimar, Germany, March 24th 2018 01.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Bark_of_the_European_Larch_(Larix_decidua),_Weimar,_Germany,_March_24th_2018_01.jpg",
+    "author": "KaiKemmann",
+    "license": "CC BY-SA 4.0",
+    "original": "4032x3024 — Larix decidua, the same genus as the Gmelinii larch of the taiga",
+    "served": "18 KB jpg, 512x128",
+    "note": "the trunk band of a leaning larch: cut from the photograph, its furrows levelled so the grain does not barber-pole as it repeats, flattened to texture only, tiled along the stem, and given the column's own cylinder shading; it is the bark of the world tree in the nine-heavens ascent (_heavens_assets.py)"
+  }
+}

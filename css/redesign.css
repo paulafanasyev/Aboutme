@@ -1,0 +1,1482 @@
+:root {
+  --ink: #0b0e0f;
+  --ink-2: #121718;
+  --deep: #1a2021;
+  --paper: #ece7dc;
+  --paper-deep: #ddd5c7;
+  --paper-line: rgba(26, 29, 28, 0.17);
+  --ink-text: #1b201f;
+  --ink-muted: #5b615d;
+  --gold: #c5a16a;
+  --gold-light: #e1c89e;
+  --gold-deep: #8f7146;
+  --ember: #9a5843;
+  --ember-deep: #774131;
+  --ember-text: #864a37;
+  --frost: #ece9e1;
+  --frost-dim: #b9bcb6;
+  --mist: #919892;
+  --teal: #91aaa7;
+  --line: rgba(236, 233, 225, 0.16);
+  --page: min(1320px, calc(100% - 96px));
+  --nav-h: 76px;
+}
+
+html {
+  scroll-padding-top: calc(var(--nav-h) + 22px);
+}
+
+body {
+  background: var(--ink);
+  color: var(--frost);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+body::after {
+  opacity: 0.018;
+}
+
+section[id],
+.arena-game {
+  scroll-margin-top: calc(var(--nav-h) + 22px);
+}
+
+.spotlight,
+.rail,
+.hero-rings,
+.hero-sun,
+.hero-rail,
+.hero-tree > svg,
+.call-gate {
+  display: none;
+}
+
+.section {
+  padding-block: clamp(88px, 8vw, 132px);
+}
+
+.is-dark {
+  --bg: var(--ink);
+  --fg: var(--frost);
+  --muted: var(--mist);
+  --line: rgba(236, 233, 225, 0.16);
+  --line-strong: rgba(236, 233, 225, 0.36);
+  --accent: var(--gold);
+  --accent-soft: var(--gold-light);
+  --accent-text: var(--gold-light);
+}
+
+.is-paper {
+  --bg: var(--paper);
+  --fg: var(--ink-text);
+  --muted: var(--ink-muted);
+  --line: var(--paper-line);
+  --line-strong: rgba(27, 32, 31, 0.4);
+  --accent: var(--ember);
+  --accent-soft: var(--ember-deep);
+  --accent-text: var(--ember-text);
+}
+
+.is-paper::before,
+.is-paper::after {
+  display: none;
+}
+
+.kicker,
+.chapter-head,
+.mono,
+.hero-foot,
+.hero-signature {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.kicker {
+  line-height: 1.6;
+}
+
+.kicker::before {
+  width: 36px;
+}
+
+.chapter-head {
+  min-height: 48px;
+  padding-top: 14px;
+  letter-spacing: 0.13em;
+}
+
+.chapter-head .chapter-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-style: normal;
+  color: var(--accent-text);
+}
+
+.chapter-head .chapter-rule {
+  opacity: 0.55;
+}
+
+.btn {
+  min-height: 52px;
+  padding-inline: 22px;
+  border-radius: 3px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  box-shadow: none;
+}
+
+.btn--gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #15130f;
+  box-shadow: none;
+}
+
+.btn--gold:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  box-shadow: none;
+}
+
+.nav {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: none;
+  height: var(--nav-h);
+  padding: 0 48px;
+  border: 0;
+  border-bottom: 1px solid rgba(236, 233, 225, 0.14);
+  border-radius: 0;
+  background: rgba(11, 14, 15, 0.97);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.brand {
+  gap: 12px;
+}
+
+.brand-sigil {
+  width: 32px;
+  height: 32px;
+  color: var(--gold);
+}
+
+.brand-text {
+  gap: 1px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.brand-text span {
+  color: var(--mist);
+}
+
+.nav-links {
+  gap: clamp(15px, 1.7vw, 28px);
+}
+
+.nav-links a {
+  min-height: 44px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #b8bbb5;
+}
+
+.nav-links a::after {
+  bottom: 6px;
+  background: var(--gold);
+}
+
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: var(--frost);
+}
+
+.nav-tools {
+  gap: 10px;
+}
+
+.icon-btn,
+.menu-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 3px;
+}
+
+.lang {
+  gap: 1px;
+  padding: 2px;
+  border-radius: 3px;
+  background: #181c1d;
+}
+
+.lang button {
+  min-width: 34px;
+  min-height: 36px;
+  border-radius: 2px;
+  font-size: 11px;
+}
+
+.lang button[aria-pressed="true"] {
+  background: var(--gold);
+  color: #15130f;
+}
+
+.scroll-progress {
+  height: 2px;
+  background: var(--gold);
+}
+
+.menu {
+  background: #0b0e0f;
+}
+
+.menu-name {
+  font-family: var(--sans);
+}
+
+.hero {
+  min-height: max(760px, 100svh);
+  background: #0b0e0f;
+}
+
+#sky {
+  opacity: 0.24;
+}
+
+.hero-aurora {
+  display: none;
+}
+
+.hero::before {
+  z-index: 1;
+  background:
+    linear-gradient(90deg, #0b0e0f 0%, rgba(11, 14, 15, 0.98) 33%, rgba(11, 14, 15, 0.67) 54%, rgba(11, 14, 15, 0.08) 78%),
+    linear-gradient(180deg, rgba(11, 14, 15, 0.28), transparent 60%, #0b0e0f 100%);
+}
+
+.hero-tree {
+  top: var(--nav-h);
+  right: 0;
+  bottom: 0;
+  width: 49vw;
+  height: auto;
+  max-height: none;
+  overflow: hidden;
+  mask-image: none;
+  -webkit-mask-image: none;
+  animation: none;
+}
+
+.hero-tree::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 14, 15, 0.06), rgba(11, 14, 15, 0.05) 60%, rgba(11, 14, 15, 0.78));
+}
+
+.hero-tree-photo {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 52% center;
+  transform: none;
+  filter: saturate(0.62) contrast(1.04) brightness(0.82);
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.hero-grid {
+  min-height: max(760px, 100svh);
+  padding-top: calc(var(--nav-h) + 68px);
+  padding-bottom: 92px;
+}
+
+.hero-copy {
+  width: min(760px, 62%);
+}
+
+.hero-badge {
+  width: max-content;
+  margin-top: 28px;
+  padding: 7px 10px;
+  border: 1px solid rgba(197, 161, 106, 0.4);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.hero-title {
+  margin-top: 22px;
+  font-family: var(--serif);
+  font-size: clamp(78px, 9.7vw, 146px);
+  font-weight: 400;
+  line-height: 0.83;
+  letter-spacing: -0.055em;
+}
+
+.hero-title .t-line--two {
+  margin-top: 0.12em;
+  padding-left: 0;
+  font-size: 0.62em;
+  font-style: normal;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  color: var(--gold-light);
+}
+
+.hero-lead {
+  max-width: 54ch;
+  margin-top: 32px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: #c2c4bd;
+}
+
+.hero-lead strong {
+  color: var(--frost);
+  font-weight: 600;
+}
+
+.hero-actions {
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.hero-signature {
+  margin-top: 26px;
+  line-height: 1.7;
+  color: #a7aca5;
+}
+
+.hero-signature .sig-dot {
+  width: 7px;
+  height: 7px;
+  background: #91a88d;
+  box-shadow: none;
+}
+
+.hero-foot {
+  padding-block: 16px 20px;
+  color: #929990;
+}
+
+.hero-scroll {
+  display: none;
+}
+
+.tale-grid,
+.worlds-intro,
+.deeds-head,
+.craft-head,
+.voice-head,
+.heavens-intro {
+  gap: clamp(40px, 6vw, 96px);
+}
+
+.tale-heading,
+.worlds-heading,
+.heavens-heading,
+.deeds-heading,
+.craft-heading,
+.voice-heading,
+.call-heading {
+  font-weight: 400;
+}
+
+.tale-lead,
+.worlds-lead,
+.heavens-lead,
+.deeds-summary,
+.craft-lead,
+.voice-intro,
+.tale-body,
+.call-copy {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.tale-aside {
+  border-radius: 0;
+  background: rgba(27, 32, 31, 0.035);
+}
+
+.facts dt,
+.era figcaption,
+.world-footnote,
+.heavens-note,
+.voice-note,
+.voice-disclaimer,
+.khomus-credit,
+.khomus-note {
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.journey {
+  font-size: 12px;
+}
+
+.era {
+  border-radius: 0;
+}
+
+.era img,
+.world-plate img {
+  filter: saturate(0.72) contrast(1.02);
+}
+
+.world-panel {
+  border-radius: 0;
+  background: #121718;
+  box-shadow: none;
+}
+
+.world-plate {
+  border-radius: 0;
+}
+
+.world-node {
+  min-height: 48px;
+}
+
+.world-node .node-name,
+.world-node .node-name small {
+  font-size: 12px;
+}
+
+.world-copy,
+.world-metaphor {
+  font-size: 16px;
+}
+
+.world-tags span,
+.deed-tags span {
+  min-height: 30px;
+  padding: 5px 9px;
+  border-radius: 2px;
+  font-size: 11px;
+}
+
+.heavens {
+  background: #0d1112;
+}
+
+.game-index {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 44px 0 84px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.game-index a {
+  min-height: 132px;
+  padding: 22px;
+  background: #111617;
+}
+
+.game-index a:hover {
+  background: #181e1f;
+}
+
+.game-index span {
+  font-size: 12px;
+  color: var(--gold);
+}
+
+.game-index strong {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.game-index small {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--mist);
+}
+
+.arena-game {
+  padding-top: 64px;
+  margin-top: 64px;
+  border-top: 1px solid var(--line);
+}
+
+.arena-game-head h3 {
+  font-weight: 400;
+}
+
+.arena-game-head p:not(.kicker) {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.heavens-stage {
+  width: 100%;
+  min-height: 0;
+  max-height: none;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-top: 30px;
+  overflow: hidden;
+  border: 1px solid rgba(236, 233, 225, 0.2);
+  border-radius: 2px;
+  background: #101719;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
+}
+
+.heavens-hud {
+  top: 14px;
+  left: 14px;
+  gap: 1px;
+  padding: 0;
+  border: 1px solid rgba(236, 233, 225, 0.18);
+  border-radius: 2px;
+  background: rgba(10, 14, 15, 0.82);
+  backdrop-filter: blur(6px);
+}
+
+.heavens-hud > div {
+  min-width: 90px;
+  padding: 10px 14px;
+  border-right: 1px solid rgba(236, 233, 225, 0.12);
+}
+
+.heavens-hud > div:last-child {
+  border-right: 0;
+}
+
+.heavens-hud dt {
+  font-size: 11px;
+  color: #b0b6af;
+}
+
+.heavens-hud dd {
+  font-size: 15px;
+  color: var(--gold-light);
+}
+
+.heavens-overlay {
+  place-content: center start;
+  justify-items: start;
+  gap: 22px;
+  padding: clamp(28px, 5vw, 72px);
+  text-align: left;
+  background: linear-gradient(90deg, rgba(8, 12, 13, 0.92) 0%, rgba(8, 12, 13, 0.74) 40%, rgba(8, 12, 13, 0.08) 78%);
+}
+
+.heavens-overlay-title {
+  max-width: 17ch;
+  margin: 0;
+  font-size: clamp(28px, 4vw, 54px);
+  font-weight: 400;
+  line-height: 1.06;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+}
+
+.heavens-result {
+  max-width: 38ch;
+  margin: 0;
+  font-size: 13px;
+}
+
+.heavens-hint {
+  max-width: 46ch;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.75;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  color: #c3c7c0;
+}
+
+.heavens-overlay .btn {
+  justify-self: start;
+  box-shadow: none;
+}
+
+.heavens-msg {
+  bottom: 14px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.heavens-pause {
+  border-radius: 3px;
+}
+
+.heavens-help {
+  gap: 14px 32px;
+  margin-top: 20px;
+}
+
+.heavens-help li {
+  min-height: 44px;
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.arena-action {
+  min-width: 132px;
+  min-height: 48px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.alas-embed {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  margin-top: 30px;
+  border-radius: 2px;
+}
+
+.alas-embed-title {
+  font-size: clamp(28px, 4vw, 52px);
+}
+
+.alas-embed-hint {
+  font-size: 14px;
+}
+
+.deeds {
+  background: var(--paper);
+}
+
+.deeds-heading {
+  font-size: clamp(64px, 8vw, 112px);
+}
+
+.deeds-subtitle {
+  max-width: 62ch;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.deeds-list {
+  margin-top: 54px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.deed {
+  grid-template-columns: 48px minmax(0, 1fr) minmax(280px, 38%) 32px;
+  gap: clamp(18px, 3vw, 44px);
+  min-height: 270px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.deed::before {
+  display: none;
+}
+
+.deed:hover {
+  background: rgba(27, 32, 31, 0.035);
+}
+
+.deed-index {
+  padding-top: 3px;
+  font-size: 13px;
+  color: var(--ember-text);
+}
+
+.deed-meta {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.deed-title {
+  margin-top: 16px;
+  font-family: var(--sans);
+  font-size: clamp(25px, 2.4vw, 36px);
+  font-weight: 550;
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+}
+
+.deed-desc {
+  max-width: 58ch;
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.deed-tags {
+  margin-top: 20px;
+}
+
+.deed-art--photo {
+  align-self: stretch;
+  width: 100%;
+  height: auto;
+  min-height: 210px;
+  overflow: hidden;
+  border: 1px solid rgba(27, 32, 31, 0.16);
+  border-radius: 2px;
+  background: #d5d0c6;
+}
+
+.deed-art--photo::after {
+  display: none;
+}
+
+.deed-art--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  filter: saturate(0.85) contrast(1.02);
+  transition: transform 0.5s var(--ease);
+}
+
+.deed:hover .deed-art--photo img {
+  transform: scale(1.018);
+}
+
+.deed--text {
+  grid-template-columns: 48px minmax(0, 1fr) 32px;
+  min-height: 0;
+}
+
+.deed--text .deed-main {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(300px, 1.2fr);
+  column-gap: 48px;
+  align-items: start;
+}
+
+.deed--text .deed-meta,
+.deed--text .deed-title,
+.deed--text .deed-tags {
+  grid-column: 1;
+}
+
+.deed--text .deed-desc {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  margin-top: 0;
+}
+
+.deed--text .deed-art {
+  display: none;
+}
+
+.deed-arrow {
+  font-size: 22px;
+}
+
+.deeds-foot {
+  font-size: 14px;
+}
+
+.craft {
+  background: #101415;
+}
+
+.craft-stage {
+  display: block;
+  margin-top: 48px;
+}
+
+.skill-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-ledger section {
+  padding: 28px 30px 32px 0;
+  border-right: 1px solid var(--line);
+}
+
+.skill-ledger section + section {
+  padding-left: 30px;
+}
+
+.skill-ledger section:last-child {
+  border-right: 0;
+}
+
+.skill-ledger section > span {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.skill-ledger h3 {
+  margin-top: 20px;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.skill-ledger ul {
+  margin-top: 22px;
+}
+
+.skill-ledger li {
+  padding-block: 8px;
+  border-top: 1px solid rgba(236, 233, 225, 0.09);
+  font-size: 15px;
+  color: #c2c5be;
+}
+
+.orbit-wrap,
+.craft-legend,
+.craft-caption {
+  display: none;
+}
+
+.craft-side {
+  margin-top: 38px;
+}
+
+.craft-facets {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.facet {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.facet b {
+  font-size: 16px;
+}
+
+.facet div > span {
+  font-size: 14px;
+}
+
+.voice {
+  background: #0b0e0f;
+}
+
+.voice::before {
+  display: none;
+}
+
+.voice-stage {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 1px;
+  margin-top: 48px;
+  border: 1px solid var(--line);
+  background: var(--line);
+  box-shadow: none;
+}
+
+.voice-stage::before,
+.voice-stage::after {
+  display: none;
+}
+
+.verse-wrap,
+.khomus-card {
+  border: 0;
+  border-radius: 0;
+  background: #111617;
+  box-shadow: none;
+}
+
+.verse-wrap {
+  grid-column: 2;
+  grid-row: 1;
+  padding: clamp(24px, 3vw, 42px);
+}
+
+.khomus-card {
+  grid-column: 1;
+  grid-row: 1;
+  padding: clamp(24px, 3vw, 40px);
+  background: #181915;
+}
+
+.khomus-head .khomus-name {
+  font-size: 46px;
+}
+
+.khomus-hint {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.khomus-stage {
+  min-height: 320px;
+  margin-top: 24px;
+  border-radius: 2px;
+}
+
+.khomus-photo {
+  filter: saturate(0.75) contrast(1.04);
+}
+
+.verse-kicker,
+.voice-status .v-state,
+.voice-status .v-count,
+.voice-toggle {
+  font-size: 12px;
+}
+
+.verse-line {
+  font-size: clamp(18px, 1.8vw, 25px);
+}
+
+.voice-note {
+  color: var(--mist);
+}
+
+.call {
+  background: #0d1112;
+}
+
+.call-photo {
+  opacity: 0.12;
+  filter: grayscale(0.5) saturate(0.55);
+}
+
+.call-grid {
+  gap: clamp(48px, 7vw, 100px);
+}
+
+.call-heading {
+  font-size: clamp(58px, 7vw, 100px);
+}
+
+.call-form {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: #121718;
+  box-shadow: none;
+}
+
+.form-head,
+.field label,
+.form-note,
+.ci-label {
+  font-size: 12px;
+}
+
+.field input,
+.field textarea {
+  border-radius: 2px;
+  font-size: 16px;
+}
+
+.form-copy {
+  min-height: 44px;
+  font-size: 12px;
+}
+
+.footer {
+  background: #080a0b;
+}
+
+.footer-label,
+.footer-bottom,
+.colophon {
+  font-size: 12px;
+}
+
+.footer-col a,
+.footer-photo-note,
+.footer-note {
+  font-size: 13px;
+}
+
+html.has-js .reveal {
+  transform: translate3d(0, 18px, 0);
+  transition-duration: 0.7s;
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --page: calc(100% - 64px);
+  }
+
+  .nav {
+    padding-inline: 32px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .menu-btn {
+    display: flex;
+  }
+
+  .hero-copy {
+    width: 65%;
+  }
+
+  .hero-title {
+    font-size: clamp(76px, 11vw, 124px);
+  }
+
+  .deed {
+    grid-template-columns: 40px minmax(0, 1fr) minmax(240px, 36%) 28px;
+  }
+
+  .deed--text {
+    grid-template-columns: 40px minmax(0, 1fr) 28px;
+  }
+
+  .deed--text .deed-main {
+    display: block;
+  }
+
+  .deed--text .deed-desc {
+    margin-top: 14px;
+  }
+
+  .heavens-hud > div {
+    min-width: 76px;
+    padding-inline: 10px;
+  }
+}
+
+@media (max-width: 820px) {
+  :root {
+    --page: calc(100% - 40px);
+    --nav-h: 68px;
+  }
+
+  .section {
+    padding-block: 78px;
+  }
+
+  .nav {
+    padding-inline: 20px;
+  }
+
+  .brand-text {
+    font-size: 11px;
+  }
+
+  .sound-toggle {
+    display: none;
+  }
+
+  .hero {
+    min-height: 0;
+  }
+
+  .hero-grid {
+    min-height: 0;
+    padding-top: 122px;
+    padding-bottom: 390px;
+  }
+
+  .hero-copy {
+    width: 100%;
+  }
+
+  .hero-title {
+    font-size: clamp(66px, 16vw, 112px);
+  }
+
+  .hero-lead {
+    max-width: 58ch;
+  }
+
+  .hero-tree {
+    top: auto;
+    bottom: 54px;
+    width: 100%;
+    height: 340px;
+    border-top: 1px solid var(--line);
+  }
+
+  .hero::before {
+    background: linear-gradient(180deg, rgba(11, 14, 15, 0.15), transparent 65%, #0b0e0f);
+  }
+
+  .hero-tree-photo {
+    object-position: center 46%;
+  }
+
+  .hero-foot {
+    background: #0b0e0f;
+  }
+
+  .chapter-sakha {
+    display: none;
+  }
+
+  .tale-grid,
+  .worlds-intro,
+  .deeds-head,
+  .craft-head,
+  .voice-head,
+  .heavens-intro,
+  .cosmos,
+  .call-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 56px;
+  }
+
+  .heavens-stage,
+  .alas-embed {
+    aspect-ratio: 4 / 3;
+  }
+
+  .heavens-hud {
+    right: 70px;
+    left: 10px;
+    width: max-content;
+    max-width: calc(100% - 82px);
+  }
+
+  .heavens-hud > div {
+    min-width: 0;
+    padding: 8px 10px;
+  }
+
+  .heavens-hud > div:last-child {
+    display: none;
+  }
+
+  .heavens-hud dt {
+    font-size: 10px;
+  }
+
+  .heavens-hud dd {
+    font-size: 13px;
+  }
+
+  .heavens-overlay {
+    padding: 28px;
+  }
+
+  .heavens-overlay-title {
+    font-size: 34px;
+  }
+
+  .heavens-help {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .skill-ledger {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-ledger section,
+  .skill-ledger section + section {
+    padding: 24px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .skill-ledger section:last-child {
+    border-bottom: 0;
+  }
+
+  .craft-facets {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .voice-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .khomus-card,
+  .verse-wrap {
+    grid-column: 1;
+  }
+
+  .khomus-card {
+    grid-row: 1;
+  }
+
+  .verse-wrap {
+    grid-row: 2;
+  }
+
+  .deed,
+  .deed--text {
+    grid-template-columns: 34px minmax(0, 1fr) 24px;
+    gap: 14px;
+  }
+
+  .deed-art--photo {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .deed-arrow {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  :root {
+    --page: calc(100% - 32px);
+  }
+
+  body {
+    font-size: 16px;
+  }
+
+  .section {
+    padding-block: 64px;
+  }
+
+  .nav {
+    padding-inline: 16px;
+  }
+
+  .brand-sigil {
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-text span {
+    display: none;
+  }
+
+  .lang button {
+    min-width: 31px;
+    min-height: 38px;
+    font-size: 10px;
+  }
+
+  .nav-tools {
+    gap: 5px;
+  }
+
+  .kicker,
+  .chapter-head,
+  .hero-signature,
+  .hero-foot {
+    font-size: 11px;
+  }
+
+  .chapter-head {
+    gap: 12px;
+  }
+
+  .hero-grid {
+    padding-top: 108px;
+    padding-bottom: 330px;
+  }
+
+  .hero-badge {
+    margin-top: 22px;
+    font-size: 11px;
+  }
+
+  .hero-title {
+    margin-top: 20px;
+    font-size: clamp(58px, 18vw, 88px);
+    line-height: 0.88;
+  }
+
+  .hero-title .t-line--two {
+    font-size: 0.58em;
+    margin-top: 0.24em;
+  }
+
+  .hero-lead,
+  .tale-lead,
+  .worlds-lead,
+  .heavens-lead,
+  .deeds-summary,
+  .craft-lead,
+  .voice-intro,
+  .tale-body,
+  .call-copy {
+    font-size: 16px;
+  }
+
+  .hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-signature .sig-sep {
+    display: none;
+  }
+
+  .hero-tree {
+    height: 280px;
+  }
+
+  .hero-foot .foot-mid {
+    display: none;
+  }
+
+  .game-index {
+    grid-template-columns: 1fr;
+    margin-top: 32px;
+  }
+
+  .game-index a {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .arena-game {
+    margin-top: 48px;
+    padding-top: 48px;
+  }
+
+  .arena-source-pair {
+    display: none;
+  }
+
+  .heavens-stage,
+  .alas-embed {
+    aspect-ratio: 3 / 4;
+    min-height: 520px;
+  }
+
+  .heavens-overlay {
+    align-content: end;
+    padding: 24px 20px 74px;
+    background: linear-gradient(0deg, rgba(8, 12, 13, 0.96) 0%, rgba(8, 12, 13, 0.72) 48%, rgba(8, 12, 13, 0.08) 85%);
+  }
+
+  .heavens-overlay-title {
+    max-width: 16ch;
+    font-size: 30px;
+  }
+
+  .heavens-hint {
+    font-size: 11px;
+  }
+
+  .heavens-hud {
+    top: 10px;
+    right: 62px;
+    max-width: calc(100% - 74px);
+  }
+
+  .heavens-hud > div {
+    padding: 7px 8px;
+  }
+
+  .heavens-hud dt {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+
+  .heavens-hud dd {
+    font-size: 12px;
+  }
+
+  .heavens-msg {
+    bottom: 10px;
+    font-size: 11px;
+  }
+
+  .deeds-heading {
+    font-size: 60px;
+  }
+
+  .deed,
+  .deed--text {
+    grid-template-columns: 26px minmax(0, 1fr) 20px;
+    padding-block: 26px;
+  }
+
+  .deed-title {
+    font-size: 25px;
+  }
+
+  .deed-desc {
+    font-size: 15px;
+  }
+
+  .deed-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .deed-art--photo {
+    aspect-ratio: 4 / 3;
+  }
+
+  .skill-ledger h3 {
+    font-size: 28px;
+  }
+
+  .khomus-stage {
+    min-height: 270px;
+  }
+
+  .verse-line {
+    font-size: 18px;
+  }
+
+  .voice-controls {
+    flex-wrap: wrap;
+  }
+
+  .call-heading {
+    font-size: 58px;
+  }
+
+  .call-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .call-actions .btn {
+    width: 100%;
+  }
+
+  .ci-value {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-tree,
+  .hero-title .t-line > span,
+  .hero-kicker,
+  .hero-lead,
+  .hero-actions,
+  .hero-signature,
+  .hero-foot {
+    animation: none;
+    transform: none;
+  }
+}

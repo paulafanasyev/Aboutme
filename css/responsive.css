@@ -1,0 +1,1414 @@
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 1480px) {
+  .hero-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 1240px) {
+  .rail {
+    display: none;
+  }
+
+  .hero-tree {
+    right: -2vw;
+    width: min(620px, 52vw);
+  }
+
+  .hero-scroll {
+    right: 32px;
+  }
+}
+
+@media (max-width: 1080px) {
+  :root {
+    --page: min(1280px, calc(100% - 56px));
+  }
+
+  .hero-tree {
+    right: -6vw;
+    width: 58vw;
+    opacity: 0.9;
+  }
+
+  /* the tree is pushed off-canvas here, so its edge labels would be cut */
+  .hero-tree .tree-labels {
+    display: none;
+  }
+
+  .hero-sun {
+    right: 8%;
+    width: 44vw;
+    height: 44vw;
+  }
+
+  .hero-rings {
+    right: -16vw;
+    width: 104vw;
+    height: 104vw;
+  }
+
+  .tale-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.55fr);
+    gap: 44px;
+  }
+
+  .cosmos {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .winter {
+    grid-template-columns: minmax(190px, 250px) minmax(0, 1fr);
+    gap: 36px;
+  }
+
+  .winter-heading {
+    font-size: clamp(36px, 5vw, 56px);
+  }
+
+  .world-panel {
+    min-height: 0;
+    padding-left: 0;
+    padding-top: 26px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 1fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  .world-panel::before {
+    left: 0;
+    top: -1px;
+    width: 92px;
+    height: 1px;
+  }
+
+  .world-panel-inner {
+    display: contents;
+  }
+
+  .world-panel-inner .world-title-block {
+    grid-column: 1;
+  }
+
+  .world-panel-inner .world-copy-block {
+    grid-column: 2;
+  }
+
+  .world-panel > .world-footnote {
+    grid-column: 1 / -1;
+  }
+
+  .craft-stage {
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.55fr);
+    gap: 34px;
+  }
+
+  .voice-stage {
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.6fr);
+    gap: 36px;
+  }
+
+  .deed {
+    grid-template-columns: 34px minmax(0, 1fr) 168px 34px;
+    gap: 20px;
+  }
+
+  .deed-title {
+    font-size: clamp(30px, 3.6vw, 44px);
+  }
+}
+
+@media (max-width: 960px) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 105;
+    height: 100px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(7, 25, 35, 0.97) 0 76px, rgba(7, 25, 35, 0) 100%);
+    transition: background 0.4s var(--ease-soft);
+  }
+
+  body.on-paper::before {
+    background: linear-gradient(to bottom, rgba(239, 230, 212, 0.98) 0 76px, rgba(239, 230, 212, 0) 100%);
+  }
+
+  .hero-tree .tree-labels,
+  .cosmos-labels {
+    display: none;
+  }
+
+  :root {
+    --page: calc(100% - 44px);
+    --nav-h: 60px;
+  }
+
+  .nav {
+    top: 12px;
+    width: calc(100% - 32px);
+    height: 60px;
+    padding-left: 16px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .lang {
+    display: none;
+  }
+
+  html.no-js .nav-links {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: -1px;
+    left: -1px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 18px;
+    margin: 0;
+    padding: 10px 20px;
+    border: 1px solid rgba(233, 239, 242, 0.16);
+    border-radius: 22px;
+    background: rgba(7, 25, 35, 0.97);
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  html.no-js .nav-links a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 11px;
+  }
+
+  .brand-text {
+    font-size: 9px;
+  }
+
+  .section {
+    padding-block: clamp(78px, 11vw, 120px);
+  }
+
+  .hero-grid {
+    padding-top: calc(var(--nav-h) + 84px);
+  }
+
+  .hero-title {
+    font-size: clamp(76px, 14vw, 150px);
+  }
+
+  .hero-copy {
+    width: 100%;
+  }
+
+  .hero-lead {
+    max-width: 46ch;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+
+  .hero-foot {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px 26px;
+    font-size: 9px;
+  }
+
+  .tale-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .tale-aside {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.5fr) minmax(0, 1fr);
+    gap: 30px;
+    align-items: start;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+
+  .seal {
+    width: min(220px, 100%);
+    margin: 0;
+  }
+
+  .facts {
+    margin-top: 0;
+  }
+
+  .tale-note {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .worlds-intro {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .worlds-lead {
+    max-width: 52ch;
+    padding-bottom: 0;
+  }
+
+  .cosmos-nodes {
+    position: static;
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    pointer-events: auto;
+  }
+
+  .world-node {
+    position: static;
+    flex: 1;
+    justify-content: center;
+    padding: 8px 10px;
+    transform: none;
+    min-width: 0;
+  }
+
+  .world-node .node-name {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+
+  .world-node .node-name small {
+    display: none;
+  }
+
+  .world-node .node-dot {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    font-size: 7px;
+  }
+
+  .world-panel {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .world-panel-inner .world-title-block,
+  .world-panel-inner .world-copy-block {
+    grid-column: 1;
+  }
+
+  .world-panel-inner .world-copy-block {
+    margin-top: 20px;
+  }
+
+  .world-panel::before {
+    width: 72px;
+  }
+
+  .deeds-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .deeds-summary {
+    max-width: 52ch;
+  }
+
+  .deed {
+    grid-template-columns: 30px minmax(0, 1fr) 150px 32px;
+    gap: 16px;
+    padding: 24px 0;
+  }
+
+  .deed-desc {
+    font-size: 11.5px;
+  }
+
+  .craft-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+
+  .craft-lead {
+    max-width: 52ch;
+    padding-bottom: 0;
+  }
+
+  .craft-stage {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .orbit-wrap {
+    width: min(calc(100% - 150px), 600px);
+  }
+
+  .craft-side {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+  }
+
+  .craft-caption {
+    border-top: 0;
+    padding-top: 18px;
+    min-height: 130px;
+  }
+
+  .craft-facets {
+    margin-top: 0;
+    border-top: 0;
+  }
+
+  .voice-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .voice-intro {
+    max-width: 54ch;
+  }
+
+  .voice-stage {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .khomus-card {
+    padding-left: 0;
+    padding-top: 26px;
+    border-left: 0;
+    border-top: 1px solid rgba(233, 239, 242, 0.12);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    grid-template-areas:
+      "head stage"
+      "hint stage"
+      "note stage";
+    gap: 4px 24px;
+    align-items: center;
+  }
+
+  .khomus-head {
+    grid-area: head;
+  }
+
+  .khomus-hint {
+    grid-area: hint;
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .khomus-note {
+    grid-area: note;
+    align-self: end;
+  }
+
+  .khomus-stage {
+    grid-area: stage;
+    margin: 0 auto;
+    width: min(100%, 340px);
+  }
+
+  .call-grid {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .call-heading {
+    max-width: 15ch;
+  }
+
+  .call-form {
+    max-width: 640px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-note {
+    grid-column: 1 / -1;
+    max-width: 54ch;
+  }
+
+  .footer-grid .to-top {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  .footer {
+    padding-bottom: 44px;
+  }
+
+  .heavens-intro {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 26px;
+  }
+
+  .heavens-heading {
+    font-size: clamp(52px, 10.5vw, 92px);
+  }
+
+  .heavens-stage {
+    aspect-ratio: 16 / 10;
+    min-height: clamp(180px, calc(100svh - 486px), 320px);
+    max-height: min(62svh, calc(100svh - 486px), 680px);
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --page: calc(100% - 32px);
+  }
+
+  .nav {
+    top: 10px;
+    width: calc(100% - 20px);
+    height: 56px;
+    padding-left: 14px;
+    padding-right: 7px;
+  }
+
+  .nav.is-scrolled {
+    height: 52px;
+  }
+
+  .brand-sigil {
+    width: 30px;
+    height: 30px;
+  }
+
+  .brand-text {
+    font-size: 9px;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .menu-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .menu-btn span {
+    left: 10px;
+  }
+
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero::before {
+    background:
+      linear-gradient(180deg, rgba(7, 10, 14, 0.72) 0%, rgba(7, 10, 14, 0.18) 34%, rgba(7, 10, 14, 0.55) 72%, rgba(7, 10, 14, 0.94) 100%),
+      linear-gradient(90deg, rgba(7, 10, 14, 0.55), transparent 80%);
+  }
+
+  .hero-grid {
+    padding-top: calc(var(--nav-h) + 70px);
+    padding-bottom: 16px;
+    justify-content: flex-end;
+  }
+
+  .hero-tree {
+    top: 6vh;
+    right: -22vw;
+    width: 92vw;
+    height: 62vh;
+    opacity: 0.55;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 38%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 38%);
+  }
+
+  .hero-rings {
+    top: -4vh;
+    right: -34vw;
+    width: 128vw;
+    height: 128vw;
+    opacity: 0.5;
+  }
+
+  .hero-sun {
+    top: 12%;
+    right: -4%;
+    width: 64vw;
+    height: 64vw;
+  }
+
+  .hero-title {
+    font-size: clamp(64px, 19vw, 118px);
+    margin-top: 20px;
+    text-shadow: 0 2px 22px rgba(7, 10, 14, 0.4);
+  }
+
+  .hero-title .t-line--two {
+    font-size: 0.42em;
+    margin-top: 0.18em;
+  }
+
+  .hero-lead {
+    margin-top: 24px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    max-width: 40ch;
+  }
+
+  .hero-actions {
+    margin-top: 26px;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 auto;
+    min-height: 48px;
+    padding: 0 18px;
+    font-size: 10.5px;
+    gap: 12px;
+  }
+
+  .hero-signature {
+    margin-top: 22px;
+    font-size: 10px;
+    gap: 9px;
+  }
+
+  .hero-signature .sig-sep {
+    width: 14px;
+  }
+
+  .hero-foot {
+    padding: 12px 0 16px;
+    font-size: 10px;
+    gap: 7px 18px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-foot > span:nth-child(2) {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .hero-kicker {
+    max-width: 100%;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    row-gap: 4px;
+    font-size: 10px;
+    line-height: 1.55;
+    letter-spacing: 0.12em;
+    text-shadow: 0 1px 14px rgba(7, 10, 14, 0.8);
+  }
+
+  .hero-kicker::before {
+    margin-top: 0.62em;
+  }
+
+  .hero-kicker span {
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .section {
+    padding-block: 74px;
+  }
+
+  .is-paper::after {
+    inset: 10px;
+  }
+
+  .chapter-head {
+    font-size: 10px;
+    gap: 12px;
+  }
+
+  .chapter-head .chapter-num {
+    font-size: 24px;
+  }
+
+  .chapter-head .chapter-sakha {
+    font-size: 10px;
+    max-width: 46%;
+    line-height: 1.5;
+  }
+
+  .display {
+    font-size: clamp(52px, 15vw, 96px);
+  }
+
+  .section-head {
+    margin-bottom: 42px;
+    gap: 22px;
+  }
+
+  .section-lead {
+    font-size: 13px;
+  }
+
+  .tale-heading {
+    font-size: clamp(60px, 17vw, 110px);
+    margin-top: 20px;
+  }
+
+  .tale-lead {
+    font-size: 23px;
+    max-width: 24ch;
+    margin-top: 24px;
+  }
+
+  .tale-body {
+    margin-top: 28px;
+  }
+
+  .tale-body p {
+    font-size: 18.5px;
+    line-height: 1.6;
+  }
+
+  .tale-quote {
+    font-size: 25px;
+    max-width: 30ch;
+  }
+
+  .tale-aside {
+    display: block;
+  }
+
+  .seal {
+    width: min(200px, 58vw);
+    margin: 0 auto 28px;
+  }
+
+  .facts {
+    margin-top: 0;
+  }
+
+  .facts > div {
+    min-height: 92px;
+    padding: 14px 12px;
+  }
+
+  .facts dd {
+    font-size: 28px;
+  }
+
+  .tale-note {
+    margin-top: 18px;
+  }
+
+  .journey {
+    gap: 10px 12px;
+    font-size: 9px;
+    margin-top: 46px;
+  }
+
+  .journey .j-line {
+    display: none;
+  }
+
+  .worlds-heading {
+    font-size: clamp(58px, 16vw, 104px);
+    margin-top: 18px;
+  }
+
+  .worlds-lead {
+    font-size: 13px;
+  }
+
+  .cosmos {
+    gap: 32px;
+    margin-top: 34px;
+  }
+
+  .winter {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    margin-top: 38px;
+  }
+
+  .winter-photo {
+    max-width: 320px;
+  }
+
+  .winter-heading {
+    font-size: 44px;
+  }
+
+  .winter-text {
+    margin-top: 14px;
+  }
+
+  .cosmos-art {
+    padding: 8px;
+  }
+
+  .world-node {
+    gap: 7px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 9px 8px;
+  }
+
+  .world-node .node-name {
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .world-node .node-dot {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+    font-size: 9px;
+  }
+
+  .world-panel {
+    padding-top: 22px;
+  }
+
+  .world-title {
+    font-size: clamp(40px, 11vw, 54px);
+  }
+
+  .world-copy {
+    font-size: 12.5px;
+  }
+
+  .world-metaphor {
+    font-size: 20px;
+    margin-top: 18px;
+  }
+
+  .deeds-heading {
+    font-size: clamp(54px, 15vw, 96px);
+  }
+
+  .deeds-summary {
+    font-size: 13px;
+  }
+
+  .deed {
+    grid-template-columns: 26px minmax(0, 1fr) 44px;
+    grid-template-areas:
+      "idx main arrow"
+      "idx art arrow";
+    align-items: start;
+    gap: 8px 12px;
+    padding: 22px 0;
+  }
+
+  .deed::before {
+    inset: 0 -10px;
+  }
+
+  .deed-index {
+    grid-area: idx;
+    font-size: 10px;
+    padding-top: 9px;
+  }
+
+  .deed-main {
+    grid-area: main;
+  }
+
+  .deed-arrow {
+    grid-area: arrow;
+    width: 44px;
+    height: 44px;
+    margin-top: 0;
+  }
+
+  .deed-art {
+    grid-area: art;
+    max-width: 460px;
+    margin-top: 14px;
+    aspect-ratio: 16 / 8.5;
+  }
+
+  .deed-title {
+    font-size: clamp(29px, 8.4vw, 40px);
+    line-height: 1.02;
+  }
+
+  .deed-desc {
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+
+  .deed-meta {
+    gap: 6px 12px;
+    font-size: 9px;
+  }
+
+  .deed-tags {
+    margin-top: 9px;
+  }
+
+  .deeds-foot {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .craft-heading {
+    font-size: clamp(54px, 15vw, 96px);
+  }
+
+  .craft-lead {
+    font-size: 13px;
+  }
+
+  .craft-stage {
+    gap: 28px;
+    margin-top: 26px;
+  }
+
+  .orbit-wrap {
+    width: 100%;
+    aspect-ratio: auto;
+  }
+
+  .orbit {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 0 4px;
+  }
+
+  .orbit-ring,
+  .orbit-ring-label {
+    display: none;
+  }
+
+  .orbit-core {
+    position: static;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    aspect-ratio: auto;
+    padding: 16px 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    transform: none;
+  }
+
+  .orbit-core b {
+    font-size: 32px;
+  }
+
+  .orbit-core span {
+    margin-top: 0;
+    font-size: 10px;
+  }
+
+  .chip-group-label {
+    display: block;
+    flex-basis: 100%;
+    margin: 12px 0 2px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: center;
+  }
+
+  .orbit-core + .chip-group-label {
+    margin-top: 0;
+  }
+
+  .chip {
+    position: static;
+    transform: none;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 11px;
+  }
+
+  .chip:hover,
+  .chip:focus-visible,
+  .chip.is-active {
+    transform: scale(1.02);
+  }
+
+  .craft-side {
+    display: block;
+    padding-top: 4px;
+  }
+
+  .craft-caption {
+    min-height: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  .craft-caption .cap-title {
+    font-size: 26px;
+  }
+
+  .craft-facets {
+    margin-top: 26px;
+  }
+
+  .voice-heading {
+    font-size: clamp(54px, 15vw, 96px);
+  }
+
+  .voice-intro {
+    font-size: 13px;
+  }
+
+  .voice-stage {
+    padding: 22px 18px 26px;
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .verse-kicker {
+    font-size: 10px;
+    gap: 8px;
+  }
+
+  .verse-kicker .verse-sep {
+    width: 16px;
+  }
+
+  .verse {
+    margin-top: 18px;
+  }
+
+  .verse-line {
+    font-size: clamp(19px, 5.4vw, 25px);
+    line-height: 1.36;
+    gap: 9px;
+  }
+
+  .verse-line .v-num {
+    font-size: 10px;
+    padding-top: 0.8em;
+  }
+
+  .voice-controls {
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+
+  .play-btn {
+    width: 54px;
+    height: 54px;
+  }
+
+  .voice-status .v-count {
+    font-size: 20px;
+  }
+
+  .wave {
+    width: 100%;
+    margin-left: 0;
+    order: 5;
+    height: 20px;
+  }
+
+  .wave span {
+    flex: 1;
+  }
+
+  .khomus-card {
+    display: flex;
+    padding-top: 24px;
+    gap: 0;
+  }
+
+  .khomus-head .khomus-name {
+    font-size: 32px;
+  }
+
+  .khomus-stage {
+    width: min(100%, 320px);
+    margin: 8px auto 4px;
+  }
+
+  .khomus-hint {
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .khomus-note {
+    text-align: center;
+  }
+
+  .call-heading {
+    font-size: clamp(54px, 15vw, 96px);
+    max-width: 14ch;
+  }
+
+  .call-copy {
+    font-size: 13px;
+    margin-top: 20px;
+  }
+
+  .call-info {
+    gap: 16px 20px;
+    margin-top: 34px;
+  }
+
+  .call-grid {
+    gap: 36px;
+  }
+
+  .call-form {
+    padding: 24px 20px;
+  }
+
+  .form-title {
+    font-size: 27px;
+  }
+
+  .footer {
+    padding-top: 40px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-brand {
+    grid-column: 1;
+  }
+
+  .footer-note {
+    grid-column: 1;
+  }
+
+  .footer-grid .to-top {
+    position: static;
+  }
+
+  .footer-bottom {
+    margin-top: 34px;
+  }
+
+  .footer-bottom .colophon {
+    gap: 8px 16px;
+  }
+
+  .menu {
+    padding-top: 18px;
+  }
+
+  .menu-nav a {
+    padding: 12px 0;
+  }
+
+  .menu-nav .menu-name {
+    font-size: clamp(34px, 10vw, 50px);
+  }
+
+  .toast {
+    bottom: 18px;
+  }
+
+  .heavens-help {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand-text b {
+    font-size: 9px;
+  }
+
+  .hero-title {
+    font-size: clamp(62px, 18.5vw, 96px);
+  }
+
+  .hero-foot {
+    font-size: 10px;
+  }
+
+  .hero-foot > span:last-child {
+    margin-left: auto;
+  }
+
+  .hero-signature {
+    max-width: 32ch;
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tale-aside {
+    padding-top: 22px;
+  }
+
+  .world-node {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .world-node .node-dot {
+    display: none;
+  }
+
+  .deed-art {
+    aspect-ratio: 16 / 9;
+  }
+
+  .deed-title {
+    font-size: 27px;
+  }
+
+  .deed-desc {
+    font-size: 12px;
+  }
+
+  .call-info {
+    grid-template-columns: 1fr;
+  }
+
+  .call-actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .footer-bottom {
+    font-size: 10px;
+  }
+
+  .heavens-stage {
+    /* Portrait: a thumb steers better along a taller scene. */
+    aspect-ratio: 4 / 5;
+    min-height: clamp(240px, calc(100svh - 486px), 400px);
+    border-radius: 18px;
+  }
+
+  .heavens-hud {
+    top: 10px;
+    left: 12px;
+    right: 12px;
+    gap: 4px 14px;
+  }
+
+  .heavens-hud dt {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .heavens-hud dd {
+    font-size: 11.5px;
+  }
+
+  .heavens-overlay-title {
+    font-size: clamp(21px, 7vw, 30px);
+  }
+
+  .heavens-msg {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    bottom: 10px;
+  }
+
+  .heavens-help {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --page: calc(100% - 26px);
+  }
+
+  .hero-kicker::before {
+    display: none;
+  }
+
+  .hero-kicker {
+    padding-left: 0;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .brand-text {
+    font-size: 9px;
+    letter-spacing: 0.09em;
+  }
+
+  .hero-title {
+    font-size: 60px;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .deed {
+    grid-template-columns: 22px minmax(0, 1fr) 44px;
+    gap: 8px;
+  }
+
+  .deed-title {
+    font-size: 24px;
+  }
+
+  .craft-heading {
+    font-size: clamp(40px, 13.2vw, 54px);
+  }
+
+  .heavens-heading {
+    font-size: clamp(42px, 13.5vw, 58px);
+    letter-spacing: -0.035em;
+  }
+
+  .heavens-stage {
+    min-height: clamp(240px, calc(100svh - 486px), 360px);
+  }
+
+  .world-panel-inner .world-title-block,
+  .world-panel-inner .world-copy-block {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .arena-game-head {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .arena-source-pair {
+    max-width: 520px;
+  }
+
+  .arena-source-pair img {
+    height: 190px;
+  }
+}
+
+@media (max-width: 700px) {
+  .game-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .game-index a {
+    min-height: 82px;
+    padding: 17px 18px;
+  }
+
+  .arena-game {
+    margin-top: 64px;
+  }
+
+  .arena-game-head h3 {
+    font-size: clamp(39px, 12vw, 58px);
+  }
+
+  .arena-source-pair img {
+    height: 170px;
+  }
+
+  .arena-action {
+    right: 12px;
+    bottom: 38px;
+    min-width: 122px;
+    min-height: 46px;
+    padding: 10px 14px;
+    font-size: 9px;
+  }
+}
+
+/* ---------- alas embed responsive ---------- */
+
+@media (max-width: 900px) {
+  .alas-embed {
+    aspect-ratio: 4 / 3;
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 560px) {
+  .alas-embed {
+    aspect-ratio: auto;
+    min-height: 320px;
+    height: 55vh;
+  }
+  .alas-embed-title {
+    font-size: clamp(22px, 6vw, 32px);
+  }
+}
+
+/* ---------- AI consultant chat ---------- */
+
+@media (max-width: 760px) {
+  .chat-launcher {
+    right: 16px;
+    bottom: 16px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .client-chat {
+    right: 16px;
+    bottom: 82px;
+    width: calc(100vw - 32px);
+    height: min(620px, calc(100vh - 105px));
+    border-radius: 18px;
+  }
+
+  .chat-quick {
+    gap: 6px;
+  }
+
+  .chat-quick button {
+    font-size: 9px;
+    padding: 6px 8px;
+  }
+
+  .chat-form button {
+    padding: 0 10px;
+  }
+}

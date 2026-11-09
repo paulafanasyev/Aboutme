@@ -1,0 +1,29 @@
+# Large texture files (use Git LFS or host separately)
+alas/textures/*.blend
+alas/textures/*.usdc
+alas/textures/*.hdr
+alas/textures/*.zip
+alas/textures/*_2K-JPG_*
+
+# Keep only essential textures
+!alas/textures/*.png
+!alas/textures/*_Color.jpg
+
+# Node modules
+node_modules/
+
+# Build output
+dist/
+dist-embed/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*.backup
