@@ -1492,4 +1492,8 @@ function createGame(stage, getLang, labels) {
     });
     ro.observe(stage);
   }
+
+  window.addEventListener("load", () => {
+    resize();
+  });
 }

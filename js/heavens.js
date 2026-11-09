@@ -1954,5 +1954,10 @@ export function initHeavens({ getLang }) {
     ro.observe(stage);
   }
 
+  window.addEventListener("load", () => {
+    resize();
+    if (!running) draw();
+  });
+
   return { start, pause, resume };
 }
