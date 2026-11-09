@@ -138,9 +138,9 @@ export const SAH = {
   deedsSakha: '<span lang="sah">Айымньылар</span><span class="sakha-gloss"> · оҥоһуллубут систиэмэлэр</span>',
   deedsKicker: "Талламмыт бырайыактар",
   deedsTitle: "Бырайыактар",
-  deedsSubtitle: "Цифралаах дойдулар оҥоруучутун аҕыс айымньыта",
+  deedsSubtitle: "Цифралаах дойдулар оҥоруучутун алта продуктата",
   deedsSummary:
-    "Бу портфолио карточкалар буолбатахтар, олохтоох систиэмэлэр. <strong>Аҕыстан алта GitHub-ка аһаҕас.</strong>",
+    "Бу портфолио карточкалар буолбатахтар, олохтоох систэмэлэр. <strong>Бары алта GitHub-ка аһаҕас.</strong>",
   p1cat: "Үөрэҕирии · Оҕолор",
   p1status: "Бүппүт",
   p1title: "AI Kids Workout",

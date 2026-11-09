@@ -139,9 +139,9 @@ export const EN = {
   deedsSakha: '<span lang="sah">Айымньылар</span><span class="sakha-gloss"> · deeds</span>',
   deedsKicker: "Selected projects",
   deedsTitle: "Projects",
-  deedsSubtitle: "Eight deeds of the digital worlds maker",
+  deedsSubtitle: "Six products of the digital worlds maker",
   deedsSummary:
-    "Not portfolio cards but living systems. <strong>Six of the eight are open on GitHub.</strong>",
+    "Not portfolio cards but living systems. <strong>All six are open on GitHub.</strong>",
   p1cat: "Education · Children",
   p1status: "Complete",
   p1title: "AI Kids Workout",

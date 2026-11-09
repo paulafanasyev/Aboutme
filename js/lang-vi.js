@@ -136,9 +136,9 @@ export const VI = {
   deedsSakha: '<span lang="sah">Айымньылар</span><span class="sakha-gloss"> · chiến công</span>',
   deedsKicker: "Dự án tuyển chọn",
   deedsTitle: "Dự án",
-  deedsSubtitle: "Tám chiến công của người chế tạo thế giới số",
+  deedsSubtitle: "Sáu sản phẩm của người chế tạo thế giới số",
   deedsSummary:
-    "Không phải những tấm thẻ hồ sơ mà là những hệ thống đang sống. <strong>Sáu trong tám dự án mở trên GitHub.</strong>",
+    "Không phải thẻ cardportflio mà là hệ系统thống sống. <strong>Cả sáu đều mở trên GitHub.</strong>",
   p1cat: "Giáo dục · Trẻ em",
   p1status: "Hoàn thành",
   p1title: "AI Kids Workout",
