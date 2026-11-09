@@ -78,11 +78,14 @@ const MSG = {
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 export function initHeavens({ getLang }) {
+  console.log("[heavens] initHeavens called");
   const canvas = document.getElementById("heavensCanvas");
   const stage = document.querySelector(".heavens-stage");
+  console.log("[heavens] canvas:", !!canvas, "stage:", !!stage);
   if (!canvas || !stage) return;
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
+  console.log("[heavens] ctx obtained");
 
   const startBtn = document.getElementById("hvStart");
   const heavenEl = document.getElementById("hvHeaven");
