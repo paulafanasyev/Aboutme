@@ -78,22 +78,11 @@ const MSG = {
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 export function initHeavens({ getLang }) {
-  window.heavensInitCalled = true;
-  console.log("[heavens] initHeavens called");
   const canvas = document.getElementById("heavensCanvas");
   const stage = document.querySelector(".heavens-stage");
-  console.log("[heavens] canvas:", !!canvas, "stage:", !!stage);
-  if (!canvas || !stage) {
-    window.heavensInitFailed = "canvas or stage not found";
-    return;
-  }
+  if (!canvas || !stage) return;
   const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    window.heavensInitFailed = "ctx not obtained";
-    return;
-  }
-  console.log("[heavens] ctx obtained");
-  window.heavensInitSuccess = true;
+  if (!ctx) return;
 
   const startBtn = document.getElementById("hvStart");
   const heavenEl = document.getElementById("hvHeaven");
@@ -1749,16 +1738,12 @@ export function initHeavens({ getLang }) {
   }
 
   function start() {
-    console.log("[heavens] start() called");
     stopIdle();
-    console.log("[heavens] stopIdle() done");
     resetRun();
-    console.log("[heavens] resetRun() done");
     phase = "play";
     running = true;
     last = performance.now();
     resize();
-    console.log("[heavens] resize() done, canvas:", canvas.width, canvas.height);
     stage.classList.add("is-live");
     document.body.classList.add("heavens-playing");
     /* The card holding the start button is about to leave the layout. If nothing
@@ -1836,13 +1821,9 @@ export function initHeavens({ getLang }) {
   }
 
   startBtn.addEventListener("click", () => {
-    console.log("[heavens] Start button clicked, phase:", phase);
     stopIdle();
     if (phase === "pause") resume();
-    else {
-      console.log("[heavens] Calling start()");
-      start();
-    }
+    else start();
   });
 
   /* The field is short, and a cursor that grazes its edge is the player asking

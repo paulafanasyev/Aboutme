@@ -4,7 +4,16 @@
   "cleanUrls": true,
   "headers": [
     {
-      "source": "/(.*)\\.(js|css|png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot|ico)",
+      "source": "/(.*)\\.(js|css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(png|jpg|jpeg|gif|svg|webp|woff|woff2|ttf|eot|ico)",
       "headers": [
         {
           "key": "Cache-Control",
