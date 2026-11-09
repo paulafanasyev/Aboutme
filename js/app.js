@@ -9,7 +9,7 @@
    way and nothing flickers. */
 document.documentElement.classList.add("has-js");
 
-import { TRANSLATIONS } from "./content.js";
+import { TRANSLATIONS } from "./content.v2.js";
 import { initHero } from "./hero.js";
 import { initDeeds } from "./deeds.js";
 import { initWorlds } from "./worlds.js";
